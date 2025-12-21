@@ -1,0 +1,27 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  content_type_migrations.content_type_service_decorator:
+    class: vardumper\IbexaAutomaticMigrationsBundle\Service\ContentTypeServiceDecorator
+    decorates: ibexa.api.service.content_type
+    arguments:
+      - '@.inner'
+      - '@event_dispatcher'
+      - '@logger'
+    public: true
+
+  content_type_migrations.content_type_listener:
+    class: vardumper\IbexaAutomaticMigrationsBundle\EventListener\ContentTypeListener
+    autoconfigure: true
+    autowire: true
+    public: false
+    arguments:
+      - '@logger'
+      # project dir is injected via Autowire attribute on the constructor
+    tags:
+      - { name: 'kernel.event_listener', event: 'vardumper\IbexaAutomaticMigrationsBundle\Event\ContentTypeCreatedEvent', method: 'onCreated' }
+      - { name: 'kernel.event_listener', event: 'vardumper\IbexaAutomaticMigrationsBundle\Event\ContentTypeUpdatedEvent', method: 'onUpdated' }
+      - { name: 'kernel.event_listener', event: 'vardumper\IbexaAutomaticMigrationsBundle\Event\ContentTypeDeletedEvent', method: 'onDeleted' }
