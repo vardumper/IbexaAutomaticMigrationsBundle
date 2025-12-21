@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace IbexaAutomaticMigrationsBundle\EventListener;
+namespace vardumper\IbexaAutomaticMigrationsBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Ibexa\Contracts\Core\Repository\Events\ContentType\CreateContentTypeEvent;
 use Ibexa\Contracts\Core\Repository\Events\ContentType\BeforeDeleteContentTypeEvent;
 use Ibexa\Contracts\Core\Repository\Events\ContentType\PublishContentTypeDraftEvent;
 use Psr\Log\LoggerInterface;

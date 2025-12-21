@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace IbexaAutomaticMigrationsBundle\EventListener;
+namespace vardumper\IbexaAutomaticMigrationsBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use IbexaAutomaticMigrationsBundle\Event\ContentTypeGroupCreatedEvent;
-use IbexaAutomaticMigrationsBundle\Event\ContentTypeGroupUpdatedEvent;
-use IbexaAutomaticMigrationsBundle\Event\ContentTypeGroupDeletedEvent;
+use vardumper\IbexaAutomaticMigrationsBundle\Event\ContentTypeGroupCreatedEvent;
+use vardumper\IbexaAutomaticMigrationsBundle\Event\ContentTypeGroupUpdatedEvent;
+use vardumper\IbexaAutomaticMigrationsBundle\Event\ContentTypeGroupDeletedEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\Process;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;

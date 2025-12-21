@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace IbexaAutomaticMigrationsBundle\Controller;
+namespace vardumper\IbexaAutomaticMigrationsBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
