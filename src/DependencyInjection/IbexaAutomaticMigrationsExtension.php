@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace vardumper\IbexaAutomaticMigrationsBundle\DependencyInjection;
+namespace IbexaAutomaticMigrationsBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

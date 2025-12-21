@@ -15,7 +15,12 @@
   },
   "autoload": {
     "psr-4": {
-      "IbexaAutomaticMigrationsBundle\\": "src/"
+      "vardumper\\IbexaAutomaticMigrationsBundle\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "vardumper\\IbexaAutomaticMigrationsBundleTests\\": "tests/"
     }
   }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace vardumper\IbexaAutomaticMigrationsBundle\EventListener;
+namespace IbexaAutomaticMigrationsBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Ibexa\Contracts\Core\Repository\Events\ContentType\CreateContentTypeEvent;

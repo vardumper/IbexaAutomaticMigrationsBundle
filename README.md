@@ -33,6 +33,29 @@ return [
 ];
 ```
 
+## Testing
+
+This bundle uses [Pest](https://pestphp.com/) for testing.
+
+### Running Tests
+
+First, install the development dependencies:
+
+```bash
+composer install --dev
+```
+
+Then run the tests:
+
+```bash
+./vendor/bin/pest
+```
+
+### Test Structure
+
+- `tests/Feature/DeleteMigrationTest.php` - Tests the delete migration generation functionality
+- `tests/Feature/ContentTypeListenerTest.php` - Unit tests for the ContentTypeListener class
+
 ## Roadmap
 * Display Migrations and their status in the amdin panel (for admin users only)
 * Allow admins to execute pending migrations in the admin panel

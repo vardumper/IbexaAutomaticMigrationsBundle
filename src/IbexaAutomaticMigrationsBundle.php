@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace vardumper\IbexaAutomaticMigrationsBundle;
+namespace IbexaAutomaticMigrationsBundle;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use vardumper\IbexaAutomaticMigrationsBundle\DependencyInjection\Compiler\ReplaceContentTypeServicePass;
+use IbexaAutomaticMigrationsBundle\DependencyInjection\Compiler\ReplaceContentTypeServicePass;
 
 class IbexaAutomaticMigrationsBundle extends Bundle
 {
