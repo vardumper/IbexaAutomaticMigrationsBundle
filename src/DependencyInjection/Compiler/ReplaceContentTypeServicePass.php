@@ -15,8 +15,5 @@ class ReplaceContentTypeServicePass implements CompilerPassInterface
             error_log('unable to activate ContentTypeMigrationsBundle because neither ibexa/migrations nor kaliop/ibexa-migration-bundle is installed. Please install one of them.');
             return;
         }
-
-        // The decorator is now defined in services.yaml with 'decorates: ibexa.api.service.content_type'
-        // No additional processing needed
     }
 }

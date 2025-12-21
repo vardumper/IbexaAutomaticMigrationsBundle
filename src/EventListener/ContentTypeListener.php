@@ -14,7 +14,8 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class ContentTypeListener
 {
-    private const DESTINATION = 'src/MigrationsDefinitions';
+    private const DESTINATION_KALIOP = 'src/MigrationsDefinitions';
+    private const DESTINATION_IBEXA = 'src/Migrations/Ibexa/migrations';
     private bool $isCli = false;
     private ?string $mode = null;
     private string $projectDir;
@@ -32,7 +33,6 @@ class ContentTypeListener
     {
         $this->container = $container;
         $this->projectDir = rtrim($projectDir, DIRECTORY_SEPARATOR);
-        $this->destination = $this->projectDir . DIRECTORY_SEPARATOR . self::DESTINATION;
         $this->isCli = PHP_SAPI === 'cli';
         
         // Use php with increased memory limit to avoid memory issues
@@ -40,9 +40,11 @@ class ContentTypeListener
         
         if (class_exists('Ibexa\\Bundle\\Migration\\Command\\GenerateCommand')) {
             $this->mode = 'ibexa';
+            $this->destination = $this->projectDir . DIRECTORY_SEPARATOR . self::DESTINATION_IBEXA;
         }
         if (class_exists('Kaliop\\IbexaMigrationBundle\\Command\\GenerateCommand')) {
             $this->mode = 'kaliop';
+            $this->destination = $this->projectDir . DIRECTORY_SEPARATOR . self::DESTINATION_KALIOP;
         }
         if (!is_dir($this->destination)) {
             mkdir($this->destination, 0777, true);
@@ -71,7 +73,8 @@ class ContentTypeListener
             
             // Determine if this is a new content type or an update to an existing one
             // Check if there are existing migration files for this content type identifier
-            $existingFiles = glob($this->destination . DIRECTORY_SEPARATOR . '*_content_type_*_' . $publishedContentType->identifier . '.yml');
+            $patternBase = $this->destination . DIRECTORY_SEPARATOR . '*_content_type_*_' . $publishedContentType->identifier;
+            $existingFiles = array_merge(glob($patternBase . '.yml') ?: [], glob($patternBase . '.yaml') ?: []);
             $isNewContentType = empty($existingFiles);
             $mode = $isNewContentType ? 'create' : 'update';
             
@@ -102,59 +105,17 @@ class ContentTypeListener
         $this->logger->info('BeforeDeleteContentTypeEvent received', ['id' => $contentType->id, 'identifier' => $contentType->identifier]);
 
         // Generate delete migration BEFORE the content type is deleted
-        $this->generateDeleteMigration($contentType);
+        $this->generateMigration($contentType, 'delete');
     }
 
-    private function generateDeleteMigration(\Ibexa\Contracts\Core\Repository\Values\ContentType\ContentType $contentType): void
-    {
-        $this->logger->info('Generating delete migration for content type', ['id' => $contentType->id, 'identifier' => $contentType->identifier]);
 
-        $timestamp = date('YmdHis');
-        $filename = $timestamp . '_auto_content_type_delete_' . $contentType->identifier . '.yml';
-        $filepath = $this->destination . DIRECTORY_SEPARATOR . $filename;
-
-        // Create the delete migration content
-        $migrationContent = [
-            [
-                'type' => 'content_type',
-                'mode' => 'delete',
-                'identifier' => $contentType->identifier,
-            ]
-        ];
-
-        $yamlContent = \Symfony\Component\Yaml\Yaml::dump($migrationContent);
-
-        if (file_put_contents($filepath, $yamlContent) === false) {
-            $this->logger->error('Failed to write delete migration file', ['filepath' => $filepath]);
-            return;
-        }
-
-        $this->logger->info('Delete migration file created', ['filepath' => $filepath]);
-
-        // Mark migration as executed
-        $md5 = md5_file($filepath);
-        try {
-            $conn = $this->container->get('doctrine.dbal.default_connection');
-            $conn->insert('kaliop_migrations', [
-                'migration' => $filename,
-                'md5' => $md5,
-                'path' => $filepath,
-                'execution_date' => time(),
-                'status' => 2,
-                'execution_error' => null
-            ]);
-            $this->logger->info('Delete migration marked as executed', ['filename' => $filename]);
-        } catch (\Throwable $e) {
-            $this->logger->warning('Failed to mark delete migration as executed', ['exception' => $e->getMessage()]);
-        }
-    }
 
     private function generateMigration(\Ibexa\Contracts\Core\Repository\Values\ContentType\ContentType|\Ibexa\Contracts\Core\Repository\Values\ContentType\ContentTypeDraft $contentType, string $mode): void
     {
         $this->logger->info('Starting migration generation', ['mode' => $mode, 'identifier' => $contentType->identifier, 'id' => $contentType->id]);
         
-        if ($this->mode !== 'kaliop') {
-            $this->logger->info('Skipping migration generation - not using kaliop mode', ['current_mode' => $this->mode]);
+        if ($this->mode !== 'kaliop' && $this->mode !== 'ibexa') {
+            $this->logger->info('Skipping migration generation - not using kaliop or ibexa mode', ['current_mode' => $this->mode]);
             return;
         }
 
@@ -162,15 +123,29 @@ class ContentTypeListener
             $matchValue = $contentType->identifier;
             $name = 'auto_content_type_' . $mode . '_' . (string) $matchValue;
 
-            $inputArray = [
-                '--format' => 'yml',
-                '--type' => 'content_type',
-                '--mode' => $mode,
-                '--match-type' => 'content_type_identifier',
-                '--match-value' => (string) $matchValue,
-                'bundle' => $this->destination,
-                'name' => $name,
-            ];
+            if ($this->mode === 'kaliop') {
+                $inputArray = [
+                    '--format' => 'yml',
+                    '--type' => 'content_type',
+                    '--mode' => $mode,
+                    '--match-type' => 'content_type_identifier',
+                    '--match-value' => (string) $matchValue,
+                    'bundle' => $this->destination,
+                    'name' => $name,
+                ];
+                $command = 'kaliop:migration:generate';
+            } elseif ($this->mode === 'ibexa') {
+                $now = new \DateTime();
+                $inputArray = [
+                    '--format' => 'yaml',
+                    '--type' => 'content_type',
+                    '--mode' => $mode,
+                    '--match-property' => 'content_type_identifier',
+                    '--value' => (string) $matchValue,
+                    '--file' => $now->format('Y_m_d_H_i_s_') . $name . '.yaml',
+                ];
+                $command = 'ibexa:migrations:generate';
+            }
 
             $flags = [];
             foreach ($inputArray as $k => $v) {
@@ -183,18 +158,34 @@ class ContentTypeListener
                 }
             }
             $cmd = array_merge($this->consoleCommand, [
-                'kaliop:migration:generate',
-            ], $flags, [$this->destination, $name]);
+                $command,
+            ], $flags);
+            if ($this->mode === 'kaliop') {
+                $cmd = array_merge($cmd, [$this->destination, $name]);
+            }
             $process = new Process($cmd, $this->projectDir);
 
             $process->run();
             $code = $process->getExitCode();
             $this->logger->info('Migration generate process finished (' . $mode . ')', ['name' => $name, 'code' => $code, 'output' => $process->getOutput(), 'error' => $process->getErrorOutput()]);
             if ($code == 0) {
-                if (preg_match('/Generated new migration file: .*\/([^\/]+\.yml)/', $process->getOutput(), $matches)) {
+                if ($this->mode === 'kaliop') {
+                    $pattern = '/Generated new migration file: .*\/([^\/]+\.yml)/';
+                } elseif ($this->mode === 'ibexa') {
+                    $pattern = '/Generated migration file: ([^\n]+)/';
+                }
+                if (preg_match($pattern, $process->getOutput(), $matches)) {
                     $fileName = $matches[1];
+
+                    // Ibexa generator already writes the file to the correct migrations directory.
+                    // Use the destination path directly and avoid moving files around.
                     $fullPath = $this->destination . DIRECTORY_SEPARATOR . $fileName;
-                    $md5 = md5_file($fullPath);
+                    if (!file_exists($fullPath)) {
+                        $this->logger->warning('Generated migration file not found', ['path' => $fullPath]);
+                        $md5 = null;
+                    } else {
+                        $md5 = md5_file($fullPath);
+                    }
                     try {
                         $conn = $this->container->get('doctrine.dbal.default_connection');
                         $conn->insert('kaliop_migrations', [
