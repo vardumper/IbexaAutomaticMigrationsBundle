@@ -1,4 +1,4 @@
-# ContentTypeMigrationsBundle
+# IbexaAutomaticMigrationsBundle
 
 This is a bundle for Ibexa DXP. It automatically creates migrations for content types and content type groups.
 The goal is to eliminate the need to manually create migrations or test them – instead have Ibexa auto-generate them for us whenever content types change.
@@ -13,7 +13,7 @@ The goal is to eliminate the need to manually create migrations or test them –
 ### 1. Install the bundle
 
 ```bash
-composer require vardumper/content-type-migrations-bundle:dev-main
+composer require vardumper/ibexa-automatic-migrations-bundle:dev-main
 ```
 
 ### 2. Register the bundle in your `config/bundles.php`:
@@ -21,10 +21,12 @@ composer require vardumper/content-type-migrations-bundle:dev-main
 ```php
 return [
     // ...
-    vardumper\IbexaAutomaticMigrationsBundle\ContentTypeMigrationsBundle::class => ['all' => true],
+    vardumper\IbexaAutomaticMigrationsBundle\IbexaAutomaticMigrationsBundle::class => ['all' => true],
 ];
 ```
 
 ## Roadmap
 * Display Migrations and their status in the amdin panel (for admin users only)
 * Allow admins to execute pending migrations in the admin panel
+* Support more types of migrations, not only content types are relevant, but Languages, Sections, etc.
+* Allow the user to select (via admin panel and/or configuration file) which data points migrations are created for

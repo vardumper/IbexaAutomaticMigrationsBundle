@@ -1,6 +1,6 @@
 {
-  "name": "vardumper/content-type-migrations-bundle",
-  "description": "Content type migration bundle for the project (module copy)",
+  "name": "vardumper/ibexa-automatic-migrations-bundle",
+  "description": "Ibexa automatic migrations bundle eliminates the need to manually create migrations for various admin changes. Migration files are automatically generated when settings change in the admin panel.",
   "type": "symfony-bundle",
   "license": "MIT",
   "authors": [
