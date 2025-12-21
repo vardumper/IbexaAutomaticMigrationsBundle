@@ -3,10 +3,18 @@
 This is a bundle for Ibexa DXP. It automatically creates migrations for content types and content type groups.
 The goal is to eliminate the need to manually create migrations or test them – instead have Ibexa auto-generate them for us whenever content types change.
 
+## Requirements
+* Ibexa DXP >= v5.0 (tested)
+* Ibexa DXP >= v4.4 (untested)
+
 ## Features
-* Automatically create migrations for Ibexa content types and content type groups
+* Automatically create migrations when changes are made in the administration
 * Supports Ibexa DXP Headless, Experience and Commerce editions via `ibexa/migrations`
 * Supports Ibexa DXP Open Source Edition via `mrk-te/ibexa-migration-bundle2`
+
+## Supported Types of Migrations
+* Content Type Group
+* Content Type
 
 ## Installation
 

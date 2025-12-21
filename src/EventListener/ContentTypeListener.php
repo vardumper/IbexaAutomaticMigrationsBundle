@@ -5,24 +5,22 @@ declare(strict_types=1);
 namespace vardumper\IbexaAutomaticMigrationsBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use vardumper\IbexaAutomaticMigrationsBundle\Event\ContentTypeCreatedEvent;
-use vardumper\IbexaAutomaticMigrationsBundle\Event\ContentTypeUpdatedEvent;
-use vardumper\IbexaAutomaticMigrationsBundle\Event\ContentTypeDeletedEvent;
+use Ibexa\Contracts\Core\Repository\Events\ContentType\CreateContentTypeEvent;
+use Ibexa\Contracts\Core\Repository\Events\ContentType\PublishContentTypeDraftEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\Process;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\Yaml\Yaml;
 
 class ContentTypeListener
 {
-    private const REL_DESTINATION = 'src/MigrationsDefinitions';
+    private const DESTINATION = 'src/MigrationsDefinitions';
     private bool $isCli = false;
     private ?string $mode = null;
     private string $projectDir;
     private string $destination;
     private ContainerInterface $container;
-    // private static array $generatedMigrations = [];
+    private array $consoleCommand;
 
     public function __construct(
         private readonly LoggerInterface $logger,
@@ -34,8 +32,12 @@ class ContentTypeListener
     {
         $this->container = $container;
         $this->projectDir = rtrim($projectDir, DIRECTORY_SEPARATOR);
-        $this->destination = $this->projectDir . DIRECTORY_SEPARATOR . self::REL_DESTINATION;
+        $this->destination = $this->projectDir . DIRECTORY_SEPARATOR . self::DESTINATION;
         $this->isCli = PHP_SAPI === 'cli';
+        
+        // Use php with increased memory limit to avoid memory issues
+        $this->consoleCommand = ['php', '-d', 'memory_limit=512M', $this->projectDir . '/bin/console'];
+        
         if (class_exists('Ibexa\\Bundle\\Migration\\Command\\GenerateCommand')) {
             $this->mode = 'ibexa';
         }
@@ -47,214 +49,127 @@ class ContentTypeListener
         }
     }
 
-    #[AsEventListener(ContentTypeCreatedEvent::class)]
-    public function onCreated(ContentTypeCreatedEvent $event): void
+    #[AsEventListener(CreateContentTypeEvent::class)]
+    public function onIbexaCreateContentType(CreateContentTypeEvent $event): void
     {
+        // Skip CreateContentTypeEvent - we'll handle this in PublishContentTypeDraftEvent
+        // to ensure we have the final identifier
+        return;
+    }
+
+    #[AsEventListener(PublishContentTypeDraftEvent::class)]
+    public function onIbexaPublishContentTypeDraft(PublishContentTypeDraftEvent $event): void
+    {
+        $this->logger->info('IbexaAutomaticMigrationsBundle: PublishContentTypeDraftEvent received', ['event' => get_class($event)]);
+
         if ($this->isCli) {
+            $this->logger->info('IbexaAutomaticMigrationsBundle: Skipping because running in CLI');
             return;
         }
 
-        $this->logger->info('ContentType created (listener)', ['identifier' => $event->identifier]);
+        $contentTypeDraft = $event->getContentTypeDraft();
+        $this->logger->info('Ibexa PublishContentTypeDraftEvent received', ['id' => $contentTypeDraft->id, 'identifier' => $contentTypeDraft->identifier]);
 
-        if ($this->mode === 'kaliop') {
-            try {
-                $matchValue = $event->identifier;
-                $name = 'auto_content_type_create_' . (string) $matchValue;
-
-                // if (in_array($name, self::$generatedMigrations)) {
-                //     return;
-                // }
-                // self::$generatedMigrations[] = $name;
-
-                $inputArray = [
-                    '--format' => 'yml',
-                    '--type' => 'content_type',
-                    '--mode' => 'create',
-                    '--match-type' => 'content_type_identifier',
-                    '--match-value' => (string) $matchValue,
-                    'bundle' => $this->destination,
-                    'name' => $name,
-                ];
-
-                $phpBinary = 'php';
-                $flags = [];
-                foreach ($inputArray as $k => $v) {
-                    if (is_int($k)) {
-                        $flags[] = $v;
-                        continue;
-                    }
-                    if (str_starts_with((string) $k, '--') || str_starts_with((string) $k, '-')) {
-                        $flags[] = $k . '=' . $v;
-                    }
-                }
-                $cmd = array_merge([
-                    $phpBinary,
-                    $this->projectDir . '/bin/console',
-                    'kaliop:migration:generate',
-                ], $flags, [$this->destination, $name]);
-                $process = new Process($cmd, $this->projectDir);
-
-                // Commit the transaction so the child process can see the new content type
-                $repository = $this->container->get('ibexa.api.repository');
-                $repository->commit();
-
-                $process->run();
-                $code = $process->getExitCode();
-                $this->logger->info('Migration generate process finished (create)', ['name' => $name, 'code' => $code, 'output' => $process->getOutput(), 'error' => $process->getErrorOutput()]);
-                if ($code == 0) {
-                    if (preg_match('/Generated new migration file: .*\/([^\/]+\.yml)/', $process->getOutput(), $matches)) {
-                        $fileName = $matches[1];
-                        $fullPath = $this->destination . DIRECTORY_SEPARATOR . $fileName;
-                        $md5 = md5_file($fullPath);
-                        try {
-                            $conn = $this->container->get('doctrine.dbal.default_connection');
-                            $conn->insert('kaliop_migrations', [
-                                'migration' => $fileName,
-                                'md5' => $md5,
-                                'path' => $fullPath,
-                                'execution_date' => time(),
-                                'status' => 2,
-                                'execution_error' => null
-                            ]);
-                        } catch (\Throwable $e) {
-                            $this->logger->warning('Failed to mark migration as executed', ['exception' => $e->getMessage()]);
-                        }
-                    }
-                }
-            } catch (\Throwable $e) {
-                $this->logger->error('Failed to generate migration programmatically (create)', ['exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
-            }
+        // After publishing, try to load the published content type by ID instead of identifier
+        // since the identifier might change during publishing
+        $contentTypeService = $this->container->get('ibexa.api.service.content_type');
+        try {
+            $publishedContentType = $contentTypeService->loadContentType($contentTypeDraft->id);
+            $this->logger->info('Published content type loaded successfully', ['id' => $publishedContentType->id, 'identifier' => $publishedContentType->identifier]);
+            
+            // Determine if this is a new content type or an update to an existing one
+            // Check if there are existing migration files for this content type identifier
+            $existingFiles = glob($this->destination . DIRECTORY_SEPARATOR . '*_content_type_*_' . $publishedContentType->identifier . '.yml');
+            $isNewContentType = empty($existingFiles);
+            $mode = $isNewContentType ? 'create' : 'update';
+            
+            $this->logger->info('Determined migration mode based on existing files', [
+                'mode' => $mode, 
+                'identifier' => $publishedContentType->identifier,
+                'existing_files_count' => count($existingFiles),
+                'is_new' => $isNewContentType
+            ]);
+            
+            $this->generateMigration($publishedContentType, $mode);
+        } catch (\Throwable $e) {
+            $this->logger->error('Failed to load published content type by ID', ['id' => $contentTypeDraft->id, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
         }
     }
 
-    #[AsEventListener(ContentTypeUpdatedEvent::class)]
-    public function onUpdated(ContentTypeUpdatedEvent $event): void
+    #[AsEventListener(UpdateContentTypeDraftEvent::class)]
+    public function onIbexaUpdateContentTypeDraft(UpdateContentTypeDraftEvent $event): void
     {
-        if ($this->isCli) {
-            return;
-        }
-        $this->logger->info('ContentType updated (listener)', ['id' => $event->contentType->id, 'identifier' => $event->contentType->identifier]);
-
-        if ($this->mode === 'kaliop') {
-            try {
-                $contentTypeService = $this->container->get('ibexa.api.service.content_type');
-                $matchValue = $event->contentType->identifier;
-                $name = 'auto_content_type_update_' . (string) $matchValue;
-
-                // if (in_array($name, self::$generatedMigrations)) {
-                //     return;
-                // }
-                // self::$generatedMigrations[] = $name;
-
-                $inputArray = [
-                    '--format' => 'yml',
-                    '--type' => 'content_type',
-                    '--mode' => 'update',
-                    '--match-type' => 'content_type_identifier',
-                    '--match-value' => (string) $matchValue,
-                    'bundle' => $this->destination,
-                    'name' => $name,
-                ];
-
-                $phpBinary = 'php';
-                $flags = [];
-                foreach ($inputArray as $k => $v) {
-                    if (is_int($k)) {
-                        $flags[] = $v;
-                        continue;
-                    }
-                    if (str_starts_with((string) $k, '--') || str_starts_with((string) $k, '-')) {
-                        $flags[] = $k . '=' . $v;
-                    }
-                }
-                $cmd = array_merge([
-                    $phpBinary,
-                    $this->projectDir . '/bin/console',
-                    'kaliop:migration:generate',
-                ], $flags, [$this->destination, $name]);
-                $process = new Process($cmd, $this->projectDir);
-
-                // Commit the transaction so the child process can see the updated content type
-                $repository = $this->container->get('ibexa.api.repository');
-                $repository->commit();
-
-                $process->run();
-                $code = $process->getExitCode();
-                $this->logger->info('Migration generate process finished (update)', ['name' => $name, 'code' => $code, 'output' => $process->getOutput(), 'error' => $process->getErrorOutput()]);
-                if ($code == 0) {
-                    if (preg_match('/Generated new migration file: .*\/([^\/]+\.yml)/', $process->getOutput(), $matches)) {
-                        $fileName = $matches[1];
-                        $fullPath = $this->destination . DIRECTORY_SEPARATOR . $fileName;
-                        $md5 = md5_file($fullPath);
-                        try {
-                            $conn = $this->container->get('doctrine.dbal.default_connection');
-                            $conn->insert('kaliop_migrations', [
-                                'migration' => $fileName,
-                                'md5' => $md5,
-                                'path' => $fullPath,
-                                'execution_date' => time(),
-                                'status' => 2,
-                                'execution_error' => null
-                            ]);
-                        } catch (\Throwable $e) {
-                            $this->logger->warning('Failed to mark migration as executed', ['exception' => $e->getMessage()]);
-                        }
-                    }
-                }
-            } catch (\Throwable $e) {
-                $this->logger->error('Failed to generate migration programmatically (update)', ['exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
-            }
-        }
+        // Skip generating migrations for draft updates - we only want final published states
+        // This prevents creating intermediate migration files for draft modifications
+        return;
     }
 
-    #[AsEventListener(ContentTypeDeletedEvent::class)]
-    public function onDeleted(ContentTypeDeletedEvent $event): void
+    private function generateMigration(\Ibexa\Contracts\Core\Repository\Values\ContentType\ContentType|\Ibexa\Contracts\Core\Repository\Values\ContentType\ContentTypeDraft $contentType, string $mode): void
     {
-        if ($this->isCli) {
+        $this->logger->info('Starting migration generation', ['mode' => $mode, 'identifier' => $contentType->identifier, 'id' => $contentType->id]);
+        
+        if ($this->mode !== 'kaliop') {
+            $this->logger->info('Skipping migration generation - not using kaliop mode', ['current_mode' => $this->mode]);
             return;
         }
-        $this->logger->info('ContentType deleted (listener)', ['id' => $event->contentType->id, 'identifier' => $event->contentType->identifier]);
 
-        if ($this->mode === 'kaliop') {
-            try {
-                $matchValue = $event->contentType->identifier ?? $event->contentType->id;
-                $name = 'auto_content_type_delete_' . (string) $matchValue;
+        try {
+            $matchValue = $contentType->identifier;
+            $name = 'auto_content_type_' . $mode . '_' . (string) $matchValue;
 
-                // if (in_array($name, self::$generatedMigrations)) {
-                //     return;
-                // }
-                // self::$generatedMigrations[] = $name;
+            $inputArray = [
+                '--format' => 'yml',
+                '--type' => 'content_type',
+                '--mode' => $mode,
+                '--match-type' => 'content_type_identifier',
+                '--match-value' => (string) $matchValue,
+                'bundle' => $this->destination,
+                'name' => $name,
+            ];
 
-                // For delete, generate YAML directly since content type may be gone
-                $timestamp = date('YmdHis');
-                $fileName = $timestamp . '_' . $name . '.yml';
-                $data = [
-                    [
-                        'type' => 'content_type',
-                        'mode' => 'delete',
-                        'match' => [
-                            'content_type_identifier' => $matchValue
-                        ]
-                    ]
-                ];
-                $yaml = Yaml::dump($data);
-                file_put_contents($this->destination . DIRECTORY_SEPARATOR . $fileName, $yaml);
-                try {
-                    $conn = $this->container->get('doctrine.dbal.default_connection');
-                    $conn->insert('kaliop_migrations', [
-                        'migration' => $fileName,
-                        'md5' => md5_file($this->destination . DIRECTORY_SEPARATOR . $fileName),
-                        'path' => $this->destination . DIRECTORY_SEPARATOR . $fileName,
-                        'execution_date' => time(),
-                        'status' => 2,
-                        'execution_error' => null
-                    ]);
-                } catch (\Throwable $e) {
-                    $this->logger->warning('Failed to mark migration as executed', ['exception' => $e->getMessage()]);
+            $flags = [];
+            foreach ($inputArray as $k => $v) {
+                if (is_int($k)) {
+                    $flags[] = $v;
+                    continue;
                 }
-            } catch (\Throwable $e) {
-                $this->logger->error('Failed to generate migration programmatically (delete)', ['exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+                if (str_starts_with((string) $k, '--') || str_starts_with((string) $k, '-')) {
+                    $flags[] = $k . '=' . $v;
+                }
             }
+            $cmd = array_merge($this->consoleCommand, [
+                'kaliop:migration:generate',
+            ], $flags, [$this->destination, $name]);
+            $process = new Process($cmd, $this->projectDir);
+
+            $process->run();
+            $code = $process->getExitCode();
+            $this->logger->info('Migration generate process finished (' . $mode . ')', ['name' => $name, 'code' => $code, 'output' => $process->getOutput(), 'error' => $process->getErrorOutput()]);
+            if ($code == 0) {
+                if (preg_match('/Generated new migration file: .*\/([^\/]+\.yml)/', $process->getOutput(), $matches)) {
+                    $fileName = $matches[1];
+                    $fullPath = $this->destination . DIRECTORY_SEPARATOR . $fileName;
+                    $md5 = md5_file($fullPath);
+                    try {
+                        $conn = $this->container->get('doctrine.dbal.default_connection');
+                        $conn->insert('kaliop_migrations', [
+                            'migration' => $fileName,
+                            'md5' => $md5,
+                            'path' => $fullPath,
+                            'execution_date' => time(),
+                            'status' => 2,
+                            'execution_error' => null
+                        ]);
+                        $this->logger->info('Migration marked as executed', ['filename' => $fileName]);
+                    } catch (\Throwable $e) {
+                        $this->logger->warning('Failed to mark migration as executed', ['exception' => $e->getMessage()]);
+                    }
+                }
+            } else {
+                $this->logger->error('Migration generation failed', ['code' => $code, 'error' => $process->getErrorOutput()]);
+            }
+        } catch (\Throwable $e) {
+            $this->logger->error('Failed to generate migration programmatically', ['mode' => $mode, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
         }
     }
 }
