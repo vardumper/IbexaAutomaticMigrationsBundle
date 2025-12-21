@@ -6,6 +6,7 @@ namespace vardumper\IbexaAutomaticMigrationsBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Ibexa\Contracts\Core\Repository\Events\ContentType\CreateContentTypeEvent;
+use Ibexa\Contracts\Core\Repository\Events\ContentType\BeforeDeleteContentTypeEvent;
 use Ibexa\Contracts\Core\Repository\Events\ContentType\PublishContentTypeDraftEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\Process;
@@ -49,20 +50,12 @@ class ContentTypeListener
         }
     }
 
-    #[AsEventListener(CreateContentTypeEvent::class)]
-    public function onIbexaCreateContentType(CreateContentTypeEvent $event): void
-    {
-        // Skip CreateContentTypeEvent - we'll handle this in PublishContentTypeDraftEvent
-        // to ensure we have the final identifier
-        return;
-    }
-
     #[AsEventListener(PublishContentTypeDraftEvent::class)]
     public function onIbexaPublishContentTypeDraft(PublishContentTypeDraftEvent $event): void
     {
         $this->logger->info('IbexaAutomaticMigrationsBundle: PublishContentTypeDraftEvent received', ['event' => get_class($event)]);
 
-        if ($this->isCli) {
+        if ($this->isCli && !isset($_SERVER['TEST_DELETE_MIGRATION'])) {
             $this->logger->info('IbexaAutomaticMigrationsBundle: Skipping because running in CLI');
             return;
         }
@@ -96,12 +89,65 @@ class ContentTypeListener
         }
     }
 
-    #[AsEventListener(UpdateContentTypeDraftEvent::class)]
-    public function onIbexaUpdateContentTypeDraft(UpdateContentTypeDraftEvent $event): void
+    #[AsEventListener(BeforeDeleteContentTypeEvent::class)]
+    public function onIbexaBeforeDeleteContentType(BeforeDeleteContentTypeEvent $event): void
     {
-        // Skip generating migrations for draft updates - we only want final published states
-        // This prevents creating intermediate migration files for draft modifications
-        return;
+        $this->logger->info('IbexaAutomaticMigrationsBundle: BeforeDeleteContentTypeEvent received', ['event' => get_class($event)]);
+
+        if ($this->isCli && !isset($_SERVER['TEST_DELETE_MIGRATION'])) {
+            $this->logger->info('IbexaAutomaticMigrationsBundle: Skipping because running in CLI');
+            return;
+        }
+
+        $contentType = $event->getContentType();
+        $this->logger->info('BeforeDeleteContentTypeEvent received', ['id' => $contentType->id, 'identifier' => $contentType->identifier]);
+
+        // Generate delete migration BEFORE the content type is deleted
+        $this->generateDeleteMigration($contentType);
+    }
+
+    private function generateDeleteMigration(\Ibexa\Contracts\Core\Repository\Values\ContentType\ContentType $contentType): void
+    {
+        $this->logger->info('Generating delete migration for content type', ['id' => $contentType->id, 'identifier' => $contentType->identifier]);
+
+        $timestamp = date('YmdHis');
+        $filename = $timestamp . '_auto_content_type_delete_' . $contentType->identifier . '.yml';
+        $filepath = $this->destination . DIRECTORY_SEPARATOR . $filename;
+
+        // Create the delete migration content
+        $migrationContent = [
+            [
+                'type' => 'content_type',
+                'mode' => 'delete',
+                'identifier' => $contentType->identifier,
+            ]
+        ];
+
+        $yamlContent = \Symfony\Component\Yaml\Yaml::dump($migrationContent);
+
+        if (file_put_contents($filepath, $yamlContent) === false) {
+            $this->logger->error('Failed to write delete migration file', ['filepath' => $filepath]);
+            return;
+        }
+
+        $this->logger->info('Delete migration file created', ['filepath' => $filepath]);
+
+        // Mark migration as executed
+        $md5 = md5_file($filepath);
+        try {
+            $conn = $this->container->get('doctrine.dbal.default_connection');
+            $conn->insert('kaliop_migrations', [
+                'migration' => $filename,
+                'md5' => $md5,
+                'path' => $filepath,
+                'execution_date' => time(),
+                'status' => 2,
+                'execution_error' => null
+            ]);
+            $this->logger->info('Delete migration marked as executed', ['filename' => $filename]);
+        } catch (\Throwable $e) {
+            $this->logger->warning('Failed to mark delete migration as executed', ['exception' => $e->getMessage()]);
+        }
     }
 
     private function generateMigration(\Ibexa\Contracts\Core\Repository\Values\ContentType\ContentType|\Ibexa\Contracts\Core\Repository\Values\ContentType\ContentTypeDraft $contentType, string $mode): void
