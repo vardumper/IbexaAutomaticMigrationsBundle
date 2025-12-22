@@ -169,37 +169,68 @@ class ContentTypeListener
             $code = $process->getExitCode();
             $this->logger->info('Migration generate process finished (' . $mode . ')', ['name' => $name, 'code' => $code, 'output' => $process->getOutput(), 'error' => $process->getErrorOutput()]);
             if ($code == 0) {
-                if ($this->mode === 'kaliop') {
-                    $pattern = '/Generated new migration file: .*\/([^\/]+\.yml)/';
-                } elseif ($this->mode === 'ibexa') {
-                    $pattern = '/Generated migration file: ([^\n]+)/';
-                }
-                if (preg_match($pattern, $process->getOutput(), $matches)) {
-                    $fileName = $matches[1];
-
-                    // Ibexa generator already writes the file to the correct migrations directory.
-                    // Use the destination path directly and avoid moving files around.
-                    $fullPath = $this->destination . DIRECTORY_SEPARATOR . $fileName;
-                    if (!file_exists($fullPath)) {
-                        $this->logger->warning('Generated migration file not found', ['path' => $fullPath]);
-                        $md5 = null;
+                if ($this->mode === 'ibexa') {
+                    $fileName = $inputArray['--file'];
+                    $this->logger->info('Using specified filename for ibexa', ['fileName' => $fileName]);
+                } else {
+                    // Find the newest migration file in the destination directory for kaliop
+                    $files = glob($this->destination . DIRECTORY_SEPARATOR . '*.{yml,yaml}', GLOB_BRACE);
+                    $latestFile = '';
+                    $latestTime = 0;
+                    foreach ($files as $file) {
+                        $mtime = filemtime($file);
+                        if ($mtime > $latestTime) {
+                            $latestTime = $mtime;
+                            $latestFile = $file;
+                        }
+                    }
+                    if ($latestFile) {
+                        $fileName = basename($latestFile);
+                        $this->logger->info('Newest migration file found for kaliop', ['fileName' => $fileName, 'path' => $latestFile]);
                     } else {
-                        $md5 = md5_file($fullPath);
+                        $this->logger->warning('No migration files found after generation for kaliop');
+                        return;
                     }
-                    try {
-                        $conn = $this->container->get('doctrine.dbal.default_connection');
-                        $conn->insert('kaliop_migrations', [
-                            'migration' => $fileName,
-                            'md5' => $md5,
-                            'path' => $fullPath,
+                }
+
+                // Ibexa generator already writes the file to the correct migrations directory.
+                // Use the destination path directly and avoid moving files around.
+                $fullPath = $this->destination . DIRECTORY_SEPARATOR . $fileName;
+                $md5 = md5_file($fullPath);
+                try {
+                    $conn = $this->container->get('doctrine.dbal.default_connection');
+                    if ($this->mode === 'ibexa') {
+                        $table = 'ibexa_migrations';
+                        $data = [
+                            'executed_at' => new \DateTime(),
+                            'execution_time' => null
+                        ];
+                        $identifier = ['name' => $fileName];
+                        $affected = $conn->update($table, $data, $identifier);
+                        if ($affected === 0) {
+                            // Row not found, insert
+                            $conn->insert($table, array_merge($identifier, $data));
+                        }
+                    } elseif ($this->mode === 'kaliop') {
+                        $table = 'kaliop_migrations';
+                        $data = [
                             'execution_date' => time(),
-                            'status' => 2,
-                            'execution_error' => null
-                        ]);
-                        $this->logger->info('Migration marked as executed', ['filename' => $fileName]);
-                    } catch (\Throwable $e) {
-                        $this->logger->warning('Failed to mark migration as executed', ['exception' => $e->getMessage()]);
+                            'status' => 2
+                        ];
+                        $identifier = ['migration' => $fileName];
+                        $affected = $conn->update($table, $data, $identifier);
+                        if ($affected === 0) {
+                            // Row not found, insert
+                            $conn->insert($table, array_merge($identifier, $data, [
+                                'md5' => $md5,
+                                'path' => $fullPath,
+                                'execution_error' => null
+                            ]));
+                        }
                     }
+                    $this->logger->info('Migration marked as executed', ['filename' => $fileName, 'table' => $table, 'action' => $affected > 0 ? 'updated' : 'inserted']);
+                } catch (\Throwable $e) {
+                    $this->logger->warning('Failed to mark migration as executed', ['exception' => $e->getMessage()]);
                 }
             } else {
                 $this->logger->error('Migration generation failed', ['code' => $code, 'error' => $process->getErrorOutput()]);
