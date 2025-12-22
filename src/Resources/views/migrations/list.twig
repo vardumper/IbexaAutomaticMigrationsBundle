@@ -1,17 +1,19 @@
 {% extends '@ibexadesign/ui/layout.html.twig' %}
 
+{% set title_prefix = mode == 'ibexa' ? 'Ibexa' : (mode == 'kaliop' ? 'Kaliop' : '') %}
+
 {% block title %}{{ 'Migrations'|trans }}{% endblock %}
 
 {%- block breadcrumbs -%}
     {% include '@ibexadesign/ui/breadcrumbs.html.twig' with { items: [
         { value: 'breadcrumb.admin'|trans(domain='messages')|desc('Admin') },
-        { value: 'url.list'|trans|desc('Migrations') }
+        { value: title_prefix ~ ' ' ~ 'url.list'|trans|desc('Migrations') }
     ]} %}
 {%- endblock -%}
 
 {%- block header -%}
     {% include '@ibexadesign/ui/page_title.html.twig' with {
-        title: 'url.list'|trans|desc('Migrations'),
+        title: title_prefix ~ ' '   ~ 'url.list'|trans|desc('Migrations'),
     } %}
 {%- endblock -%}
 

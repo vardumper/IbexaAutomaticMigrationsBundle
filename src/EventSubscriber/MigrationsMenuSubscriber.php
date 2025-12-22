@@ -7,20 +7,15 @@ use Ibexa\AdminUi\Menu\MainMenuBuilder;
 use Ibexa\AdminUi\Menu\MenuItemFactory;
 use Ibexa\Contracts\Core\Repository\PermissionResolver;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use vardumper\IbexaAutomaticMigrationsBundle\Helper\Helper;
 
 class MigrationsMenuSubscriber implements EventSubscriberInterface
 {
     public const ITEM_ADMIN__MIGRATIONS = 'main__admin__migrations';
 
-    /**
-     * @var \Ibexa\AdminUi\Menu\MenuItemFactory
-     */
-    private $menuItemFactory;
+    private MenuItemFactory $menuItemFactory;
 
-    /**
-     * @var \Ibexa\Contracts\Core\Repository\PermissionResolver
-     */
-    private $permissionResolver;
+    private PermissionResolver $permissionResolver;
 
     public function __construct(
         MenuItemFactory $menuItemFactory,
@@ -30,27 +25,28 @@ class MigrationsMenuSubscriber implements EventSubscriberInterface
         $this->permissionResolver = $permissionResolver;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             ConfigureMenuEvent::MAIN_MENU => ['onMainMenuConfigure', 0],
         ];
     }
 
-    public function onMainMenuConfigure(ConfigureMenuEvent $event)
+    public function onMainMenuConfigure(ConfigureMenuEvent $event): void
     {
         $menu = $event->getMenu();
+        $mode = Helper::determineMode();
+        $prefix = ($mode === 'ibexa') ? 'Ibexa' : 'Kaliop';
 
-        // only for admins - temporarily removed
-        // if (!$this->permissionResolver->hasAccess('setup', 'system_info')) {
-        //     return;
-        // }
+        if (!$this->permissionResolver->hasAccess('setup', 'system_info')) {
+            return;
+        }
 
         $menu->getChild(MainMenuBuilder::ITEM_ADMIN)->addChild(
             $this->menuItemFactory->createItem(
                 self::ITEM_ADMIN__MIGRATIONS,
                 [
-                    'label' => 'Migrations',
+                    'label' => $prefix . ' Migrations',
                     'route' => 'migrations_list',
                     'attributes' => [
                         'class' => 'custom-menu-item',

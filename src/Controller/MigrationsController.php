@@ -102,6 +102,7 @@ class MigrationsController extends Controller
             'migrations' => $paginator,
             'sort' => $sort,
             'direction' => $direction,
+            'mode' => $mode,
         ]);
     }
     
