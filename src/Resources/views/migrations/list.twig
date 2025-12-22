@@ -17,62 +17,193 @@
 
 {%- block content -%}
     <section class="container ibexa-container">
-        {% set body_rows = [] %}
-        {% for migrationData in migrations.currentPageResults %}
-            {% set migration = migrationData.migration %}
-            {% set isExecuted = migrationData.isExecuted %}
+        <form method="post" action="{{ path('migrations_list') }}" id="migrations-form">
+            <input type="hidden" name="action" id="bulk-action" value="">
             
-            {% set status_badge %}
-                {% if isExecuted %}
-                    <span class="ibexa-badge ibexa-badge--success">{{ 'Executed'|trans }}</span>
-                {% else %}
-                    <span class="ibexa-badge ibexa-badge--warning">{{ 'Pending'|trans }}</span>
-                {% endif %}
+            {% set body_rows = [] %}
+            {% for migrationData in migrations.currentPageResults %}
+                {% set migration = migrationData.migration %}
+                {% set isExecuted = migrationData.isExecuted %}
+                
+                {% set checkbox %}
+                    <input type="checkbox" name="migrations[]" value="{{ migration.name }}" class="ibexa-input ibexa-input--checkbox migration-checkbox" data-executed="{{ isExecuted ? 'true' : 'false' }}">
+                {% endset %}
+                
+                {% set status_badge %}
+                    {% if isExecuted %}
+                        <span class="ibexa-badge ibexa-badge--success">✓ {{ 'Executed'|trans }}</span>
+                    {% else %}
+                        <span class="ibexa-badge ibexa-badge--danger">✘ {{ 'Pending'|trans }}</span>
+                    {% endif %}
+                {% endset %}
+
+                {% set body_rows = body_rows|merge([{
+                    cols: [
+                        { content: checkbox, raw: true },
+                        { content: migration.name },
+                        { content: status_badge, raw: true },
+                        { content: migrationData.createdAt ? migrationData.createdAt|date('Y-m-d H:i:s') : '-' },
+                        { content: migrationData.executedAt ? migrationData.executedAt|date('Y-m-d H:i:s') : '-' }
+                    ],
+                }]) %}
+            {% endfor %}
+
+            {% set name_header %}
+                {% include '@IbexaAutomaticMigrationsBundle/partials/sortable_header.html.twig' with { label: 'Migration Name'|trans, field: 'name', current_sort: sort, direction: direction } %}
+            {% endset %}
+            {% set status_header %}
+                {% include '@IbexaAutomaticMigrationsBundle/partials/sortable_header.html.twig' with { label: 'Status'|trans, field: 'status', current_sort: sort, direction: direction } %}
+            {% endset %}
+            {% set created_header %}
+                {% include '@IbexaAutomaticMigrationsBundle/partials/sortable_header.html.twig' with { label: 'Created at'|trans, field: 'createdAt', current_sort: sort, direction: direction } %}
+            {% endset %}
+            {% set executed_header %}
+                {% include '@IbexaAutomaticMigrationsBundle/partials/sortable_header.html.twig' with { label: 'Executed at'|trans, field: 'executedAt', current_sort: sort, direction: direction } %}
             {% endset %}
 
-            {% set body_rows = body_rows|merge([{
-                cols: [
-                    { content: migration.name },
-                    { content: status_badge, raw: true },
-                    { content: migrationData.createdAt ? migrationData.createdAt|date('Y-m-d H:i:s') : '-' },
-                    { content: migrationData.executedAt ? migrationData.executedAt|date('Y-m-d H:i:s') : '-' }
+            {% embed '@ibexadesign/ui/component/table/table.html.twig' with {
+                headline: 'Migrations'|trans  ~ ' ' ~ '(' ~ migrations|length ~ ')',
+                head_cols: [
+                    { has_checkbox: true },
+                    { content: name_header, raw: true },
+                    { content: status_header, raw: true },
+                    { content: created_header, raw: true },
+                    { content: executed_header, raw: true },
                 ],
-            }]) %}
-        {% endfor %}
-
-        {% set name_header %}
-            {% include '@IbexaAutomaticMigrationsBundle/partials/sortable_header.html.twig' with { label: 'Migration Name'|trans, field: 'name', current_sort: sort, direction: direction } %}
-        {% endset %}
-        {% set status_header %}
-            {% include '@IbexaAutomaticMigrationsBundle/partials/sortable_header.html.twig' with { label: 'Status'|trans, field: 'status', current_sort: sort, direction: direction } %}
-        {% endset %}
-        {% set created_header %}
-            {% include '@IbexaAutomaticMigrationsBundle/partials/sortable_header.html.twig' with { label: 'Created at'|trans, field: 'createdAt', current_sort: sort, direction: direction } %}
-        {% endset %}
-        {% set executed_header %}
-            {% include '@IbexaAutomaticMigrationsBundle/partials/sortable_header.html.twig' with { label: 'Executed at'|trans, field: 'executedAt', current_sort: sort, direction: direction } %}
-        {% endset %}
-
-        {% include '@ibexadesign/ui/component/table/table.html.twig' with {
-            headline: 'Migrations'|trans,
-            head_cols: [
-                { content: name_header, raw: true },
-                { content: status_header, raw: true },
-                { content: created_header, raw: true },
-                { content: executed_header, raw: true },
-            ],
-            class: 'ibexa-table',
-            body_rows
-        } %}
-
-        {% if migrations.haveToPaginate %}
-            {% include '@ibexadesign/ui/pagination.html.twig' with {
-                'pager': migrations
+                class: 'ibexa-table',
+                body_rows
             } %}
-        {% endif %}
+                {% block header %}
+                    {% embed '@ibexadesign/ui/component/table/table_header.html.twig' %}
+                        {% block actions %}
+                            <button type="button" class="btn ibexa-btn ibexa-btn--primary ibexa-btn--small" onclick="executeBulkAction('execute')" id="execute-migrations" disabled>
+                                <svg class="ibexa-icon ibexa-icon--small-medium">
+                                    <use xlink:href="{{ ibexa_icon_path('automation') }}"></use>
+                                </svg>
+                                <span class="ibexa-btn__small">
+                                    {{ 'Execute'|trans }}
+                                </span>
+                            </button>
+                            <button type="button" class="btn ibexa-btn ibexa-btn--ghost ibexa-btn--small" onclick="executeBulkAction('mark_executed')" id="mark-executed-migrations" disabled>
+                                <svg class="ibexa-icon ibexa-icon--small-medium">
+                                    <use xlink:href="{{ ibexa_icon_path('form-check') }}"></use>
+                                </svg>
+                                <span class="ibexa-btn__small">
+                                    {{ 'Mark Executed'|trans }}
+                                </span>
+                            </button>
+                            <button type="button" class="btn ibexa-btn ibexa-btn--ghost ibexa-btn--small" onclick="executeBulkAction('mark_pending')" id="mark-pending-migrations" disabled>
+                                <svg class="ibexa-icon ibexa-icon--small-medium">
+                                    <use xlink:href="{{ ibexa_icon_path('action-undo') }}"></use>
+                                </svg>
+                                <span class="ibexa-btn__small">
+                                    {{ 'Mark Pending'|trans }}
+                                </span>
+                            </button>
+                            <button type="button" class="btn ibexa-btn ibexa-btn--danger ibexa-btn--ghost ibexa-btn--small" onclick="executeBulkAction('delete')" id="delete-migrations" disabled>
+                                <svg class="ibexa-icon ibexa-icon--small-medium">
+                                    <use xlink:href="{{ ibexa_icon_path('trash') }}"></use>
+                                </svg>
+                                <span class="ibexa-btn__small">
+                                    {{ 'Delete'|trans }}
+                                </span>
+                            </button>
+                        {% endblock %}
+                    {% endembed %}
+                {% endblock %}
+            {% endembed %}
+            
+            {% if migrations.haveToPaginate %}
+                <div class="ibexa-pagination">
+                    <div class="ibexa-pagination__info">
+                        {{ 'pagination.viewing'|trans({
+                            '%viewing%': migrations.currentPageResults|length,
+                            '%total%': migrations.nbResults}, 'ibexa_pagination')|desc('Viewing %viewing% out of %total% items')|raw
+                        }}
+                    </div>
+                    {{ pagerfanta(migrations, 'ibexa', {sort: sort, direction: direction}) }}
+                </div>
+            {% endif %}
+        </form>
     </section>
 {%- endblock -%}
 
 {% block javascripts %}
     {{ encore_entry_script_tags('ibexa-admin-ui-dashboard-js', null, 'ibexa') }}
+    <script>
+        function executeBulkAction(action) {
+            const selectedMigrations = document.querySelectorAll('.migration-checkbox:checked');
+            if (selectedMigrations.length === 0) {
+                alert('{{ 'Please select at least one migration'|trans }}');
+                return;
+            }
+            
+            if (action === 'delete' && !confirm('{{ 'Are you sure you want to delete the selected migrations?'|trans }}')) {
+                return;
+            }
+            
+            document.getElementById('bulk-action').value = action;
+            document.getElementById('migrations-form').submit();
+        }
+        
+        function updateBulkActionButtons() {
+            const selectedMigrations = document.querySelectorAll('.migration-checkbox:checked');
+            const hasSelection = selectedMigrations.length > 0;
+            
+            // Check if any selected migration is already executed
+            const hasExecutedMigrations = Array.from(selectedMigrations).some(checkbox => 
+                checkbox.getAttribute('data-executed') === 'true'
+            );
+            
+            // Check if any selected migration is pending (not executed)
+            const hasPendingMigrations = Array.from(selectedMigrations).some(checkbox => 
+                checkbox.getAttribute('data-executed') === 'false'
+            );
+            
+            // Execute button: only enable if we have selection and NO executed migrations
+            document.getElementById('execute-migrations').disabled = !hasSelection || hasExecutedMigrations;
+            
+            // Mark Executed button: only enable if we have selection and NO executed migrations
+            document.getElementById('mark-executed-migrations').disabled = !hasSelection || hasExecutedMigrations;
+            
+            // Mark Pending button: only enable if we have selection and at least one executed migration
+            document.getElementById('mark-pending-migrations').disabled = !hasSelection || !hasExecutedMigrations;
+            
+            // Delete button: enable if we have any selection
+            document.getElementById('delete-migrations').disabled = !hasSelection;
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle select all checkbox
+            const selectAllCheckbox = document.getElementById('select-all');
+            if (selectAllCheckbox) {
+                selectAllCheckbox.addEventListener('change', function() {
+                    const checkboxes = document.querySelectorAll('.migration-checkbox');
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = this.checked;
+                    });
+                    updateBulkActionButtons();
+                });
+            }
+            
+            // Update select all checkbox state and button states based on individual checkboxes
+            document.addEventListener('change', function(e) {
+                if (e.target.classList.contains('migration-checkbox')) {
+                    const selectAllCheckbox = document.getElementById('select-all');
+                    const checkboxes = document.querySelectorAll('.migration-checkbox');
+                    const checkedBoxes = document.querySelectorAll('.migration-checkbox:checked');
+                    
+                    if (selectAllCheckbox) {
+                        selectAllCheckbox.checked = checkboxes.length === checkedBoxes.length;
+                        selectAllCheckbox.indeterminate = checkedBoxes.length > 0 && checkedBoxes.length < checkboxes.length;
+                    }
+                    
+                    updateBulkActionButtons();
+                }
+            });
+            
+            // Initial state
+            updateBulkActionButtons();
+        });
+    </script>
 {%- endblock -%}

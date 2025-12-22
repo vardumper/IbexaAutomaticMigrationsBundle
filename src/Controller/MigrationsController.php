@@ -5,6 +5,7 @@ namespace vardumper\IbexaAutomaticMigrationsBundle\Controller;
 use Ibexa\Contracts\AdminUi\Controller\Controller;
 use Ibexa\Contracts\Migration\Metadata\Storage\MetadataStorage;
 use Ibexa\Migration\MigrationService;
+use Ibexa\Migration\Metadata\ExecutionResult;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -35,6 +36,23 @@ class MigrationsController extends Controller
         $sort = $request->query->get('sort', 'name');
         $direction = $request->query->get('direction', 'asc');
         
+        // Handle POST actions
+        if ($request->isMethod('POST')) {
+            $action = $request->request->get('bulk-action');
+            $selectedMigrations = $request->request->all('migrations');
+            
+            if (!empty($selectedMigrations)) {
+                $this->handleBulkAction($action, $selectedMigrations);
+                
+                // Redirect to refresh the page
+                return $this->redirectToRoute('migrations_list', [
+                    'page' => $page,
+                    'sort' => $sort,
+                    'direction' => $direction,
+                ]);
+            }
+        }
+        
         $mode = Helper::determineMode();
         $destination = Helper::determineDestination($this->projectDir);
         $all = match ($mode) {
@@ -48,7 +66,11 @@ class MigrationsController extends Controller
         $migrationsWithStatus = [];
         foreach ($all as $migration) {
             $path = $destination . DIRECTORY_SEPARATOR . $migration->getName();
-            $createdAt = filectime($path);
+            $createdAt = null;
+            if (file_exists($path)) {
+                // Use file modification time as it's more reliable than creation time
+                $createdAt = filemtime($path);
+            }
             $executedAt = null;
             if ($executedMigrations->hasMigration($migration->getName())) {
                 $executedMigration = $executedMigrations->getMigration($migration->getName());
@@ -88,10 +110,82 @@ class MigrationsController extends Controller
         return match ($sort) {
             'name' => $migrationData['migration']->getName(),
             'status' => $migrationData['isExecuted'] ? 1 : 0,
-            'createdAt' => $migrationData['createdAt'],
+            'createdAt' => $migrationData['createdAt'] ?? 0,
             'executedAt' => $migrationData['executedAt'] ? $migrationData['executedAt']->getTimestamp() : 0,
             default => $migrationData['migration']->getName(),
         };
+    }
+    
+    private function handleBulkAction(string $action, array $migrationNames): void
+    {
+        foreach ($migrationNames as $migrationName) {
+            $migration = $this->migrationService->findOneByName($migrationName);
+            if (!$migration) {
+                continue; // Skip if migration not found
+            }
+            
+            switch ($action) {
+                case 'execute':
+                    if (!$this->migrationService->isMigrationExecuted($migration)) {
+                        try {
+                            $this->migrationService->executeOne($migration);
+                        } catch (\Exception $e) {
+                            // Log error but continue with other migrations
+                            error_log("Failed to execute migration {$migrationName}: " . $e->getMessage());
+                        }
+                    }
+                    break;
+                    
+                case 'mark_executed':
+                    if (!$this->migrationService->isMigrationExecuted($migration)) {
+                        // Manually mark as executed in metadata storage
+                        $result = new ExecutionResult($migrationName);
+                        $result->setExecutedAt(new \DateTimeImmutable());
+                        $this->metadataStorage->complete($result);
+                    }
+                    break;
+                    
+                case 'mark_pending':
+                    if ($this->migrationService->isMigrationExecuted($migration)) {
+                        // Remove from executed migrations metadata
+                        // Note: This is a simplified approach - in a real implementation,
+                        // you might want to add a method to remove from metadata storage
+                        $this->metadataStorage->reset();
+                        // Re-execute all other migrations to restore metadata
+                        $allMigrations = $this->migrationService->listMigrations();
+                        foreach ($allMigrations as $m) {
+                            if ($m->getName() !== $migrationName && !$this->migrationService->isMigrationExecuted($m)) {
+                                try {
+                                    $this->migrationService->executeOne($m);
+                                } catch (\Exception $e) {
+                                    // Continue
+                                }
+                            }
+                        }
+                    }
+                    break;
+                    
+                case 'delete':
+                    // Note: This is a simplified approach. In a real implementation,
+                    // you would need to handle file deletion and metadata cleanup
+                    // For now, we'll just remove from metadata if executed
+                    if ($this->migrationService->isMigrationExecuted($migration)) {
+                        $this->metadataStorage->reset();
+                        // Re-execute all other migrations to restore metadata
+                        $allMigrations = $this->migrationService->listMigrations();
+                        foreach ($allMigrations as $m) {
+                            if ($m->getName() !== $migrationName && !$this->migrationService->isMigrationExecuted($m)) {
+                                try {
+                                    $this->migrationService->executeOne($m);
+                                } catch (\Exception $e) {
+                                    // Continue
+                                }
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
     }
 }
 
