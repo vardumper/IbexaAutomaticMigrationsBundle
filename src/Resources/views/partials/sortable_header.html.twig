@@ -1,0 +1,10 @@
+{% set next_direction = (current_sort == field and direction == 'asc') ? 'desc' : 'asc' %}
+{% set is_active = current_sort == field %}
+{% set icon_class = is_active ? (direction == 'asc' ? 'ibexa-icon--arrow-up' : 'ibexa-icon--arrow-down') : 'ibexa-icon--sort' %}
+
+<a href="{{ path('migrations_list', { sort: field, direction: next_direction, page: app.request.get('page', 1) }) }}" class="ibexa-table__sort-link {{ is_active ? 'ibexa-table__sort-link--active' }}">
+    {{ label }}
+    <svg class="ibexa-icon ibexa-icon--small ibexa-table__sort-icon {{ icon_class }}">
+        <use xlink:href="{{ ibexa_icon_path('sort') }}"></use>
+    </svg>
+</a>

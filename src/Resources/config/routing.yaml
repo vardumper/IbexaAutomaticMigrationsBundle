@@ -1,0 +1,4 @@
+migrations_list:
+    path: /migrations
+    defaults:
+        _controller: 'vardumper\IbexaAutomaticMigrationsBundle\Controller\MigrationsController::listAction'

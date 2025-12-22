@@ -11,11 +11,10 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\Process;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use vardumper\IbexaAutomaticMigrationsBundle\Helper\Helper;
 
 class ContentTypeListener
 {
-    private const DESTINATION_KALIOP = 'src/MigrationsDefinitions';
-    private const DESTINATION_IBEXA = 'src/Migrations/Ibexa/migrations';
     private bool $isCli = false;
     private ?string $mode = null;
     private string $projectDir;
@@ -34,18 +33,9 @@ class ContentTypeListener
         $this->container = $container;
         $this->projectDir = rtrim($projectDir, DIRECTORY_SEPARATOR);
         $this->isCli = PHP_SAPI === 'cli';
-        
-        // Use php with increased memory limit to avoid memory issues
         $this->consoleCommand = ['php', '-d', 'memory_limit=512M', $this->projectDir . '/bin/console'];
-        
-        if (class_exists('Ibexa\\Bundle\\Migration\\Command\\GenerateCommand')) {
-            $this->mode = 'ibexa';
-            $this->destination = $this->projectDir . DIRECTORY_SEPARATOR . self::DESTINATION_IBEXA;
-        }
-        if (class_exists('Kaliop\\IbexaMigrationBundle\\Command\\GenerateCommand')) {
-            $this->mode = 'kaliop';
-            $this->destination = $this->projectDir . DIRECTORY_SEPARATOR . self::DESTINATION_KALIOP;
-        }
+        $this->mode = Helper::determineMode();
+        $this->destination = Helper::determineDestination($this->projectDir);
         if (!is_dir($this->destination)) {
             mkdir($this->destination, 0777, true);
         }

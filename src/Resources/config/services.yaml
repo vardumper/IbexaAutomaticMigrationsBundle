@@ -4,17 +4,27 @@ services:
     autoconfigure: true
     public: false
 
-  content_type_migrations.content_type_listener:
+  ibexa_automatic_migrations.content_type_listener:
     class: vardumper\IbexaAutomaticMigrationsBundle\EventListener\ContentTypeListener
     autoconfigure: true
     autowire: true
     public: false
     arguments:
       - '@logger'
-  content_type_migrations.content_type_group_listener:
+  ibexa_automatic_migrations.content_type_group_listener:
     class: vardumper\IbexaAutomaticMigrationsBundle\EventListener\ContentTypeGroupListener
     autoconfigure: true
     autowire: true
     public: false
     arguments:
       - '@logger'
+  ibexa_automatic_migrations.menu_subscriber:
+    class: vardumper\IbexaAutomaticMigrationsBundle\EventSubscriber\MigrationsMenuSubscriber
+    autoconfigure: true
+    autowire: true
+    public: false
+
+  vardumper\IbexaAutomaticMigrationsBundle\Controller\MigrationsController:
+    autoconfigure: true
+    autowire: true
+    public: true

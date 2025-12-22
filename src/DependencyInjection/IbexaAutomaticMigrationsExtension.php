@@ -16,4 +16,13 @@ class IbexaAutomaticMigrationsExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
     }
+
+    public function prepend(ContainerBuilder $container): void
+    {
+        $container->prependExtensionConfig('twig', [
+            'paths' => [
+                __DIR__ . '/../Resources/views' => 'IbexaAutomaticMigrationsBundle',
+            ],
+        ]);
+    }
 }
