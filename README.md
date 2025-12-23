@@ -7,6 +7,7 @@ Migrations are created in the default locations (in `src/Migrations/Ibexa/migrat
 ## Requirements
 * Ibexa DXP >= v5.0
 * Ibexa DXP >= v4.4 (untested)
+* A migrations [bundle](https://packagist.org/packages/mrk-te/ibexa-migration-bundle2) if using Ibexa OSS
 
 ## Features
 * Automatically create migrations when changes are made in the admin panel
