@@ -2,7 +2,7 @@
 
 This is a bundle for Ibexa DXP. It automatically creates migrations for content types and content type groups.
 The goal is to eliminate the need to manually create migrations or test them – instead have Ibexa auto-generate them for us whenever content types change.
-Migrations are created in the defautl locations (in `src/Migrations/Ibexa/migrations` when using ibexa/migrations or in `src/MigrationsDefinitions` when using kaliop/tanoconsulting/mrk-te open source migration bundle).
+Migrations are created in the default locations (in `src/Migrations/Ibexa/migrations` when using ibexa/migrations or in `src/MigrationsDefinitions` when using kaliop, tanoconsulting, mrk-te open source migration bundle).
 
 ## Requirements
 * Ibexa DXP >= v5.0
@@ -14,8 +14,8 @@ Migrations are created in the defautl locations (in `src/Migrations/Ibexa/migrat
 * Supports Ibexa DXP v5.x. Open Source Edition via `mrk-te/ibexa-migration-bundle2`
 
 ## Supported Types of Migrations
-* Content Type Group
-* Content Type
+* Content Type Group (create, update, delete) 
+* Content Type (create, update, delete)
 
 ## Installation
 
