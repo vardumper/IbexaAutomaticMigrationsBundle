@@ -12,20 +12,10 @@ PASS=true
 
 printf "Committing as ${YELLOW}$(git config user.name) ${NC}/ ${YELLOW}$(git config user.email)${NC}\n"
 
-# This is DDEV specific
-PYTHON=$(command -v python3 || command -v python || command -v python2)
-DDEV_RUNNING=$(ddev status -j | $PYTHON -c "import sys, json; print(json.load(sys.stdin)['raw']['status'])")
-
-if [ "$DDEV_RUNNING" != "running" ]; then
-  printf "In order to commit to this DDEV project, it must be running so static analysis uses the correct PHP version. Starting now...\n"
-  time ddev start
-fi
-
-
 CHANGED_FILES=$(git diff --cached --name-only --diff-filter=ACM -- '*.php')
 
 # Swiss Knife
-PHP_SWISSKNIFE="./site/vendor/bin/swiss-knife"
+PHP_SWISSKNIFE="./vendor/bin/swiss-knife"
 HAS_PHP_SWISSKNIFE=false
 if [ -x $PHP_SWISSKNIFE ]; then
     HAS_PHP_SWISSKNIFE=true
@@ -34,33 +24,32 @@ fi
 printf "${YELLOW}Rector Swiss Knife${NC}\n"
 if $HAS_PHP_SWISSKNIFE; then
     # prevent committing unresolved conflicts or erroneous merges
-    time ddev composer run swiss-knife-check-conflicts
+    time composer run swiss-knife-check-conflicts
     ret_code=$?
 
     if [[ $ret_code == 1 ]]; then
         PASS=false
     fi
 
-    time ddev composer run swiss-knife-check-commented-code
+    time composer run swiss-knife-check-commented-code
     ret_code=$?
 
     if [[ $ret_code == 1 ]]; then
         PASS=false
     fi
 
-    time ddev composer run swiss-knife-find-multi-classes
+    time composer run swiss-knife-find-multi-classes
     ret_code=$?
     if [[ $ret_code == 1 ]]; then
         PASS=false
     fi
 
-    time ddev composer run swiss-knife-finalize-classes
-
+    time composer run swiss-knife-finalize-classes
     # hasnt proven very reliable
-    # time ddev composer run swiss-knife-privatize-constants
+    time composer run swiss-knife-privatize-constants
 
   else
-    printf "\nrector/swiss-knife is required. Install it:\n\n ddev composer require --dev rector/swiss-knife\n\n"
+    printf "\nrector/swiss-knife is required. Install it:\n\n composer require --dev rector/swiss-knife\n\n"
 fi
 
 # if swiss knife doesn't pass, do not continue
@@ -70,7 +59,7 @@ if ! $PASS; then
 fi
 
 # Easy Coding Standard
-PHP_ECS="./site/vendor/bin/ecs"
+PHP_ECS="./vendor/bin/ecs"
 HAS_PHP_ECS=false
 
 if [ -x $PHP_ECS ]; then
@@ -88,7 +77,7 @@ if $HAS_PHP_ECS; then
     else
         # Strip site/ prefix for ECS command
         FILES_FOR_ECS=$(echo "$FILES" | sed 's|site/||g')
-        time ddev composer run fix-cs ${FILES_FOR_ECS}
+        time composer run fix-cs ${FILES_FOR_ECS}
         ret_code=$?
         if [[ $ret_code == 0 ]]; then
             # Trim whitespace and check if FILES is not empty
@@ -107,7 +96,7 @@ fi
 
 # phpstan
 HAS_PHPSTAN=false
-PHPSTAN="./site/vendor/bin/phpstan"
+PHPSTAN="./vendor/bin/phpstan"
 if [ -x $PHPSTAN ]; then
     HAS_PHPSTAN=true
 fi
@@ -118,7 +107,7 @@ if $HAS_PHPSTAN; then
   if [ -z "$CHANGED_FILES" ]; then
         printf "\nNo PHP file in this commit. Skipping PHPStan.\n"
   else
-    if time ddev exec $PHPSTAN analyse -c ./site/phpstan.neon --ansi --memory-limit=1G $CHANGED_FILES; then
+    if time exec $PHPSTAN analyse -c ./phpstan.neon --ansi --memory-limit=1G $CHANGED_FILES; then
       # All good
       printf "${GREEN}PHPStan passed${NC}\n"
     else
@@ -131,7 +120,7 @@ fi
 
 # you shouldn't be able to commit if composer.lock and composer.json are out of sync
 printf "${YELLOW}Composer Lockfile${NC}\n"
-time ddev composer validate --no-check-all --no-check-publish
+time composer validate --no-check-all --no-check-publish
 ret_code=$?
 if [[ $ret_code == 0 ]]; then
     printf "${GREEN}Composer validation passed${NC}\n"
@@ -142,7 +131,7 @@ fi
 
 # you should still be able to commit if there are CVE vulnerabilities - information only
 printf "${YELLOW}Composer Audit${NC}\n"
-time ddev composer audit
+time composer audit
 ret_code=$?
 if [[ $ret_code == 0 ]]; then
     printf "${GREEN}Composer audit passed${NC}\n"
