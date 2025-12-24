@@ -3,6 +3,8 @@
   "description": "Ibexa automatic migrations bundle eliminates the need to manually create migrations for various admin changes. Migration files are automatically generated when settings change in the admin panel.",
   "type": "symfony-bundle",
   "license": "MIT",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "authors": [
     {
       "name": "vardumper",
@@ -11,7 +13,16 @@
   ],
   "require": {
     "php": ">=8.1",
-    "ibexa/core": "^5.0"
+    "ibexa/core": "^5.0",
+    "guzzlehttp/promises": "^2.3",
+    "nyholm/psr7": "^1.8"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^1.12",
+    "friendsofphp/php-cs-fixer": "^3.89",
+    "brainmaestro/composer-git-hooks": "dev-master",
+    "rector/swiss-knife": "^2.3",
+    "symplify/easy-coding-standard": "^10.3"
   },
   "autoload": {
     "psr-4": {
@@ -21,6 +32,21 @@
   "autoload-dev": {
     "psr-4": {
       "vardumper\\IbexaAutomaticMigrationsBundleTests\\": "tests/"
+    }
+  },
+  "extra": {
+    "hooks": {
+      "pre-commit": [
+        ".githooks/pre-commit"
+      ],
+      "commit-msg": [
+        ".githooks/commit-msg"
+      ]
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
     }
   }
 }

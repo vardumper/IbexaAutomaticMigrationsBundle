@@ -1,0 +1,163 @@
+#!/bin/bash
+START_TIME=$(date +%s)
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+NC='\033[0m' # No Color
+
+# assume all checks will pass... until they don't
+PASS=true
+
+printf "Committing as ${YELLOW}$(git config user.name) ${NC}/ ${YELLOW}$(git config user.email)${NC}\n"
+
+# This is DDEV specific
+PYTHON=$(command -v python3 || command -v python || command -v python2)
+DDEV_RUNNING=$(ddev status -j | $PYTHON -c "import sys, json; print(json.load(sys.stdin)['raw']['status'])")
+
+if [ "$DDEV_RUNNING" != "running" ]; then
+  printf "In order to commit to this DDEV project, it must be running so static analysis uses the correct PHP version. Starting now...\n"
+  time ddev start
+fi
+
+
+CHANGED_FILES=$(git diff --cached --name-only --diff-filter=ACM -- '*.php')
+
+# Swiss Knife
+PHP_SWISSKNIFE="./site/vendor/bin/swiss-knife"
+HAS_PHP_SWISSKNIFE=false
+if [ -x $PHP_SWISSKNIFE ]; then
+    HAS_PHP_SWISSKNIFE=true
+fi
+
+printf "${YELLOW}Rector Swiss Knife${NC}\n"
+if $HAS_PHP_SWISSKNIFE; then
+    # prevent committing unresolved conflicts or erroneous merges
+    time ddev composer run swiss-knife-check-conflicts
+    ret_code=$?
+
+    if [[ $ret_code == 1 ]]; then
+        PASS=false
+    fi
+
+    time ddev composer run swiss-knife-check-commented-code
+    ret_code=$?
+
+    if [[ $ret_code == 1 ]]; then
+        PASS=false
+    fi
+
+    time ddev composer run swiss-knife-find-multi-classes
+    ret_code=$?
+    if [[ $ret_code == 1 ]]; then
+        PASS=false
+    fi
+
+    time ddev composer run swiss-knife-finalize-classes
+
+    # hasnt proven very reliable
+    # time ddev composer run swiss-knife-privatize-constants
+
+  else
+    printf "\nrector/swiss-knife is required. Install it:\n\n ddev composer require --dev rector/swiss-knife\n\n"
+fi
+
+# if swiss knife doesn't pass, do not continue
+if ! $PASS; then
+  printf "pre commit hook ${RED}FAILED${NC}\n"
+  exit 1
+fi
+
+# Easy Coding Standard
+PHP_ECS="./site/vendor/bin/ecs"
+HAS_PHP_ECS=false
+
+if [ -x $PHP_ECS ]; then
+    HAS_PHP_ECS=true
+fi
+
+printf "${YELLOW}Easy Coding Standard${NC}\n"
+if $HAS_PHP_ECS; then
+# if ([ -x $PHP_ECS ] && [ -n "$CHANGED_FILES" ]); then
+    printf "ECS start"
+    # Get a list of files in the staging area
+    FILES=` git status --porcelain | grep -e '^[AM]\(.*\).php$' | cut -c 3- | tr '\n' ' '`
+    if [ -z "$FILES" ]; then
+          printf "\nNo PHP file in this commit. Skipping ECS.\n"
+    else
+        # Strip site/ prefix for ECS command
+        FILES_FOR_ECS=$(echo "$FILES" | sed 's|site/||g')
+        time ddev composer run fix-cs ${FILES_FOR_ECS}
+        ret_code=$?
+        if [[ $ret_code == 0 ]]; then
+            # Trim whitespace and check if FILES is not empty
+            FILES_TRIMMED=$(echo "$FILES" | xargs)
+            if [ -n "$FILES_TRIMMED" ]; then
+                git add $FILES
+            fi
+        else
+            # Different code than 0 means that there were unresolved fixes
+            PASS=false
+        fi
+    fi
+else
+    printf "\neasy-coding-standard & php-cs-fixer are required. Install them:\n\n  composer require --dev symplify/easy-coding-standard friendsofphp/php-cs-fixer\n\n"
+fi
+
+# phpstan
+HAS_PHPSTAN=false
+PHPSTAN="./site/vendor/bin/phpstan"
+if [ -x $PHPSTAN ]; then
+    HAS_PHPSTAN=true
+fi
+
+printf "${YELLOW}PHPStan${NC}\n"
+# @todo consider having phpstan scan all the complete repo, instead of comitted php files
+if $HAS_PHPSTAN; then
+  if [ -z "$CHANGED_FILES" ]; then
+        printf "\nNo PHP file in this commit. Skipping PHPStan.\n"
+  else
+    if time ddev exec $PHPSTAN analyse -c ./site/phpstan.neon --ansi --memory-limit=1G $CHANGED_FILES; then
+      # All good
+      printf "${GREEN}PHPStan passed${NC}\n"
+    else
+      PASS=false
+    fi
+  fi
+else
+  printf "\nphpstan is required. Install it with:\n\n  ddev composer req --dev phpstan/phpstan\n\n"
+fi
+
+# you shouldn't be able to commit if composer.lock and composer.json are out of sync
+printf "${YELLOW}Composer Lockfile${NC}\n"
+time ddev composer validate --no-check-all --no-check-publish
+ret_code=$?
+if [[ $ret_code == 0 ]]; then
+    printf "${GREEN}Composer validation passed${NC}\n"
+else
+    printf "${RED}Composer validation failed${NC}\n"
+    PASS=false
+fi
+
+# you should still be able to commit if there are CVE vulnerabilities - information only
+printf "${YELLOW}Composer Audit${NC}\n"
+time ddev composer audit
+ret_code=$?
+if [[ $ret_code == 0 ]]; then
+    printf "${GREEN}Composer audit passed${NC}\n"
+else
+    printf "${RED}Composer audit failed${NC}\n"
+fi
+
+END_TIME=$(date +%s) # Record the end time
+DURATION=$((END_TIME - START_TIME)) # Calculate the duration
+
+if ! $PASS; then
+  printf "pre commit hook ${RED}FAILED${NC}. Took ${YELLOW}${DURATION}${NC} seconds\n"
+  exit 1
+else
+  printf "pre commit hook ${GREEN}SUCCEEDED${NC}. Took ${YELLOW}${DURATION}${NC} seconds\n"
+  git add $CHANGED_FILES
+  exit 0
+fi
