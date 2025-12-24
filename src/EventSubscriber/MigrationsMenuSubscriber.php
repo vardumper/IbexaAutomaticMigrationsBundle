@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace vardumper\IbexaAutomaticMigrationsBundle\EventSubscriber;
 
@@ -9,9 +11,9 @@ use Ibexa\Contracts\Core\Repository\PermissionResolver;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use vardumper\IbexaAutomaticMigrationsBundle\Helper\Helper;
 
-class MigrationsMenuSubscriber implements EventSubscriberInterface
+final class MigrationsMenuSubscriber implements EventSubscriberInterface
 {
-    public const ITEM_ADMIN__MIGRATIONS = 'main__admin__migrations';
+    private const ITEM_ADMIN__MIGRATIONS = 'main__admin__migrations';
 
     private MenuItemFactory $menuItemFactory;
 

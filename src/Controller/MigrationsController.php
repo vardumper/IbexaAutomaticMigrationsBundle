@@ -1,36 +1,35 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace vardumper\IbexaAutomaticMigrationsBundle\Controller;
 
 use Doctrine\DBAL\Connection;
 use Ibexa\Contracts\AdminUi\Controller\Controller;
 use Ibexa\Contracts\Migration\Metadata\Storage\MetadataStorage;
-use Ibexa\Migration\MigrationService;
 use Ibexa\Migration\Metadata\ExecutionResult;
-use Kaliop\IbexaMigrationBundle\Core\MigrationService as KaliopMigrationService;
+use Ibexa\Migration\MigrationService;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\Routing\Attribute\Route;
 use vardumper\IbexaAutomaticMigrationsBundle\Helper\Helper;
 
 #[AsController]
-class MigrationsController extends Controller
+final class MigrationsController extends Controller
 {
     private string $projectDir;
 
     public function __construct(
         #[Autowire('%kernel.project_dir%')]
         string $projectDir,
-        private readonly ?MigrationService $migrationService = null,
-        private readonly ?MetadataStorage $metadataStorage = null,
         #[Autowire(service: 'ibexa.api.storage_engine.legacy.connection')]
         private readonly Connection $connection,
-        #[Autowire(service: 'ibexa_migration_bundle.migration_service')]
-        private readonly ?KaliopMigrationService $kaliopMigrationService = null,
+        private readonly ?MigrationService $migrationService = null,
+        private readonly ?MetadataStorage $metadataStorage = null
     ) {
         $this->projectDir = rtrim($projectDir, DIRECTORY_SEPARATOR);
     }
@@ -93,7 +92,7 @@ class MigrationsController extends Controller
         }
         
         // Sort the migrations
-        usort($migrationsWithStatus, function($a, $b) use ($sort, $direction) {
+        usort($migrationsWithStatus, function ($a, $b) use ($sort, $direction) {
             $valueA = $this->getSortValue($a, $sort);
             $valueB = $this->getSortValue($b, $sort);
             

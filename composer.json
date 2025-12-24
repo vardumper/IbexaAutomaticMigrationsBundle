@@ -13,11 +13,13 @@
   ],
   "require": {
     "php": ">=8.1",
-    "ibexa/core": "^5.0",
+    "ibexa/core": "^4.4|^5.0",
+    "ibexa/admin-ui": "^4.4|^5.0",
     "guzzlehttp/promises": "^2.3",
     "nyholm/psr7": "^1.8"
   },
   "require-dev": {
+    "mrk-te/ibexa-migration-bundle2": "^1.0|^2.0",
     "phpstan/phpstan": "^2.1",
     "friendsofphp/php-cs-fixer": "^3.92",
     "brainmaestro/composer-git-hooks": "dev-master",

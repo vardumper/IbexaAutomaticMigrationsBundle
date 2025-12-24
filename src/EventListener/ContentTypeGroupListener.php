@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace vardumper\IbexaAutomaticMigrationsBundle\EventListener;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Doctrine\DBAL\Connection;
+
 use Ibexa\Contracts\Core\Repository\Events\ContentType\CreateContentTypeGroupEvent;
-use Ibexa\Contracts\Core\Repository\Events\ContentType\UpdateContentTypeGroupEvent;
 use Ibexa\Contracts\Core\Repository\Events\ContentType\DeleteContentTypeGroupEvent;
+use Ibexa\Contracts\Core\Repository\Events\ContentType\UpdateContentTypeGroupEvent;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Process\Process;
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 
-class ContentTypeGroupListener
+final class ContentTypeGroupListener
 {
     private const DESTINATION_KALIOP = 'src/MigrationsDefinitions';
     private const DESTINATION_IBEXA = 'src/Migrations/Ibexa/migrations';
@@ -22,6 +24,7 @@ class ContentTypeGroupListener
     private ?string $mode = null;
     private string $projectDir;
     private string $destination;
+    /** @var array<string> */
     private array $consoleCommand;
 
     public function __construct(
@@ -30,8 +33,7 @@ class ContentTypeGroupListener
         string $projectDir,
         #[Autowire(service: 'service_container')]
         private readonly ContainerInterface $container
-    )
-    {
+    ) {
         $this->projectDir = rtrim($projectDir, DIRECTORY_SEPARATOR);
         $this->isCli = PHP_SAPI === 'cli';
         $this->consoleCommand = ['php', '-d', 'memory_limit=512M', $this->projectDir . '/bin/console'];
@@ -58,8 +60,21 @@ class ContentTypeGroupListener
         try {
             $matchValue = $event->getContentTypeGroupCreateStruct()->identifier;
             $name = 'auto_content_type_group_create_' . (string) $matchValue;
+            $fileName = '';
+            $inputArray = [];
 
-            if ($this->mode === 'kaliop') {
+            if ($this->mode === 'ibexa') {
+                $fileName = (new \DateTime())->format('Y_m_d_H_i_s_') . strtolower($name) . '.yaml';
+                $inputArray = [
+                    '--format' => 'yaml',
+                    '--type' => 'content_type_group',
+                    '--mode' => 'create',
+                    '--match-property' => 'content_type_group_identifier',
+                    '--value' => (string) $matchValue,
+                    '--file' => $fileName,
+                ];
+                $command = 'ibexa:migrations:generate';
+            } else {
                 $inputArray = [
                     '--format' => 'yml',
                     '--type' => 'content_type_group',
@@ -70,27 +85,10 @@ class ContentTypeGroupListener
                     'name' => $name,
                 ];
                 $command = 'kaliop:migration:generate';
-            } elseif ($this->mode === 'ibexa') {
-                $now = new \DateTime();
-                $inputArray = [
-                    '--format' => 'yaml',
-                    '--type' => 'content_type_group',
-                    '--mode' => 'create',
-                    '--match-property' => 'content_type_group_identifier',
-                    '--value' => (string) $matchValue,
-                    '--file' => $now->format('Y_m_d_H_i_s_') . strtolower($name) . '.yaml',
-                ];
-                $command = 'ibexa:migrations:generate';
-            } else {
-                return;
             }
 
             $flags = [];
             foreach ($inputArray as $k => $v) {
-                if (is_int($k)) {
-                    $flags[] = $v;
-                    continue;
-                }
                 if (str_starts_with((string) $k, '--') || str_starts_with((string) $k, '-')) {
                     $flags[] = $k . '=' . $v;
                 }
@@ -108,7 +106,6 @@ class ContentTypeGroupListener
 
             if ($code == 0) {
                 if ($this->mode === 'ibexa') {
-                    $fileName = $inputArray['--file'];
                     $this->logger->info('Using specified filename for ibexa', ['fileName' => $fileName]);
                 } else {
                     // Find the newest migration file in the destination directory for kaliop
@@ -133,6 +130,9 @@ class ContentTypeGroupListener
                 $fullPath = $this->destination . DIRECTORY_SEPARATOR . $fileName;
                 $md5 = file_exists($fullPath) ? md5_file($fullPath) : null;
                 try {
+                    $affected = 0;
+                    $table = '';
+                    /** @var Connection $conn */
                     $conn = $this->container->get('doctrine.dbal.default_connection');
                     if ($this->mode === 'ibexa') {
                         $table = 'ibexa_migrations';
@@ -184,8 +184,21 @@ class ContentTypeGroupListener
         try {
             $matchValue = $event->getContentTypeGroup()->identifier;
             $name = 'auto_content_type_group_update_' . (string) $matchValue;
+            $fileName = '';
+            $inputArray = [];
 
-            if ($this->mode === 'kaliop') {
+            if ($this->mode === 'ibexa') {
+                $fileName = (new \DateTime())->format('Y_m_d_H_i_s_') . $name . '.yaml';
+                $inputArray = [
+                    '--format' => 'yaml',
+                    '--type' => 'content_type_group',
+                    '--mode' => 'update',
+                    '--match-property' => 'content_type_group_identifier',
+                    '--value' => (string) $matchValue,
+                    '--file' => $fileName,
+                ];
+                $command = 'ibexa:migrations:generate';
+            } else {
                 $inputArray = [
                     '--format' => 'yml',
                     '--type' => 'content_type_group',
@@ -196,27 +209,10 @@ class ContentTypeGroupListener
                     'name' => $name,
                 ];
                 $command = 'kaliop:migration:generate';
-            } elseif ($this->mode === 'ibexa') {
-                $now = new \DateTime();
-                $inputArray = [
-                    '--format' => 'yaml',
-                    '--type' => 'content_type_group',
-                    '--mode' => 'update',
-                    '--match-property' => 'content_type_group_identifier',
-                    '--value' => (string) $matchValue,
-                    '--file' => $now->format('Y_m_d_H_i_s_') . $name . '.yaml',
-                ];
-                $command = 'ibexa:migrations:generate';
-            } else {
-                return;
             }
 
             $flags = [];
             foreach ($inputArray as $k => $v) {
-                if (is_int($k)) {
-                    $flags[] = $v;
-                    continue;
-                }
                 if (str_starts_with((string) $k, '--') || str_starts_with((string) $k, '-')) {
                     $flags[] = $k . '=' . $v;
                 }
@@ -234,7 +230,6 @@ class ContentTypeGroupListener
 
             if ($code == 0) {
                 if ($this->mode === 'ibexa') {
-                    $fileName = $inputArray['--file'];
                     $this->logger->info('Using specified filename for ibexa', ['fileName' => $fileName]);
                 } else {
                     // Find the newest migration file in the destination directory for kaliop
@@ -259,6 +254,9 @@ class ContentTypeGroupListener
                 $fullPath = $this->destination . DIRECTORY_SEPARATOR . $fileName;
                 $md5 = file_exists($fullPath) ? md5_file($fullPath) : null;
                 try {
+                    $affected = 0;
+                    $table = '';
+                    /** @var Connection $conn */
                     $conn = $this->container->get('doctrine.dbal.default_connection');
                     if ($this->mode === 'ibexa') {
                         $table = 'ibexa_migrations';
@@ -327,7 +325,10 @@ class ContentTypeGroupListener
             $fullPath = $this->destination . DIRECTORY_SEPARATOR . $fileName;
             file_put_contents($fullPath, $yaml);
             try {
+                /** @var Connection $conn */
                 $conn = $this->container->get('doctrine.dbal.default_connection');
+                $affected = 0;
+                $table = '';
                 if ($this->mode === 'ibexa') {
                     $table = 'ibexa_migrations';
                     $data = [

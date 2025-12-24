@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace vardumper\IbexaAutomaticMigrationsBundle\EventListener;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Ibexa\Contracts\Core\Repository\Events\ContentType\BeforeDeleteContentTypeEvent;
 use Ibexa\Contracts\Core\Repository\Events\ContentType\PublishContentTypeDraftEvent;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Process\Process;
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use Symfony\Component\Process\Process;
 use vardumper\IbexaAutomaticMigrationsBundle\Helper\Helper;
 
-class ContentTypeListener
+final class ContentTypeListener
 {
     private bool $isCli = false;
     private ?string $mode = null;
@@ -28,8 +28,7 @@ class ContentTypeListener
         string $projectDir,
         #[Autowire(service: 'service_container')]
         ContainerInterface $container
-    )
-    {
+    ) {
         $this->container = $container;
         $this->projectDir = rtrim($projectDir, DIRECTORY_SEPARATOR);
         $this->isCli = PHP_SAPI === 'cli';
@@ -70,7 +69,7 @@ class ContentTypeListener
             $mode = $isNewContentType ? 'create' : 'update';
             
             $this->logger->info('Determined migration mode based on existing files', [
-                'mode' => $mode, 
+                'mode' => $mode,
                 'identifier' => $publishedContentType->identifier,
                 'existing_files_count' => count($existingFiles),
                 'is_new' => $isNewContentType

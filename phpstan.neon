@@ -1,0 +1,21 @@
+includes:
+parameters:
+    level: 5
+    treatPhpDocTypesAsCertain: false
+    paths:
+        - %currentWorkingDirectory%
+    excludePaths:
+        - vendor
+    scanFiles:
+    earlyTerminatingMethodCalls:
+    ignoreErrors:
+        - '#Parameter .* has invalid type Ibexa\\Migration\\MigrationService#'
+        - '#Property .* has unknown class Ibexa\\Migration\\MigrationService#'
+        - '#Call to method .* on an unknown class Ibexa\\Migration\\MigrationService#'
+        - '#Parameter .* has invalid type Ibexa\\Contracts\\Migration\\Metadata\\Storage\\MetadataStorage#'
+        - '#Property .* has unknown class Ibexa\\Contracts\\Migration\\Metadata\\Storage\\MetadataStorage#'
+        - '#Call to method .* on an unknown class Ibexa\\Contracts\\Migration\\Metadata\\Storage\\MetadataStorage#'
+        - '#Instantiated class Ibexa\\Migration\\Metadata\\ExecutionResult not found#'                                                                
+        - '#Call to method .* on an unknown class Ibexa\\Migration\\Metadata\\ExecutionResult#'
+    reportUnmatchedIgnoredErrors: false
+    universalObjectCratesClasses:

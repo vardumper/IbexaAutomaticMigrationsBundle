@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use vardumper\IbexaAutomaticMigrationsBundle\DependencyInjection\Compiler\ReplaceContentTypeServicePass;
 
-class IbexaAutomaticMigrationsBundle extends Bundle
+final class IbexaAutomaticMigrationsBundle extends Bundle
 {
     public function getPath(): string
     {
@@ -28,4 +28,3 @@ class IbexaAutomaticMigrationsBundle extends Bundle
         ]);
     }
 }
-
