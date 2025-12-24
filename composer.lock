@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b6939c9f23aebec8fa369e8b5547f1c7",
+    "content-hash": "103e9f3a37801b227e2ed6d0ad0423a2",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -9035,15 +9035,15 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.12.32",
+            "version": "2.1.33",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/2770dcdf5078d0b0d53f94317e06affe88419aa8",
-                "reference": "2770dcdf5078d0b0d53f94317e06affe88419aa8",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/9e800e6bee7d5bd02784d4c6069b48032d16224f",
+                "reference": "9e800e6bee7d5bd02784d4c6069b48032d16224f",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2|^8.0"
+                "php": "^7.4|^8.0"
             },
             "conflict": {
                 "phpstan/phpstan-shim": "*"
@@ -9084,7 +9084,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-09-30T10:16:31+00:00"
+            "time": "2025-12-05T10:24:31+00:00"
         },
         {
             "name": "react/cache",
@@ -9874,34 +9874,33 @@
         },
         {
             "name": "symplify/easy-coding-standard",
-            "version": "10.3.3",
+            "version": "13.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symplify/easy-coding-standard.git",
-                "reference": "c93878b3c052321231519b6540e227380f90be17"
+                "url": "https://github.com/easy-coding-standard/easy-coding-standard.git",
+                "reference": "24708c6673871e342245c692e1bb304f119ffc58"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/easy-coding-standard/zipball/c93878b3c052321231519b6540e227380f90be17",
-                "reference": "c93878b3c052321231519b6540e227380f90be17",
+                "url": "https://api.github.com/repos/easy-coding-standard/easy-coding-standard/zipball/24708c6673871e342245c692e1bb304f119ffc58",
+                "reference": "24708c6673871e342245c692e1bb304f119ffc58",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2"
             },
             "conflict": {
-                "friendsofphp/php-cs-fixer": "<3.0",
-                "squizlabs/php_codesniffer": "<3.6"
+                "friendsofphp/php-cs-fixer": "<3.46",
+                "phpcsstandards/php_codesniffer": "<3.8",
+                "symplify/coding-standard": "<12.1"
+            },
+            "suggest": {
+                "ext-dom": "Needed to support checkstyle output format in class CheckstyleOutputFormatter"
             },
             "bin": [
                 "bin/ecs"
             ],
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "10.3-dev"
-                }
-            },
             "autoload": {
                 "files": [
                     "bootstrap.php"
@@ -9911,9 +9910,16 @@
             "license": [
                 "MIT"
             ],
-            "description": "Prefixed scoped version of ECS package",
+            "description": "Use Coding Standard with 0-knowledge of PHP-CS-Fixer and PHP_CodeSniffer",
+            "keywords": [
+                "Code style",
+                "automation",
+                "fixer",
+                "static analysis"
+            ],
             "support": {
-                "source": "https://github.com/symplify/easy-coding-standard/tree/10.3.3"
+                "issues": "https://github.com/easy-coding-standard/easy-coding-standard/issues",
+                "source": "https://github.com/easy-coding-standard/easy-coding-standard/tree/13.0.0"
             },
             "funding": [
                 {
@@ -9925,7 +9931,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-06-13T14:03:37+00:00"
+            "time": "2025-11-06T14:47:06+00:00"
         }
     ],
     "aliases": [],
