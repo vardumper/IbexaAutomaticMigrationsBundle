@@ -12,7 +12,7 @@ class ReplaceContentTypeServicePass implements CompilerPassInterface
     public function process(ContainerBuilder $container): void
     {
         if (!class_exists('\\Ibexa\\Bundle\\Migration\\IbexaMigrationBundle') && !class_exists('\\Kaliop\\IbexaMigrationBundle\\IbexaMigrationBundle')) {
-            error_log('unable to activate ContentTypeMigrationsBundle because neither ibexa/migrations nor kaliop/ibexa-migration-bundle is installed. Please install one of them.');
+            error_log('unable to activate IbexaAutomaticMigrationsBundle because neither ibexa/migrations nor kaliop/ibexa-migration-bundle is installed. Please install one of them.');
             return;
         }
     }

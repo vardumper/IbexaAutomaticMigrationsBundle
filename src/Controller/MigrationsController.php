@@ -23,8 +23,8 @@ class MigrationsController extends Controller
     public function __construct(
         #[Autowire('%kernel.project_dir%')]
         string $projectDir,
-        private readonly MigrationService $migrationService,
-        private readonly MetadataStorage $metadataStorage,
+        private readonly ?MigrationService $migrationService = null,
+        private readonly ?MetadataStorage $metadataStorage = null,
     ) {
         $this->projectDir = rtrim($projectDir, DIRECTORY_SEPARATOR);
     }
@@ -55,33 +55,35 @@ class MigrationsController extends Controller
         
         $mode = Helper::determineMode();
         $destination = Helper::determineDestination($this->projectDir);
-        $all = match ($mode) {
-            'ibexa' => $this->migrationService->listMigrations(), 
-            'kaliop' => null,
-            default => throw new \RuntimeException('Neither ibexa/migrations nor kaliop/ibexa-migration-bundle is installed. Please install one of them to use the Migrations functionality.'),
-        };
-        
-        // Add execution status to each migration
-        $executedMigrations = $this->metadataStorage->getExecutedMigrations();
-        $migrationsWithStatus = [];
-        foreach ($all as $migration) {
-            $path = $destination . DIRECTORY_SEPARATOR . $migration->getName();
-            $createdAt = null;
-            if (file_exists($path)) {
-                // Use file modification time as it's more reliable than creation time
-                $createdAt = filemtime($path);
+        if ($mode === 'ibexa') {
+            $all = $this->migrationService->listMigrations();
+            // Add execution status to each migration
+            $executedMigrations = $this->metadataStorage->getExecutedMigrations();
+            $migrationsWithStatus = [];
+            foreach ($all as $migration) {
+                $path = $destination . DIRECTORY_SEPARATOR . $migration->getName();
+                $createdAt = null;
+                if (file_exists($path)) {
+                    // Use file modification time as it's more reliable than creation time
+                    $createdAt = filemtime($path);
+                }
+                $executedAt = null;
+                if ($executedMigrations->hasMigration($migration->getName())) {
+                    $executedMigration = $executedMigrations->getMigration($migration->getName());
+                    $executedAt = $executedMigration->getExecutedAt();
+                }
+                $migrationsWithStatus[] = [
+                    'migration' => $migration,
+                    'isExecuted' => $this->migrationService->isMigrationExecuted($migration),
+                    'createdAt' => $createdAt,
+                    'executedAt' => $executedAt,
+                ];
             }
-            $executedAt = null;
-            if ($executedMigrations->hasMigration($migration->getName())) {
-                $executedMigration = $executedMigrations->getMigration($migration->getName());
-                $executedAt = $executedMigration->getExecutedAt();
-            }
-            $migrationsWithStatus[] = [
-                'migration' => $migration,
-                'isExecuted' => $this->migrationService->isMigrationExecuted($migration),
-                'createdAt' => $createdAt,
-                'executedAt' => $executedAt,
-            ];
+        } elseif ($mode === 'kaliop') {
+            // Kaliop mode: scan migration files and check status via CLI
+            $migrationsWithStatus = $this->getKaliopMigrationsWithStatus($destination);
+        } else {
+            throw new \RuntimeException('Neither ibexa/migrations nor kaliop/ibexa-migration-bundle is installed. Please install one of them to use the Migrations functionality.');
         }
         
         // Sort the migrations
@@ -117,74 +119,148 @@ class MigrationsController extends Controller
         };
     }
     
+    /**
+     * Returns an array of migrations with status for Kaliop mode.
+     */
+    private function getKaliopMigrationsWithStatus(string $destination): array
+    {
+        $migrationsWithStatus = [];
+        // Find migration files (Kaliop convention: *.php in $destination)
+        $files = glob($destination . DIRECTORY_SEPARATOR . '*.php');
+        foreach ($files as $file) {
+            $name = basename($file);
+            $createdAt = filemtime($file);
+            // Use CLI to check if migration is executed
+            $isExecuted = $this->isKaliopMigrationExecuted($name);
+            $executedAt = $isExecuted ? $this->getKaliopMigrationExecutedAt($name) : null;
+            $migrationsWithStatus[] = [
+                'migration' => (object)['getName' => fn() => $name],
+                'isExecuted' => $isExecuted,
+                'createdAt' => $createdAt,
+                'executedAt' => $executedAt,
+            ];
+        }
+        return $migrationsWithStatus;
+    }
+
+    /**
+     * Checks if a Kaliop migration is executed by calling the CLI tool.
+     */
+    private function isKaliopMigrationExecuted(string $migrationName): bool
+    {
+        $cmd = sprintf('php bin/console kaliop:migration:status %s --no-interaction', escapeshellarg($migrationName));
+        $output = shell_exec($cmd);
+        return is_string($output) && str_contains($output, 'executed');
+    }
+
+    /**
+     * Gets the execution date of a Kaliop migration (if available).
+     */
+    private function getKaliopMigrationExecutedAt(string $migrationName): ?\DateTimeImmutable
+    {
+        $cmd = sprintf('php bin/console kaliop:migration:status %s --no-interaction', escapeshellarg($migrationName));
+        $output = shell_exec($cmd);
+        if (is_string($output) && preg_match('/executed at ([0-9\- :]+)/', $output, $matches)) {
+            return new \DateTimeImmutable(trim($matches[1]));
+        }
+        return null;
+    }
+    
     private function handleBulkAction(string $action, array $migrationNames): void
     {
-        foreach ($migrationNames as $migrationName) {
-            $migration = $this->migrationService->findOneByName($migrationName);
-            if (!$migration) {
-                continue; // Skip if migration not found
+        $mode = Helper::determineMode();
+        if ($mode === 'ibexa') {
+            foreach ($migrationNames as $migrationName) {
+                $migration = $this->migrationService->findOneByName($migrationName);
+                if (!$migration) {
+                    continue; // Skip if migration not found
+                }
+                
+                switch ($action) {
+                    case 'execute':
+                        if (!$this->migrationService->isMigrationExecuted($migration)) {
+                            try {
+                                $this->migrationService->executeOne($migration);
+                            } catch (\Exception $e) {
+                                // Log error but continue with other migrations
+                                error_log("Failed to execute migration {$migrationName}: " . $e->getMessage());
+                            }
+                        }
+                        break;
+                        
+                    case 'mark_executed':
+                        if (!$this->migrationService->isMigrationExecuted($migration)) {
+                            // Manually mark as executed in metadata storage
+                            $result = new ExecutionResult($migrationName);
+                            $result->setExecutedAt(new \DateTimeImmutable());
+                            $this->metadataStorage->complete($result);
+                        }
+                        break;
+                        
+                    case 'mark_pending':
+                        if ($this->migrationService->isMigrationExecuted($migration)) {
+                            // Remove from executed migrations metadata
+                            // Note: This is a simplified approach - in a real implementation,
+                            // you might want to add a method to remove from metadata storage
+                            $this->metadataStorage->reset();
+                            // Re-execute all other migrations to restore metadata
+                            $allMigrations = $this->migrationService->listMigrations();
+                            foreach ($allMigrations as $m) {
+                                if ($m->getName() !== $migrationName && !$this->migrationService->isMigrationExecuted($m)) {
+                                    try {
+                                        $this->migrationService->executeOne($m);
+                                    } catch (\Exception $e) {
+                                        // Continue
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                        
+                    case 'delete':
+                        // Note: This is a simplified approach. In a real implementation,
+                        // you would need to handle file deletion and metadata cleanup
+                        // For now, we'll just remove from metadata if executed
+                        if ($this->migrationService->isMigrationExecuted($migration)) {
+                            $this->metadataStorage->reset();
+                            // Re-execute all other migrations to restore metadata
+                            $allMigrations = $this->migrationService->listMigrations();
+                            foreach ($allMigrations as $m) {
+                                if ($m->getName() !== $migrationName && !$this->migrationService->isMigrationExecuted($m)) {
+                                    try {
+                                        $this->migrationService->executeOne($m);
+                                    } catch (\Exception $e) {
+                                        // Continue
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                }
             }
-            
-            switch ($action) {
-                case 'execute':
-                    if (!$this->migrationService->isMigrationExecuted($migration)) {
-                        try {
-                            $this->migrationService->executeOne($migration);
-                        } catch (\Exception $e) {
-                            // Log error but continue with other migrations
-                            error_log("Failed to execute migration {$migrationName}: " . $e->getMessage());
+        } elseif ($mode === 'kaliop') {
+            foreach ($migrationNames as $migrationName) {
+                switch ($action) {
+                    case 'execute':
+                        $cmd = sprintf('php bin/console kaliop:migration:execute %s --no-interaction', escapeshellarg($migrationName));
+                        shell_exec($cmd);
+                        break;
+                    case 'mark_executed':
+                        $cmd = sprintf('php bin/console kaliop:migration:mark-executed %s --no-interaction', escapeshellarg($migrationName));
+                        shell_exec($cmd);
+                        break;
+                    case 'mark_pending':
+                        $cmd = sprintf('php bin/console kaliop:migration:mark-pending %s --no-interaction', escapeshellarg($migrationName));
+                        shell_exec($cmd);
+                        break;
+                    case 'delete':
+                        $destination = Helper::determineDestination($this->projectDir);
+                        $file = $destination . DIRECTORY_SEPARATOR . $migrationName;
+                        if (file_exists($file)) {
+                            unlink($file);
                         }
-                    }
-                    break;
-                    
-                case 'mark_executed':
-                    if (!$this->migrationService->isMigrationExecuted($migration)) {
-                        // Manually mark as executed in metadata storage
-                        $result = new ExecutionResult($migrationName);
-                        $result->setExecutedAt(new \DateTimeImmutable());
-                        $this->metadataStorage->complete($result);
-                    }
-                    break;
-                    
-                case 'mark_pending':
-                    if ($this->migrationService->isMigrationExecuted($migration)) {
-                        // Remove from executed migrations metadata
-                        // Note: This is a simplified approach - in a real implementation,
-                        // you might want to add a method to remove from metadata storage
-                        $this->metadataStorage->reset();
-                        // Re-execute all other migrations to restore metadata
-                        $allMigrations = $this->migrationService->listMigrations();
-                        foreach ($allMigrations as $m) {
-                            if ($m->getName() !== $migrationName && !$this->migrationService->isMigrationExecuted($m)) {
-                                try {
-                                    $this->migrationService->executeOne($m);
-                                } catch (\Exception $e) {
-                                    // Continue
-                                }
-                            }
-                        }
-                    }
-                    break;
-                    
-                case 'delete':
-                    // Note: This is a simplified approach. In a real implementation,
-                    // you would need to handle file deletion and metadata cleanup
-                    // For now, we'll just remove from metadata if executed
-                    if ($this->migrationService->isMigrationExecuted($migration)) {
-                        $this->metadataStorage->reset();
-                        // Re-execute all other migrations to restore metadata
-                        $allMigrations = $this->migrationService->listMigrations();
-                        foreach ($allMigrations as $m) {
-                            if ($m->getName() !== $migrationName && !$this->migrationService->isMigrationExecuted($m)) {
-                                try {
-                                    $this->migrationService->executeOne($m);
-                                } catch (\Exception $e) {
-                                    // Continue
-                                }
-                            }
-                        }
-                    }
-                    break;
+                        break;
+                }
             }
         }
     }
