@@ -48,5 +48,19 @@
     "allow-plugins": {
       "php-http/discovery": true
     }
+  },
+  "scripts": {
+    "check-cs": "vendor/bin/ecs check --ansi",
+    "fix-cs": "vendor/bin/ecs check --no-ansi --fix",
+    "phpstan": "phpstan --memory-limit=1G",
+    "post-install-cmd": "@git-hooks-init",
+    "post-update-cmd": "@git-hooks-update",
+    "swiss-knife-check-conflicts": "vendor/bin/swiss-knife check-conflicts ./config ./modules ./migrations ./plugins --ansi",
+    "swiss-knife-check-commented-code": "vendor/bin/swiss-knife check-commented-code ./config ./modules ./migrations ./plugins --line-limit 4 --no-ansi",
+    "swiss-knife-find-multi-classes": "vendor/bin/swiss-knife find-multi-classes ./config ./modules ./migrations ./plugins --ansi",
+    "swiss-knife-finalize-classes": "vendor/bin/swiss-knife finalize-classes ./config ./modules ./plugins --ansi",
+    "swiss-knife-privatize-constants": "vendor/bin/swiss-knife privatize-constants ./config ./modules ./migrations ./plugins --ansi",
+    "git-hooks-init": "vendor/bin/cghooks add --ignore-lock",
+    "git-hooks-update": "vendor/bin/cghooks update"
   }
 }
