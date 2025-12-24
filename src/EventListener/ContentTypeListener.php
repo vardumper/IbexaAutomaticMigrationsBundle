@@ -46,8 +46,9 @@ class ContentTypeListener
     {
         $this->logger->info('IbexaAutomaticMigrationsBundle: PublishContentTypeDraftEvent received', ['event' => get_class($event)]);
 
-        if ($this->isCli && !isset($_SERVER['TEST_DELETE_MIGRATION'])) {
-            $this->logger->info('IbexaAutomaticMigrationsBundle: Skipping because running in CLI');
+        // Skip in CLI to prevent creating redundant migrations when executing migrations that create/update content types
+        if ($this->isCli) {
+            $this->logger->info('IbexaAutomaticMigrationsBundle: Skipping in CLI to avoid redundant migrations during execution');
             return;
         }
 
@@ -75,6 +76,12 @@ class ContentTypeListener
                 'is_new' => $isNewContentType
             ]);
             
+            // Only generate migrations for new content types to avoid environment-specific issues
+            if (!$isNewContentType) {
+                $this->logger->info('Skipping migration generation for update of existing content type', ['identifier' => $publishedContentType->identifier]);
+                return;
+            }
+            
             $this->generateMigration($publishedContentType, $mode);
         } catch (\Throwable $e) {
             $this->logger->error('Failed to load published content type by ID', ['id' => $contentTypeDraft->id, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
@@ -86,8 +93,9 @@ class ContentTypeListener
     {
         $this->logger->info('IbexaAutomaticMigrationsBundle: BeforeDeleteContentTypeEvent received', ['event' => get_class($event)]);
 
-        if ($this->isCli && !isset($_SERVER['TEST_DELETE_MIGRATION'])) {
-            $this->logger->info('IbexaAutomaticMigrationsBundle: Skipping because running in CLI');
+        // Skip in CLI to prevent creating redundant migrations when executing migrations that delete content types
+        if ($this->isCli) {
+            $this->logger->info('IbexaAutomaticMigrationsBundle: Skipping in CLI to avoid redundant migrations during execution');
             return;
         }
 
@@ -183,13 +191,11 @@ class ContentTypeListener
                     }
                 }
 
-                // Ibexa generator already writes the file to the correct migrations directory.
-                // Use the destination path directly and avoid moving files around.
                 $fullPath = $this->destination . DIRECTORY_SEPARATOR . $fileName;
                 $md5 = md5_file($fullPath);
                 try {
-                    $conn = $this->container->get('doctrine.dbal.default_connection');
                     if ($this->mode === 'ibexa') {
+                        $conn = $this->container->get('doctrine.dbal.default_connection');
                         $table = 'ibexa_migrations';
                         $data = [
                             'executed_at' => new \DateTime(),
@@ -202,23 +208,25 @@ class ContentTypeListener
                             $conn->insert($table, array_merge($identifier, $data));
                         }
                     } elseif ($this->mode === 'kaliop') {
+                        $conn = $this->container->get('doctrine.dbal.default_connection');
                         $table = 'kaliop_migrations';
                         $data = [
                             'execution_date' => time(),
-                            'status' => 2
+                            'status' => 2  // STATUS_DONE
                         ];
                         $identifier = ['migration' => $fileName];
                         $affected = $conn->update($table, $data, $identifier);
                         if ($affected === 0) {
                             // Row not found, insert
                             $conn->insert($table, array_merge($identifier, $data, [
-                                'md5' => $md5,
+                                'md5' => md5_file($fullPath),
                                 'path' => $fullPath,
                                 'execution_error' => null
                             ]));
                         }
+                        $this->logger->info('Migration marked as executed in DB', ['filename' => $fileName, 'table' => $table, 'action' => $affected > 0 ? 'updated' : 'inserted']);
                     }
-                    $this->logger->info('Migration marked as executed', ['filename' => $fileName, 'table' => $table, 'action' => $affected > 0 ? 'updated' : 'inserted']);
+                    $this->logger->info('Migration marked as executed', ['filename' => $fileName, 'mode' => $this->mode]);
                 } catch (\Throwable $e) {
                     $this->logger->warning('Failed to mark migration as executed', ['exception' => $e->getMessage()]);
                 }

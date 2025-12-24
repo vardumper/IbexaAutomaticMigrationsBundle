@@ -2,10 +2,12 @@
 
 namespace vardumper\IbexaAutomaticMigrationsBundle\Controller;
 
+use Doctrine\DBAL\Connection;
 use Ibexa\Contracts\AdminUi\Controller\Controller;
 use Ibexa\Contracts\Migration\Metadata\Storage\MetadataStorage;
 use Ibexa\Migration\MigrationService;
 use Ibexa\Migration\Metadata\ExecutionResult;
+use Kaliop\IbexaMigrationBundle\Core\MigrationService as KaliopMigrationService;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -25,6 +27,10 @@ class MigrationsController extends Controller
         string $projectDir,
         private readonly ?MigrationService $migrationService = null,
         private readonly ?MetadataStorage $metadataStorage = null,
+        #[Autowire(service: 'ibexa.api.storage_engine.legacy.connection')]
+        private readonly Connection $connection,
+        #[Autowire(service: 'ibexa_migration_bundle.migration_service')]
+        private readonly ?KaliopMigrationService $kaliopMigrationService = null,
     ) {
         $this->projectDir = rtrim($projectDir, DIRECTORY_SEPARATOR);
     }
@@ -41,7 +47,7 @@ class MigrationsController extends Controller
             $action = $request->request->get('bulk-action');
             $selectedMigrations = $request->request->all('migrations');
             
-            if (!empty($selectedMigrations)) {
+            if (!empty($selectedMigrations) && $action) {
                 $this->handleBulkAction($action, $selectedMigrations);
                 
                 // Redirect to refresh the page
@@ -125,14 +131,31 @@ class MigrationsController extends Controller
     private function getKaliopMigrationsWithStatus(string $destination): array
     {
         $migrationsWithStatus = [];
-        // Find migration files (Kaliop convention: *.php or *.yml in $destination)
-        $files = glob($destination . DIRECTORY_SEPARATOR . '*.{php,yml}', GLOB_BRACE);
+        $conn = $this->connection;
+        $dbMigrations = [];
+        try {
+            $sql = "SELECT migration, status, execution_date FROM kaliop_migrations";
+            $stmt = $conn->executeQuery($sql);
+            while ($row = $stmt->fetchAssociative()) {
+                $dbMigrations[$row['migration']] = $row;
+            }
+        } catch (\Exception $e) {
+            // Table may not exist
+        }
+
+        // Find migration files
+        $files = glob($destination . DIRECTORY_SEPARATOR . '*.{php,yml,yaml}', GLOB_BRACE);
         foreach ($files as $file) {
             $name = basename($file);
             $createdAt = filemtime($file);
-            // Use CLI to check if migration is executed
-            $isExecuted = $this->isKaliopMigrationExecuted($name);
-            $executedAt = $isExecuted ? $this->getKaliopMigrationExecutedAt($name) : null;
+            $isExecuted = false;
+            $executedAt = null;
+            if (isset($dbMigrations[$name])) {
+                $isExecuted = $dbMigrations[$name]['status'] == 2; // STATUS_DONE
+                if ($isExecuted && $dbMigrations[$name]['execution_date']) {
+                    $executedAt = \DateTimeImmutable::createFromFormat('U', (string)$dbMigrations[$name]['execution_date']);
+                }
+            }
             $migrationsWithStatus[] = [
                 'migration' => (object)['name' => $name],
                 'isExecuted' => $isExecuted,
@@ -143,28 +166,7 @@ class MigrationsController extends Controller
         return $migrationsWithStatus;
     }
 
-    /**
-     * Checks if a Kaliop migration is executed by calling the CLI tool.
-     */
-    private function isKaliopMigrationExecuted(string $migrationName): bool
-    {
-        $cmd = sprintf('php bin/console kaliop:migration:status %s --no-interaction', escapeshellarg($migrationName));
-        $output = shell_exec($cmd);
-        return is_string($output) && str_contains($output, 'executed');
-    }
 
-    /**
-     * Gets the execution date of a Kaliop migration (if available).
-     */
-    private function getKaliopMigrationExecutedAt(string $migrationName): ?\DateTimeImmutable
-    {
-        $cmd = sprintf('php bin/console kaliop:migration:status %s --no-interaction', escapeshellarg($migrationName));
-        $output = shell_exec($cmd);
-        if (is_string($output) && preg_match('/executed at ([0-9\- :]+)/', $output, $matches)) {
-            return new \DateTimeImmutable(trim($matches[1]));
-        }
-        return null;
-    }
     
     private function handleBulkAction(string $action, array $migrationNames): void
     {
@@ -228,19 +230,51 @@ class MigrationsController extends Controller
                 }
             }
         } elseif ($mode === 'kaliop') {
+            $destination = Helper::determineDestination($this->projectDir);
             foreach ($migrationNames as $migrationName) {
                 switch ($action) {
                     case 'execute':
-                        $cmd = sprintf('php bin/console kaliop:migration:execute %s --no-interaction', escapeshellarg($migrationName));
+                        $cmd = sprintf('php bin/console kaliop:migration:migration execute %s %s --no-interaction', escapeshellarg($migrationName), escapeshellarg($destination));
                         shell_exec($cmd);
                         break;
                     case 'mark_executed':
-                        $cmd = sprintf('php bin/console kaliop:migration:mark-executed %s --no-interaction', escapeshellarg($migrationName));
-                        shell_exec($cmd);
+                        $conn = $this->connection;
+                        $table = 'kaliop_migrations';
+                        $data = [
+                            'execution_date' => time(),
+                            'status' => 2  // STATUS_DONE
+                        ];
+                        $identifier = ['migration' => $migrationName];
+                        $affected = $conn->update($table, $data, $identifier);
+                        if ($affected === 0) {
+                            // Row not found, insert
+                            $fullPath = $destination . DIRECTORY_SEPARATOR . $migrationName;
+                            $conn->insert($table, array_merge($identifier, $data, [
+                                'md5' => file_exists($fullPath) ? md5_file($fullPath) : '',
+                                'path' => $fullPath,
+                                'execution_error' => null
+                            ]));
+                        }
                         break;
                     case 'mark_pending':
-                        $cmd = sprintf('php bin/console kaliop:migration:mark-pending %s --no-interaction', escapeshellarg($migrationName));
-                        shell_exec($cmd);
+                        // For Kaliop, mark as pending by setting status to TODO
+                        $conn = $this->connection;
+                        $table = 'kaliop_migrations';
+                        $data = [
+                            'status' => 0  // STATUS_TODO
+                        ];
+                        $identifier = ['migration' => $migrationName];
+                        $affected = $conn->update($table, $data, $identifier);
+                        if ($affected === 0) {
+                            // Row not found, insert with TODO
+                            $fullPath = $destination . DIRECTORY_SEPARATOR . $migrationName;
+                            $conn->insert($table, array_merge($identifier, $data, [
+                                'execution_date' => null,
+                                'md5' => file_exists($fullPath) ? md5_file($fullPath) : '',
+                                'path' => $fullPath,
+                                'execution_error' => null
+                            ]));
+                        }
                         break;
                     case 'delete':
                         $destination = Helper::determineDestination($this->projectDir);
