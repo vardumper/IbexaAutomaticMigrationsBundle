@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Yaml\Yaml;
+use vardumper\IbexaAutomaticMigrationsBundle\Service\SettingsService;
 
 final class ContentTypeGroupListener
 {
@@ -29,6 +29,7 @@ final class ContentTypeGroupListener
 
     public function __construct(
         private readonly LoggerInterface $logger,
+        private readonly SettingsService $settingsService,
         #[Autowire('%kernel.project_dir%')]
         string $projectDir,
         #[Autowire(service: 'service_container')]
@@ -53,6 +54,10 @@ final class ContentTypeGroupListener
     #[AsEventListener(CreateContentTypeGroupEvent::class)]
     public function onCreated(CreateContentTypeGroupEvent $event): void
     {
+        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('content_type_group')) {
+            return;
+        }
+
         if ($this->isCli && !isset($_SERVER['TEST_DELETE_MIGRATION'])) {
             return;
         }
@@ -176,6 +181,10 @@ final class ContentTypeGroupListener
     #[AsEventListener(UpdateContentTypeGroupEvent::class)]
     public function onUpdated(UpdateContentTypeGroupEvent $event): void
     {
+        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('content_type_group')) {
+            return;
+        }
+
         if ($this->isCli && !isset($_SERVER['TEST_DELETE_MIGRATION'])) {
             return;
         }
@@ -300,6 +309,10 @@ final class ContentTypeGroupListener
     #[AsEventListener(DeleteContentTypeGroupEvent::class)]
     public function onDeleted(DeleteContentTypeGroupEvent $event): void
     {
+        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('content_type_group')) {
+            return;
+        }
+
         if ($this->isCli && !isset($_SERVER['TEST_DELETE_MIGRATION'])) {
             return;
         }

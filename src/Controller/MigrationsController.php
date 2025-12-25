@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use vardumper\IbexaAutomaticMigrationsBundle\Helper\Helper;
+use vardumper\IbexaAutomaticMigrationsBundle\Service\SettingsService;
 
 #[AsController]
 final class MigrationsController extends Controller
@@ -29,7 +30,8 @@ final class MigrationsController extends Controller
         #[Autowire(service: 'ibexa.api.storage_engine.legacy.connection')]
         private readonly Connection $connection,
         private readonly ?MigrationService $migrationService = null,
-        private readonly ?MetadataStorage $metadataStorage = null
+        private readonly ?MetadataStorage $metadataStorage = null,
+        private readonly SettingsService $settingsService,
     ) {
         $this->projectDir = rtrim($projectDir, DIRECTORY_SEPARATOR);
     }
@@ -112,6 +114,30 @@ final class MigrationsController extends Controller
             'mode' => $mode,
         ]);
     }
+
+    #[Route('/migrations/settings', name: 'migrations_settings')]
+    public function settingsAction(Request $request): Response
+    {
+        $settings = $this->settingsService->getSettings();
+
+        if ($request->isMethod('POST')) {
+            $settings['enabled'] = $request->request->getBoolean('enabled');
+            $settings['types']['content_type'] = $request->request->getBoolean('content_type');
+            $settings['types']['content_type_group'] = $request->request->getBoolean('content_type_group');
+            $settings['types']['section'] = $request->request->getBoolean('section');
+            $settings['types']['lock'] = $request->request->getBoolean('lock');
+
+            $this->settingsService->saveSettings($settings);
+
+            $this->addFlash('success', 'Settings saved successfully.');
+
+            return $this->redirectToRoute('migrations_settings');
+        }
+
+        return $this->render('@IbexaAutomaticMigrationsBundle/migrations/settings.twig', [
+            'settings' => $settings,
+        ]);
+    }
     
     private function getSortValue(array $migrationData, string $sort): mixed
     {
@@ -164,8 +190,6 @@ final class MigrationsController extends Controller
         }
         return $migrationsWithStatus;
     }
-
-
     
     private function handleBulkAction(string $action, array $migrationNames): void
     {

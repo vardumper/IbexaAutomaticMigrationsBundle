@@ -1,0 +1,101 @@
+{% extends '@ibexadesign/ui/layout.html.twig' %}
+
+{% block title %}{{ 'Migration Settings'|trans }}{% endblock %}
+
+{%- block breadcrumbs -%}
+    {% include '@ibexadesign/ui/breadcrumbs.html.twig' with { items: [
+        { value: 'breadcrumb.admin'|trans(domain='messages')|desc('Admin') },
+        { value: 'Migrations'|trans },
+        { value: 'Settings'|trans }
+    ]} %}
+{%- endblock -%}
+
+{%- block header -%}
+    {% include '@ibexadesign/ui/page_title.html.twig' with {
+        title: 'Migration Settings'|trans,
+    } %}
+{%- endblock -%}
+
+{% block context_menu %}
+    <ul class="ibexa-context-menu">
+        <li class="ibexa-context-menu__item ibexa-adaptive-items__item">
+            <a href="{{ path('migrations_list') }}" class="btn ibexa-btn ibexa-btn--secondary">
+                <span class="ibexa-btn__label">
+                    Back to Migrations
+                </span>
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+
+{%- block content -%}
+    <section class="container ibexa-container">
+        <form method="post" action="{{ path('migrations_settings') }}">
+            <div class="ibexa-form-group">
+                <div class="ibexa-form-group__header">
+                    <h2 class="ibexa-form-group__title">{{ 'General Settings'|trans }}</h2>
+                </div>
+                <div class="ibexa-form-group__fields">
+                    <div class="ibexa-field">
+                        <label class="ibexa-field__label" for="enabled">
+                            {{ 'Enable automatic migration creation'|trans }}
+                        </label>
+                        <div class="ibexa-field__input-wrapper">
+                            <input type="checkbox" id="enabled" name="enabled" value="1" {{ settings.enabled ? 'checked' : '' }}>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ibexa-form-group">
+                <div class="ibexa-form-group__header">
+                    <h2 class="ibexa-form-group__title">{{ 'Migration Types'|trans }}</h2>
+                </div>
+                <div class="ibexa-form-group__fields">
+                    <div class="ibexa-field">
+                        <label class="ibexa-field__label" for="content_type">
+                            {{ 'Content Types'|trans }}
+                        </label>
+                        <div class="ibexa-field__input-wrapper">
+                            <input type="checkbox" id="content_type" name="content_type" value="1" {{ settings.types.content_type ? 'checked' : '' }}>
+                        </div>
+                    </div>
+                    <div class="ibexa-field">
+                        <label class="ibexa-field__label" for="content_type_group">
+                            {{ 'Content Type Groups'|trans }}
+                        </label>
+                        <div class="ibexa-field__input-wrapper">
+                            <input type="checkbox" id="content_type_group" name="content_type_group" value="1" {{ settings.types.content_type_group ? 'checked' : '' }}>
+                        </div>
+                    </div>
+                    <div class="ibexa-field">
+                        <label class="ibexa-field__label" for="section">
+                            {{ 'Sections'|trans }}
+                        </label>
+                        <div class="ibexa-field__input-wrapper">
+                            <input type="checkbox" id="section" name="section" value="1" {{ settings.types.section ? 'checked' : '' }}>
+                        </div>
+                    </div>
+                    <div class="ibexa-field">
+                        <label class="ibexa-field__label" for="lock">
+                            {{ 'Locks'|trans }}
+                        </label>
+                        <div class="ibexa-field__input-wrapper">
+                            <input type="checkbox" id="lock" name="lock" value="1" {{ settings.types.lock ? 'checked' : '' }}>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ibexa-form-group">
+                <div class="ibexa-form-group__actions">
+                    <button type="submit" class="btn ibexa-btn ibexa-btn--primary">
+                        <span class="ibexa-btn__label">
+                            {{ 'Save Settings'|trans }}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </section>
+{%- endblock -%}

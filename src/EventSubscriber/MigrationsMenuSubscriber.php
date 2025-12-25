@@ -9,7 +9,6 @@ use Ibexa\AdminUi\Menu\MainMenuBuilder;
 use Ibexa\AdminUi\Menu\MenuItemFactory;
 use Ibexa\Contracts\Core\Repository\PermissionResolver;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use vardumper\IbexaAutomaticMigrationsBundle\Helper\Helper;
 
 final class MigrationsMenuSubscriber implements EventSubscriberInterface
 {
@@ -37,8 +36,6 @@ final class MigrationsMenuSubscriber implements EventSubscriberInterface
     public function onMainMenuConfigure(ConfigureMenuEvent $event): void
     {
         $menu = $event->getMenu();
-        $mode = Helper::determineMode();
-        $prefix = ($mode === 'ibexa') ? 'Ibexa' : 'Kaliop';
 
         if (!$this->permissionResolver->hasAccess('setup', 'system_info')) {
             return;
@@ -48,7 +45,7 @@ final class MigrationsMenuSubscriber implements EventSubscriberInterface
             $this->menuItemFactory->createItem(
                 self::ITEM_ADMIN__MIGRATIONS,
                 [
-                    'label' => $prefix . ' Migrations',
+                    'label' => 'Migrations',
                     'route' => 'migrations_list',
                     'attributes' => [
                         'class' => 'custom-menu-item',

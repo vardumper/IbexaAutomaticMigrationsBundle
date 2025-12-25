@@ -4,6 +4,16 @@ services:
     autoconfigure: true
     public: false
 
+  ibexa_automatic_migrations.settings_service:
+    class: vardumper\IbexaAutomaticMigrationsBundle\Service\SettingsService
+    arguments:
+      - '%kernel.project_dir%'
+      - '%ibexa_automatic_migrations.enabled%'
+      - '%ibexa_automatic_migrations.types%'
+    public: true
+
+  vardumper\IbexaAutomaticMigrationsBundle\Service\SettingsService: '@ibexa_automatic_migrations.settings_service'
+
   ibexa_automatic_migrations.content_type_listener:
     class: vardumper\IbexaAutomaticMigrationsBundle\EventListener\ContentTypeListener
     autoconfigure: true
@@ -11,6 +21,7 @@ services:
     public: false
     arguments:
       - '@logger'
+      - '@ibexa_automatic_migrations.settings_service'
   ibexa_automatic_migrations.content_type_group_listener:
     class: vardumper\IbexaAutomaticMigrationsBundle\EventListener\ContentTypeGroupListener
     autoconfigure: true
@@ -18,6 +29,25 @@ services:
     public: false
     arguments:
       - '@logger'
+      - '@ibexa_automatic_migrations.settings_service'
+  ibexa_automatic_migrations.section_listener:
+    class: vardumper\IbexaAutomaticMigrationsBundle\EventListener\SectionListener
+    autoconfigure: true
+    autowire: true
+    public: false
+    arguments:
+      - '@logger'
+      - '@ibexa_automatic_migrations.settings_service'
+
+  ibexa_automatic_migrations.lock_listener:
+    class: vardumper\IbexaAutomaticMigrationsBundle\EventListener\LockListener
+    autoconfigure: true
+    autowire: true
+    public: false
+    arguments:
+      - '@logger'
+      - '@ibexa_automatic_migrations.settings_service'
+
   ibexa_automatic_migrations.menu_subscriber:
     class: vardumper\IbexaAutomaticMigrationsBundle\EventSubscriber\MigrationsMenuSubscriber
     autoconfigure: true
