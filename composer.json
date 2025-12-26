@@ -4,6 +4,7 @@
   "type": "symfony-bundle",
   "license": "MIT",
   "minimum-stability": "dev",
+  "homepage": "https://github.com/vardumper/IbexaAutomaticMigrationsBundle",
   "prefer-stable": true,
   "authors": [
     {
