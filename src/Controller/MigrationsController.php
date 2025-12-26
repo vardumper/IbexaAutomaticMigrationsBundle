@@ -29,9 +29,9 @@ final class MigrationsController extends Controller
         string $projectDir,
         #[Autowire(service: 'ibexa.api.storage_engine.legacy.connection')]
         private readonly Connection $connection,
+        private readonly SettingsService $settingsService,
         private readonly ?MigrationService $migrationService = null,
         private readonly ?MetadataStorage $metadataStorage = null,
-        private readonly SettingsService $settingsService,
     ) {
         $this->projectDir = rtrim($projectDir, DIRECTORY_SEPARATOR);
     }
@@ -126,6 +126,8 @@ final class MigrationsController extends Controller
             $settings['types']['content_type_group'] = $request->request->getBoolean('content_type_group');
             $settings['types']['section'] = $request->request->getBoolean('section');
             $settings['types']['lock'] = $request->request->getBoolean('lock');
+            $settings['types']['object_state'] = $request->request->getBoolean('object_state');
+            $settings['types']['object_state_group'] = $request->request->getBoolean('object_state_group');
 
             $this->settingsService->saveSettings($settings);
 

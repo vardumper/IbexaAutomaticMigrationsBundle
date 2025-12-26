@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace vardumper\IbexaAutomaticMigrationsBundle\EventListener;
 
-use Ibexa\Contracts\Core\Repository\Events\ContentType\BeforeDeleteContentTypeEvent;
-use Ibexa\Contracts\Core\Repository\Events\ContentType\PublishContentTypeDraftEvent;
+use Ibexa\Contracts\Core\Repository\Events\ObjectState\CreateObjectStateEvent;
+use Ibexa\Contracts\Core\Repository\Events\ObjectState\DeleteObjectStateEvent;
+use Ibexa\Contracts\Core\Repository\Events\ObjectState\UpdateObjectStateEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Process\Process;
 use vardumper\IbexaAutomaticMigrationsBundle\Helper\Helper;
+use vardumper\IbexaAutomaticMigrationsBundle\Service\SettingsService;
 
-final class ContentTypeListener
+final class ObjectStateListener
 {
     private bool $isCli = false;
     private ?string $mode = null;
@@ -24,6 +26,7 @@ final class ContentTypeListener
 
     public function __construct(
         private readonly LoggerInterface $logger,
+        private readonly SettingsService $settingsService,
         #[Autowire('%kernel.project_dir%')]
         string $projectDir,
         #[Autowire(service: 'service_container')]
@@ -40,92 +43,89 @@ final class ContentTypeListener
         }
     }
 
-    #[AsEventListener(PublishContentTypeDraftEvent::class)]
-    public function onIbexaPublishContentTypeDraft(PublishContentTypeDraftEvent $event): void
+    #[AsEventListener(CreateObjectStateEvent::class)]
+    public function onCreated(CreateObjectStateEvent $event): void
     {
-        $this->logger->info('IbexaAutomaticMigrationsBundle: PublishContentTypeDraftEvent received', ['event' => get_class($event)]);
+        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('object_state')) {
+            return;
+        }
 
-        // Skip in CLI to prevent creating redundant migrations when executing migrations that create/update content types
+        $this->logger->info('IbexaAutomaticMigrationsBundle: CreateObjectStateEvent received', ['event' => get_class($event)]);
+
+        // Skip in CLI to prevent creating redundant migrations when executing migrations that create/update object states
         if ($this->isCli) {
             $this->logger->info('IbexaAutomaticMigrationsBundle: Skipping in CLI to avoid redundant migrations during execution');
             return;
         }
 
-        $contentTypeDraft = $event->getContentTypeDraft();
-        $this->logger->info('Ibexa PublishContentTypeDraftEvent received', ['id' => $contentTypeDraft->id, 'identifier' => $contentTypeDraft->identifier]);
+        $objectState = $event->getObjectState();
+        $this->logger->info('CreateObjectStateEvent received', ['id' => $objectState->id, 'identifier' => $objectState->identifier]);
 
-        // After publishing, try to load the published content type by ID instead of identifier
-        // since the identifier might change during publishing
-        $contentTypeService = $this->container->get('ibexa.api.service.content_type');
-        try {
-            $publishedContentType = $contentTypeService->loadContentType($contentTypeDraft->id);
-            $this->logger->info('Published content type loaded successfully', ['id' => $publishedContentType->id, 'identifier' => $publishedContentType->identifier]);
-            
-            // Determine if this is a new content type or an update to an existing one
-            // Check if there are existing migration files for this content type identifier
-            $patternBase = $this->destination . DIRECTORY_SEPARATOR . '*_content_type_*_' . $publishedContentType->identifier;
-            $existingFiles = array_merge(glob($patternBase . '.yml') ?: [], glob($patternBase . '.yaml') ?: []);
-            $isNewContentType = empty($existingFiles);
-            $mode = $isNewContentType ? 'create' : 'update';
-            
-            $this->logger->info('Determined migration mode based on existing files', [
-                'mode' => $mode,
-                'identifier' => $publishedContentType->identifier,
-                'existing_files_count' => count($existingFiles),
-                'is_new' => $isNewContentType
-            ]);
-            
-            // Only generate migrations for new content types to avoid environment-specific issues
-            if (!$isNewContentType) {
-                $this->logger->info('Skipping migration generation for update of existing content type', ['identifier' => $publishedContentType->identifier]);
-                return;
-            }
-            
-            $this->generateMigration($publishedContentType, $mode);
-        } catch (\Throwable $e) {
-            $this->logger->error('Failed to load published content type by ID', ['id' => $contentTypeDraft->id, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
-        }
+        $this->generateMigration($objectState, 'create');
     }
 
-    #[AsEventListener(BeforeDeleteContentTypeEvent::class)]
-    public function onIbexaBeforeDeleteContentType(BeforeDeleteContentTypeEvent $event): void
+    #[AsEventListener(UpdateObjectStateEvent::class)]
+    public function onUpdated(UpdateObjectStateEvent $event): void
     {
-        $this->logger->info('IbexaAutomaticMigrationsBundle: BeforeDeleteContentTypeEvent received', ['event' => get_class($event)]);
+        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('object_state')) {
+            return;
+        }
 
-        // Skip in CLI to prevent creating redundant migrations when executing migrations that delete content types
+        $this->logger->info('IbexaAutomaticMigrationsBundle: UpdateObjectStateEvent received', ['event' => get_class($event)]);
+
+        // Skip in CLI to prevent creating redundant migrations when executing migrations that create/update object states
         if ($this->isCli) {
             $this->logger->info('IbexaAutomaticMigrationsBundle: Skipping in CLI to avoid redundant migrations during execution');
             return;
         }
 
-        $contentType = $event->getContentType();
-        $this->logger->info('BeforeDeleteContentTypeEvent received', ['id' => $contentType->id, 'identifier' => $contentType->identifier]);
+        $objectState = $event->getObjectState();
+        $this->logger->info('UpdateObjectStateEvent received', ['id' => $objectState->id, 'identifier' => $objectState->identifier]);
 
-        // Generate delete migration BEFORE the content type is deleted
-        $this->generateMigration($contentType, 'delete');
+        $this->generateMigration($objectState, 'update');
     }
 
-
-
-    private function generateMigration(\Ibexa\Contracts\Core\Repository\Values\ContentType\ContentType|\Ibexa\Contracts\Core\Repository\Values\ContentType\ContentTypeDraft $contentType, string $mode): void
+    #[AsEventListener(DeleteObjectStateEvent::class)]
+    public function onDeleted(DeleteObjectStateEvent $event): void
     {
-        $this->logger->info('Starting migration generation', ['mode' => $mode, 'identifier' => $contentType->identifier, 'id' => $contentType->id]);
-        
+        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('object_state')) {
+            return;
+        }
+
+        $this->logger->info('IbexaAutomaticMigrationsBundle: DeleteObjectStateEvent received', ['event' => get_class($event)]);
+
+        // Skip in CLI to prevent creating redundant migrations when executing migrations that delete object states
+        if ($this->isCli) {
+            $this->logger->info('IbexaAutomaticMigrationsBundle: Skipping in CLI to avoid redundant migrations during execution');
+            return;
+        }
+
+        $objectState = $event->getObjectState();
+        $this->logger->info('DeleteObjectStateEvent received', ['id' => $objectState->id, 'identifier' => $objectState->identifier]);
+
+        // Generate delete migration BEFORE the object state is deleted
+        $this->generateMigration($objectState, 'delete');
+    }
+
+    private function generateMigration(\Ibexa\Contracts\Core\Repository\Values\ObjectState\ObjectState $objectState, string $mode): void
+    {
+        $this->logger->info('Starting object state migration generation', ['mode' => $mode, 'identifier' => $objectState->identifier, 'id' => $objectState->id]);
+
         if ($this->mode !== 'kaliop' && $this->mode !== 'ibexa') {
             $this->logger->info('Skipping migration generation - not using kaliop or ibexa mode', ['current_mode' => $this->mode]);
             return;
         }
 
         try {
-            $matchValue = $contentType->identifier;
-            $name = 'auto_content_type_' . $mode . '_' . (string) $matchValue;
+            $matchValue = $objectState->identifier;
+            $name = 'auto_objectstate_' . $mode . '_' . (string) $matchValue;
 
             if ($this->mode === 'kaliop') {
                 $inputArray = [
                     '--format' => 'yml',
-                    '--type' => 'content_type',
+                    '--type' => 'object_state',
                     '--mode' => $mode,
-                    '--match-type' => 'content_type_identifier',
+                    '--match-type' => 'object_state_identifier',
                     '--match-value' => (string) $matchValue,
                     'bundle' => $this->destination,
                     'name' => $name,
@@ -135,9 +135,9 @@ final class ContentTypeListener
                 $now = new \DateTime();
                 $inputArray = [
                     '--format' => 'yaml',
-                    '--type' => 'content_type',
+                    '--type' => 'object_state',
                     '--mode' => $mode,
-                    '--match-property' => 'content_type_identifier',
+                    '--match-property' => 'object_state_identifier',
                     '--value' => (string) $matchValue,
                     '--file' => $now->format('Y_m_d_H_i_s_') . $name . '.yaml',
                 ];
@@ -160,7 +160,7 @@ final class ContentTypeListener
 
             $process->run();
             $code = $process->getExitCode();
-            $this->logger->info('Migration generate process finished (' . $mode . ')', ['name' => $name, 'code' => $code, 'output' => $process->getOutput(), 'error' => $process->getErrorOutput()]);
+            $this->logger->info('Object state migration generate process finished (' . $mode . ')', ['name' => $name, 'code' => $code, 'output' => $process->getOutput(), 'error' => $process->getErrorOutput()]);
             if ($code == 0) {
                 if ($this->mode === 'ibexa') {
                     $fileName = $inputArray['--file'];
@@ -226,10 +226,10 @@ final class ContentTypeListener
                     $this->logger->warning('Failed to mark migration as executed', ['exception' => $e->getMessage()]);
                 }
             } else {
-                $this->logger->error('Migration generation failed', ['code' => $code, 'error' => $process->getErrorOutput()]);
+                $this->logger->error('Object state migration generation failed', ['code' => $code, 'error' => $process->getErrorOutput()]);
             }
         } catch (\Throwable $e) {
-            $this->logger->error('Failed to generate migration programmatically', ['mode' => $mode, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            $this->logger->error('Failed to generate object state migration programmatically', ['mode' => $mode, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
         }
     }
 }

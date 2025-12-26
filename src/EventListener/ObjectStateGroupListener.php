@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace vardumper\IbexaAutomaticMigrationsBundle\EventListener;
 
 use Doctrine\DBAL\Connection;
-
-use Ibexa\Contracts\Core\Repository\Events\ContentType\CreateContentTypeGroupEvent;
-use Ibexa\Contracts\Core\Repository\Events\ContentType\DeleteContentTypeGroupEvent;
-use Ibexa\Contracts\Core\Repository\Events\ContentType\UpdateContentTypeGroupEvent;
+use Ibexa\Contracts\Core\Repository\Events\ObjectState\CreateObjectStateGroupEvent;
+use Ibexa\Contracts\Core\Repository\Events\ObjectState\DeleteObjectStateGroupEvent;
+use Ibexa\Contracts\Core\Repository\Events\ObjectState\UpdateObjectStateGroupEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -18,7 +17,7 @@ use Symfony\Component\Yaml\Yaml;
 use vardumper\IbexaAutomaticMigrationsBundle\Helper\Helper;
 use vardumper\IbexaAutomaticMigrationsBundle\Service\SettingsService;
 
-final class ContentTypeGroupListener
+final class ObjectStateGroupListener
 {
     private bool $isCli = false;
     private ?string $mode = null;
@@ -44,21 +43,21 @@ final class ContentTypeGroupListener
             mkdir($this->destination, 0777, true);
         }
     }
-    
-    #[AsEventListener(CreateContentTypeGroupEvent::class)]
-    public function onCreated(CreateContentTypeGroupEvent $event): void
+
+    #[AsEventListener(CreateObjectStateGroupEvent::class)]
+    public function onCreated(CreateObjectStateGroupEvent $event): void
     {
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('content_type_group')) {
+        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('object_state_group')) {
             return;
         }
 
-        if ($this->isCli && !isset($_SERVER['TEST_DELETE_MIGRATION'])) {
+        if ($this->isCli) {
             return;
         }
-        
+
         try {
-            $matchValue = $event->getContentTypeGroupCreateStruct()->identifier;
-            $name = 'auto_content_type_group_create_' . (string) $matchValue;
+            $matchValue = $event->getObjectStateGroupCreateStruct()->identifier;
+            $name = 'auto_objectstategroup_create_' . (string) $matchValue;
             $fileName = '';
             $inputArray = [];
 
@@ -66,9 +65,9 @@ final class ContentTypeGroupListener
                 $fileName = (new \DateTime())->format('Y_m_d_H_i_s_') . strtolower($name) . '.yaml';
                 $inputArray = [
                     '--format' => 'yaml',
-                    '--type' => 'content_type_group',
+                    '--type' => 'object_state_group',
                     '--mode' => 'create',
-                    '--match-property' => 'content_type_group_identifier',
+                    '--match-property' => 'object_state_group_identifier',
                     '--value' => (string) $matchValue,
                     '--file' => $fileName,
                 ];
@@ -76,9 +75,9 @@ final class ContentTypeGroupListener
             } else {
                 $inputArray = [
                     '--format' => 'yml',
-                    '--type' => 'content_type_group',
+                    '--type' => 'object_state_group',
                     '--mode' => 'create',
-                    '--match-type' => 'content_type_group_identifier',
+                    '--match-type' => 'object_state_group_identifier',
                     '--match-value' => (string) $matchValue,
                     'bundle' => $this->destination,
                     'name' => $name,
@@ -101,7 +100,7 @@ final class ContentTypeGroupListener
             $process = new Process($cmd, $this->projectDir);
             $process->run();
             $code = $process->getExitCode();
-            $this->logger->info('Migration generate process finished (group create)', ['name' => $name, 'code' => $code, 'output' => $process->getOutput(), 'error' => $process->getErrorOutput()]);
+            $this->logger->info('ObjectStateGroup migration generate process finished (create)', ['name' => $name, 'code' => $code, 'output' => $process->getOutput(), 'error' => $process->getErrorOutput()]);
 
             if ($code == 0) {
                 if ($this->mode === 'ibexa') {
@@ -168,25 +167,26 @@ final class ContentTypeGroupListener
                 }
             }
         } catch (\Throwable $e) {
-            $this->logger->error('Failed to generate migration programmatically (group create)', ['exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            $this->logger->error('Failed to generate migration programmatically (object state group create)', ['exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
         }
     }
 
-    #[AsEventListener(UpdateContentTypeGroupEvent::class)]
-    public function onUpdated(UpdateContentTypeGroupEvent $event): void
+    #[AsEventListener(UpdateObjectStateGroupEvent::class)]
+    public function onUpdated(UpdateObjectStateGroupEvent $event): void
     {
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('content_type_group')) {
+        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('object_state_group')) {
             return;
         }
 
-        if ($this->isCli && !isset($_SERVER['TEST_DELETE_MIGRATION'])) {
+        if ($this->isCli) {
             return;
         }
-        $this->logger->info('ContentTypeGroup updated (listener)', ['id' => $event->getContentTypeGroup()->id, 'identifier' => $event->getContentTypeGroup()->identifier]);
+
+        $this->logger->info('ObjectStateGroup updated (listener)', ['id' => $event->getObjectStateGroup()->id, 'identifier' => $event->getObjectStateGroup()->identifier]);
 
         try {
-            $matchValue = $event->getContentTypeGroup()->identifier;
-            $name = 'auto_content_type_group_update_' . (string) $matchValue;
+            $matchValue = $event->getObjectStateGroup()->identifier;
+            $name = 'auto_objectstategroup_update_' . (string) $matchValue;
             $fileName = '';
             $inputArray = [];
 
@@ -194,9 +194,9 @@ final class ContentTypeGroupListener
                 $fileName = (new \DateTime())->format('Y_m_d_H_i_s_') . $name . '.yaml';
                 $inputArray = [
                     '--format' => 'yaml',
-                    '--type' => 'content_type_group',
+                    '--type' => 'object_state_group',
                     '--mode' => 'update',
-                    '--match-property' => 'content_type_group_identifier',
+                    '--match-property' => 'object_state_group_identifier',
                     '--value' => (string) $matchValue,
                     '--file' => $fileName,
                 ];
@@ -204,9 +204,9 @@ final class ContentTypeGroupListener
             } else {
                 $inputArray = [
                     '--format' => 'yml',
-                    '--type' => 'content_type_group',
+                    '--type' => 'object_state_group',
                     '--mode' => 'update',
-                    '--match-type' => 'content_type_group_identifier',
+                    '--match-type' => 'object_state_group_identifier',
                     '--match-value' => (string) $matchValue,
                     'bundle' => $this->destination,
                     'name' => $name,
@@ -229,7 +229,7 @@ final class ContentTypeGroupListener
             $process = new Process($cmd, $this->projectDir);
             $process->run();
             $code = $process->getExitCode();
-            $this->logger->info('Migration generate process finished (group update)', ['name' => $name, 'code' => $code, 'output' => $process->getOutput(), 'error' => $process->getErrorOutput()]);
+            $this->logger->info('ObjectStateGroup migration generate process finished (update)', ['name' => $name, 'code' => $code, 'output' => $process->getOutput(), 'error' => $process->getErrorOutput()]);
 
             if ($code == 0) {
                 if ($this->mode === 'ibexa') {
@@ -296,35 +296,36 @@ final class ContentTypeGroupListener
                 }
             }
         } catch (\Throwable $e) {
-            $this->logger->error('Failed to generate migration programmatically (group update)', ['exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            $this->logger->error('Failed to generate migration programmatically (object state group update)', ['exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
         }
     }
 
-    #[AsEventListener(DeleteContentTypeGroupEvent::class)]
-    public function onDeleted(DeleteContentTypeGroupEvent $event): void
+    #[AsEventListener(DeleteObjectStateGroupEvent::class)]
+    public function onDeleted(DeleteObjectStateGroupEvent $event): void
     {
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('content_type_group')) {
+        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('object_state_group')) {
             return;
         }
 
-        if ($this->isCli && !isset($_SERVER['TEST_DELETE_MIGRATION'])) {
+        if ($this->isCli) {
             return;
         }
-        $this->logger->info('ContentTypeGroup deleted (listener)', ['id' => $event->getContentTypeGroup()->id, 'identifier' => $event->getContentTypeGroup()->identifier]);
+
+        $this->logger->info('ObjectStateGroup deleted (listener)', ['id' => $event->getObjectStateGroup()->id, 'identifier' => $event->getObjectStateGroup()->identifier]);
 
         try {
-            $matchValue = $event->getContentTypeGroup()->identifier;
-            $name = 'auto_content_type_group_delete_' . (string) $matchValue;
+            $matchValue = $event->getObjectStateGroup()->identifier;
+            $name = 'auto_objectstategroup_delete_' . (string) $matchValue;
 
             // For delete we create YAML directly (object may be gone), write .yaml for ibexa compatibility
             $timestamp = date('Y_m_d_H_i_s_');
             $fileName = $timestamp . $name . '.yaml';
             $data = [
                 [
-                    'type' => 'content_type_group',
+                    'type' => 'object_state_group',
                     'mode' => 'delete',
                     'match' => [
-                        'content_type_group_identifier' => $matchValue
+                        'object_state_group_identifier' => $matchValue
                     ]
                 ]
             ];
@@ -370,7 +371,7 @@ final class ContentTypeGroupListener
                 $this->logger->warning('Failed to mark migration as executed', ['exception' => $e->getMessage()]);
             }
         } catch (\Throwable $e) {
-            $this->logger->error('Failed to generate migration programmatically (group delete)', ['exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            $this->logger->error('Failed to generate migration programmatically (object state group delete)', ['exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
         }
     }
 }

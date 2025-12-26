@@ -84,7 +84,22 @@
                             <input type="checkbox" id="lock" name="lock" value="1" {{ settings.types.lock ? 'checked' : '' }}>
                         </div>
                     </div>
-                </div>
+                    <div class="ibexa-field">
+                        <label class="ibexa-field__label" for="object_state">
+                            {{ 'Object States'|trans }}
+                        </label>
+                        <div class="ibexa-field__input-wrapper">
+                            <input type="checkbox" id="object_state" name="object_state" value="1" {{ settings.types.object_state ? 'checked' : '' }}>
+                        </div>
+                    </div>
+                    <div class="ibexa-field">
+                        <label class="ibexa-field__label" for="object_state_group">
+                            {{ 'Object State Groups'|trans }}
+                        </label>
+                        <div class="ibexa-field__input-wrapper">
+                            <input type="checkbox" id="object_state_group" name="object_state_group" value="1" {{ settings.types.object_state_group ? 'checked' : '' }}>
+                        </div>
+                    </div>
             </div>
 
             <div class="ibexa-form-group">

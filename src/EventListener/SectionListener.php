@@ -21,6 +21,8 @@ final class SectionListener
     private ?string $mode = null;
     private string $projectDir;
     private ?string $destination;
+    /** @phpstan-ignore property.onlyWritten */
+    private ContainerInterface $container;
     /** @var array<string> */
     private array $consoleCommand;
 
