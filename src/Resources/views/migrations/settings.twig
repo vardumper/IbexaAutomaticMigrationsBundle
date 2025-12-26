@@ -100,6 +100,14 @@
                             <input type="checkbox" id="user" name="user" value="1" {{ settings.types.user ? 'checked' : '' }}>
                         </div>
                     </div>
+                     <div class="ibexa-field">
+                        <label class="ibexa-field__label" for="user_group">
+                            {{ 'User Groups'|trans }}
+                        </label>
+                        <div class="ibexa-field__input-wrapper">
+                            <input type="checkbox" id="user_group" name="user_group" value="1" {{ settings.types.user_group ? 'checked' : '' }}>
+                        </div>
+                    </div>
                     <div class="ibexa-field">
                         <label class="ibexa-field__label" for="role">
                             {{ 'Roles'|trans }}
