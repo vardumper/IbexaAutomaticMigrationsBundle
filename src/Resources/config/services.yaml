@@ -19,6 +19,16 @@ services:
     autoconfigure: true
     autowire: true
     public: false
+  ibexa_automatic_migrations.content_listener:
+    class: vardumper\IbexaAutomaticMigrationsBundle\EventListener\ContentListener
+    autoconfigure: true
+    autowire: true
+    public: false
+    arguments:
+      - '@logger'
+      - '@ibexa_automatic_migrations.settings_service'
+      - '%kernel.project_dir%'
+      - '@service_container'
   ibexa_automatic_migrations.content_type_group_listener:
     class: vardumper\IbexaAutomaticMigrationsBundle\EventListener\ContentTypeGroupListener
     autoconfigure: true

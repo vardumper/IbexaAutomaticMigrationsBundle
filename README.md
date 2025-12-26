@@ -15,8 +15,15 @@ Migrations are created in the default locations (in `src/Migrations/Ibexa/migrat
 * Supports Ibexa DXP v5.x. Open Source Edition via `mrk-te/ibexa-migration-bundle2`
 
 ## Supported Types of Migrations
-* Content Type Group (create, update, delete) 
-* Content Type (create, update, delete)
+* Content Type Group 
+* Content Type
+* Language
+* Object State Group 
+* Object State
+* Role
+* Section
+* URL Wildcards
+* URL Manager
 
 ## Installation
 
