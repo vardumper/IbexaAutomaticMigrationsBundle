@@ -30,119 +30,125 @@
 
 {%- block content -%}
     <section class="container ibexa-container">
-        <form method="post" action="{{ path('migrations_settings') }}">
-            <div class="ibexa-form-group">
-                <div class="ibexa-form-group__header">
-                    <h2 class="ibexa-form-group__title">{{ 'General Settings'|trans }}</h2>
-                </div>
-                <div class="ibexa-form-group__fields">
-                    <div class="ibexa-field">
-                        <label class="ibexa-field__label" for="enabled">
-                            {{ 'Enable automatic migration creation'|trans }}
-                        </label>
-                        <div class="ibexa-field__input-wrapper">
-                            <input type="checkbox" id="enabled" name="enabled" value="1" {{ settings.enabled ? 'checked' : '' }}>
+        <div class="card ibexa-card ibexa-card--light ibexa-card--no-padding">
+            <div class="card-body ibexa-card__body">
+                <form method="post" action="{{ path('migrations_settings') }}">
+                    <div class="ibexa-form-group" style="margin-bottom: 2rem;">
+                        <div class="ibexa-form-group__header">
+                            <h2 class="ibexa-form-group__title ibexa-table-header__headline">{{ 'General Settings'|trans }}</h2>
+                            <p class="ibexa-form-group__description">{{ 'Enable or disable automatic migration generation for admin panel changes.'|trans }}</p>
+                        </div>
+                        <div class="ibexa-form-group__fields">
+                            <div class="ibexa-field">
+                                <div class="ibexa-field__input-wrapper" style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="enabled" name="enabled" value="1" class="ibexa-input ibexa-input--checkbox" {{ settings.enabled ? 'checked' : '' }}>
+                                    <label class="ibexa-field__label ibexa-field__label--checkbox" for="enabled" style="margin-left: 0.5rem;">
+                                        {{ 'Enable automatic migration creation'|trans }}
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="ibexa-form-group">
-                <div class="ibexa-form-group__header">
-                    <h2 class="ibexa-form-group__title">{{ 'Migration Types'|trans }}</h2>
-                </div>
-                <div class="ibexa-form-group__fields">
-                    <div class="ibexa-field">
-                        <label class="ibexa-field__label" for="content_type">
-                            {{ 'Content Types'|trans }}
-                        </label>
-                        <div class="ibexa-field__input-wrapper">
-                            <input type="checkbox" id="content_type" name="content_type" value="1" {{ settings.types.content_type ? 'checked' : '' }}>
+                    <div class="ibexa-form-group" style="margin-bottom: 2rem;">
+                        <div class="ibexa-form-group__header ">
+                            <h2 class="ibexa-form-group__title ibexa-table-header__headline">{{ 'Migration Types'|trans }}</h2>
+                            <p class="ibexa-form-group__description">{{ 'Select which types of changes should automatically generate migration files.'|trans }}</p>
                         </div>
+                        <div class="ibexa-form-group__fields" style="margin-bottom: 2rem;">
+                            <div class="ibexa-field">
+                                <div class="ibexa-field__input-wrapper" style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="content_type" name="content_type" value="1" class="ibexa-input ibexa-input--checkbox" {{ settings.types.content_type ? 'checked' : '' }}>
+                                    <label class="ibexa-field__label ibexa-field__label--checkbox" for="content_type" style="margin-left: 0.5rem;">
+                                        {{ 'Content Types'|trans }}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="ibexa-field">
+                                <div class="ibexa-field__input-wrapper" style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="content_type_group" name="content_type_group" value="1" class="ibexa-input ibexa-input--checkbox" {{ settings.types.content_type_group ? 'checked' : '' }}>
+                                    <label class="ibexa-field__label ibexa-field__label--checkbox" for="content_type_group" style="margin-left: 0.5rem;">
+                                        {{ 'Content Type Groups'|trans }}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="ibexa-field">
+                                <div class="ibexa-field__input-wrapper" style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="section" name="section" value="1" class="ibexa-input ibexa-input--checkbox" {{ settings.types.section ? 'checked' : '' }}>
+                                    <label class="ibexa-field__label ibexa-field__label--checkbox" for="section" style="margin-left: 0.5rem;">
+                                        {{ 'Sections'|trans }}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="ibexa-field">
+                                <div class="ibexa-field__input-wrapper" style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="object_state" name="object_state" value="1" class="ibexa-input ibexa-input--checkbox" {{ settings.types.object_state ? 'checked' : '' }}>
+                                    <label class="ibexa-field__label ibexa-field__label--checkbox" for="object_state" style="margin-left: 0.5rem;">
+                                        {{ 'Object States'|trans }}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="ibexa-field">
+                                <div class="ibexa-field__input-wrapper" style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="object_state_group" name="object_state_group" value="1" class="ibexa-input ibexa-input--checkbox" {{ settings.types.object_state_group ? 'checked' : '' }}>
+                                    <label class="ibexa-field__label ibexa-field__label--checkbox" for="object_state_group" style="margin-left: 0.5rem;">
+                                        {{ 'Object State Groups'|trans }}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="ibexa-field">
+                                <div class="ibexa-field__input-wrapper" style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="user" name="user" value="1" class="ibexa-input ibexa-input--checkbox" {{ settings.types.user ? 'checked' : '' }}>
+                                    <label class="ibexa-field__label ibexa-field__label--checkbox" for="user" style="margin-left: 0.5rem;">
+                                        {{ 'Users'|trans }}
+                                    </label>
+                                </div>
+                            </div>
+                             <div class="ibexa-field">
+                                <div class="ibexa-field__input-wrapper" style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="user_group" name="user_group" value="1" class="ibexa-input ibexa-input--checkbox" {{ settings.types.user_group ? 'checked' : '' }}>
+                                    <label class="ibexa-field__label ibexa-field__label--checkbox" for="user_group" style="margin-left: 0.5rem;">
+                                        {{ 'User Groups'|trans }}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="ibexa-field">
+                                <div class="ibexa-field__input-wrapper" style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="role" name="role" value="1" class="ibexa-input ibexa-input--checkbox" {{ settings.types.role ? 'checked' : '' }}>
+                                    <label class="ibexa-field__label ibexa-field__label--checkbox" for="role" style="margin-left: 0.5rem;">
+                                        {{ 'Roles'|trans }}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="ibexa-field">
+                                <div class="ibexa-field__input-wrapper" style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="language" name="language" value="1" class="ibexa-input ibexa-input--checkbox" {{ settings.types.language ? 'checked' : '' }}>
+                                    <label class="ibexa-field__label ibexa-field__label--checkbox" for="language" style="margin-left: 0.5rem;">
+                                        {{ 'Languages'|trans }}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="ibexa-field">
+                                <div class="ibexa-field__input-wrapper" style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="url" name="url" value="1" class="ibexa-input ibexa-input--checkbox" {{ settings.types.url ? 'checked' : '' }}>
+                                    <label class="ibexa-field__label ibexa-field__label--checkbox" for="url" style="margin-left: 0.5rem;">
+                                        {{ 'URL Aliases'|trans }}
+                                    </label>
+                                </div>
+                            </div>
                     </div>
-                    <div class="ibexa-field">
-                        <label class="ibexa-field__label" for="content_type_group">
-                            {{ 'Content Type Groups'|trans }}
-                        </label>
-                        <div class="ibexa-field__input-wrapper">
-                            <input type="checkbox" id="content_type_group" name="content_type_group" value="1" {{ settings.types.content_type_group ? 'checked' : '' }}>
-                        </div>
-                    </div>
-                    <div class="ibexa-field">
-                        <label class="ibexa-field__label" for="section">
-                            {{ 'Sections'|trans }}
-                        </label>
-                        <div class="ibexa-field__input-wrapper">
-                            <input type="checkbox" id="section" name="section" value="1" {{ settings.types.section ? 'checked' : '' }}>
-                        </div>
-                    </div>
-                    <div class="ibexa-field">
-                        <label class="ibexa-field__label" for="object_state">
-                            {{ 'Object States'|trans }}
-                        </label>
-                        <div class="ibexa-field__input-wrapper">
-                            <input type="checkbox" id="object_state" name="object_state" value="1" {{ settings.types.object_state ? 'checked' : '' }}>
-                        </div>
-                    </div>
-                    <div class="ibexa-field">
-                        <label class="ibexa-field__label" for="object_state_group">
-                            {{ 'Object State Groups'|trans }}
-                        </label>
-                        <div class="ibexa-field__input-wrapper">
-                            <input type="checkbox" id="object_state_group" name="object_state_group" value="1" {{ settings.types.object_state_group ? 'checked' : '' }}>
-                        </div>
-                    </div>
-                    <div class="ibexa-field">
-                        <label class="ibexa-field__label" for="user">
-                            {{ 'Users'|trans }}
-                        </label>
-                        <div class="ibexa-field__input-wrapper">
-                            <input type="checkbox" id="user" name="user" value="1" {{ settings.types.user ? 'checked' : '' }}>
-                        </div>
-                    </div>
-                     <div class="ibexa-field">
-                        <label class="ibexa-field__label" for="user_group">
-                            {{ 'User Groups'|trans }}
-                        </label>
-                        <div class="ibexa-field__input-wrapper">
-                            <input type="checkbox" id="user_group" name="user_group" value="1" {{ settings.types.user_group ? 'checked' : '' }}>
-                        </div>
-                    </div>
-                    <div class="ibexa-field">
-                        <label class="ibexa-field__label" for="role">
-                            {{ 'Roles'|trans }}
-                        </label>
-                        <div class="ibexa-field__input-wrapper">
-                            <input type="checkbox" id="role" name="role" value="1" {{ settings.types.role ? 'checked' : '' }}>
-                        </div>
-                    </div>
-                    <div class="ibexa-field">
-                        <label class="ibexa-field__label" for="language">
-                            {{ 'Languages'|trans }}
-                        </label>
-                        <div class="ibexa-field__input-wrapper">
-                            <input type="checkbox" id="language" name="language" value="1" {{ settings.types.language ? 'checked' : '' }}>
-                        </div>
-                    </div>
-                    <div class="ibexa-field">
-                        <label class="ibexa-field__label" for="url">
-                            {{ 'URL Aliases'|trans }}
-                        </label>
-                        <div class="ibexa-field__input-wrapper">
-                            <input type="checkbox" id="url" name="url" value="1" {{ settings.types.url ? 'checked' : '' }}>
-                        </div>
-                    </div>
-            </div>
 
-            <div class="ibexa-form-group">
-                <div class="ibexa-form-group__actions">
-                    <button type="submit" class="btn ibexa-btn ibexa-btn--primary">
-                        <span class="ibexa-btn__label">
-                            {{ 'Save Settings'|trans }}
-                        </span>
-                    </button>
-                </div>
+                    <div class="ibexa-form-group">
+                        <div class="ibexa-form-group__actions">
+                            <button type="submit" class="btn ibexa-btn ibexa-btn--primary">
+                                <span class="ibexa-btn__label">
+                                    {{ 'Save Settings'|trans }}
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     </section>
 {%- endblock -%}
