@@ -11,13 +11,13 @@ use Ibexa\Contracts\Core\Repository\Events\ObjectState\UpdateObjectStateGroupEve
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 use vardumper\IbexaAutomaticMigrationsBundle\Helper\Helper;
 use vardumper\IbexaAutomaticMigrationsBundle\Service\SettingsService;
 
-final class ObjectStateGroupListener
+final class ObjectStateGroupListener implements EventSubscriberInterface
 {
     private bool $isCli = false;
     private ?string $mode = null;
@@ -34,6 +34,7 @@ final class ObjectStateGroupListener
         #[Autowire(service: 'service_container')]
         private readonly ContainerInterface $container
     ) {
+        $this->logger->info('ObjectStateGroupListener constructor called');
         $this->projectDir = rtrim($projectDir, DIRECTORY_SEPARATOR);
         $this->isCli = PHP_SAPI === 'cli';
         $this->consoleCommand = ['php', '-d', 'memory_limit=512M', $this->projectDir . '/bin/console'];
@@ -44,14 +45,31 @@ final class ObjectStateGroupListener
         }
     }
 
-    #[AsEventListener(CreateObjectStateGroupEvent::class)]
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            CreateObjectStateGroupEvent::class => 'onCreated',
+            UpdateObjectStateGroupEvent::class => 'onUpdated',
+            DeleteObjectStateGroupEvent::class => 'onDeleted',
+        ];
+    }
+
     public function onCreated(CreateObjectStateGroupEvent $event): void
     {
+        $this->logger->info('ObjectStateGroupListener onCreated called', [
+            'event' => get_class($event),
+            'enabled' => $this->settingsService->isEnabled(),
+            'object_state_group_enabled' => $this->settingsService->isTypeEnabled('object_state_group'),
+            'is_cli' => $this->isCli
+        ]);
+
         if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('object_state_group')) {
+            $this->logger->info('ObjectStateGroupListener: settings not enabled');
             return;
         }
 
         if ($this->isCli) {
+            $this->logger->info('ObjectStateGroupListener: running in CLI, skipping');
             return;
         }
 
@@ -171,7 +189,6 @@ final class ObjectStateGroupListener
         }
     }
 
-    #[AsEventListener(UpdateObjectStateGroupEvent::class)]
     public function onUpdated(UpdateObjectStateGroupEvent $event): void
     {
         if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('object_state_group')) {
@@ -300,7 +317,6 @@ final class ObjectStateGroupListener
         }
     }
 
-    #[AsEventListener(DeleteObjectStateGroupEvent::class)]
     public function onDeleted(DeleteObjectStateGroupEvent $event): void
     {
         if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('object_state_group')) {

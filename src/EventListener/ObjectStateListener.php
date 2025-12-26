@@ -10,12 +10,12 @@ use Ibexa\Contracts\Core\Repository\Events\ObjectState\UpdateObjectStateEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Process\Process;
 use vardumper\IbexaAutomaticMigrationsBundle\Helper\Helper;
 use vardumper\IbexaAutomaticMigrationsBundle\Service\SettingsService;
 
-final class ObjectStateListener
+final class ObjectStateListener implements EventSubscriberInterface
 {
     private bool $isCli = false;
     private ?string $mode = null;
@@ -43,7 +43,15 @@ final class ObjectStateListener
         }
     }
 
-    #[AsEventListener(CreateObjectStateEvent::class)]
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            CreateObjectStateEvent::class => 'onCreated',
+            UpdateObjectStateEvent::class => 'onUpdated',
+            DeleteObjectStateEvent::class => 'onDeleted',
+        ];
+    }
+
     public function onCreated(CreateObjectStateEvent $event): void
     {
         if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('object_state')) {
@@ -64,7 +72,6 @@ final class ObjectStateListener
         $this->generateMigration($objectState, 'create');
     }
 
-    #[AsEventListener(UpdateObjectStateEvent::class)]
     public function onUpdated(UpdateObjectStateEvent $event): void
     {
         if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('object_state')) {
@@ -85,7 +92,6 @@ final class ObjectStateListener
         $this->generateMigration($objectState, 'update');
     }
 
-    #[AsEventListener(DeleteObjectStateEvent::class)]
     public function onDeleted(DeleteObjectStateEvent $event): void
     {
         if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('object_state')) {
