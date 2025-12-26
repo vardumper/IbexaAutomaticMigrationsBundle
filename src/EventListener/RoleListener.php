@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace vardumper\IbexaAutomaticMigrationsBundle\EventListener;
 
+use Ibexa\Contracts\Core\Repository\Events\Role\BeforeDeleteRoleEvent;
 use Ibexa\Contracts\Core\Repository\Events\Role\CreateRoleEvent;
-use Ibexa\Contracts\Core\Repository\Events\Role\DeleteRoleEvent;
+use Ibexa\Contracts\Core\Repository\Events\Role\PublishRoleDraftEvent;
 use Ibexa\Contracts\Core\Repository\Events\Role\UpdateRoleDraftEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -44,8 +45,9 @@ final class RoleListener implements EventSubscriberInterface
     {
         return [
             CreateRoleEvent::class => 'onCreated',
+            PublishRoleDraftEvent::class => 'onPublished',
             UpdateRoleDraftEvent::class => 'onUpdated',
-            DeleteRoleEvent::class => 'onDeleted',
+            BeforeDeleteRoleEvent::class => 'onBeforeDeleted',
         ];
     }
 
@@ -69,6 +71,46 @@ final class RoleListener implements EventSubscriberInterface
         $this->generateMigration($role, 'create');
     }
 
+    public function onPublished(PublishRoleDraftEvent $event): void
+    {
+        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('role')) {
+            return;
+        }
+
+        $this->logger->info('IbexaAutomaticMigrationsBundle: PublishRoleDraftEvent received', ['event' => get_class($event)]);
+
+        // Skip in CLI to prevent creating redundant migrations when executing migrations that create/update roles
+        if ($this->isCli) {
+            $this->logger->info('IbexaAutomaticMigrationsBundle: Skipping in CLI to avoid redundant migrations during execution');
+            return;
+        }
+
+        $role = $event->getRoleDraft();
+        $this->logger->info('PublishRoleDraftEvent received', ['id' => $role->id, 'identifier' => $role->identifier]);
+
+        // Determine if this is a new role or an update to an existing one
+        // Check if there are existing migration files for this role identifier
+        $existingFiles = [];
+        $files = glob($this->destination . DIRECTORY_SEPARATOR . '*.{yml,yaml}', GLOB_BRACE);
+        foreach ($files as $file) {
+            $filename = basename($file);
+            if (str_contains($filename, '_role_') && str_contains($filename, $role->identifier)) {
+                $existingFiles[] = $file;
+            }
+        }
+        $isNewRole = empty($existingFiles);
+        $mode = $isNewRole ? 'create' : 'update';
+
+        $this->logger->info('Determined migration mode based on existing files', [
+            'mode' => $mode,
+            'identifier' => $role->identifier,
+            'existing_files_count' => count($existingFiles),
+            'is_new' => $isNewRole
+        ]);
+
+        $this->generateMigration($role, $mode);
+    }
+
     public function onUpdated(UpdateRoleDraftEvent $event): void
     {
         if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('role')) {
@@ -89,13 +131,13 @@ final class RoleListener implements EventSubscriberInterface
         $this->generateMigration($role, 'update');
     }
 
-    public function onDeleted(DeleteRoleEvent $event): void
+    public function onBeforeDeleted(BeforeDeleteRoleEvent $event): void
     {
         if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('role')) {
             return;
         }
 
-        $this->logger->info('IbexaAutomaticMigrationsBundle: DeleteRoleEvent received', ['event' => get_class($event)]);
+        $this->logger->info('IbexaAutomaticMigrationsBundle: BeforeDeleteRoleEvent received', ['event' => get_class($event)]);
 
         // Skip in CLI to prevent creating redundant migrations when executing migrations that delete roles
         if ($this->isCli) {
@@ -104,7 +146,7 @@ final class RoleListener implements EventSubscriberInterface
         }
 
         $role = $event->getRole();
-        $this->logger->info('DeleteRoleEvent received', ['id' => $role->id, 'identifier' => $role->identifier]);
+        $this->logger->info('BeforeDeleteRoleEvent received', ['id' => $role->id, 'identifier' => $role->identifier]);
 
         // Generate delete migration BEFORE the role is deleted
         $this->generateMigration($role, 'delete');

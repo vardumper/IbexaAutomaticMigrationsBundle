@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace vardumper\IbexaAutomaticMigrationsBundle\EventListener;
 
+use Ibexa\Contracts\Core\Repository\Events\Language\BeforeDeleteLanguageEvent;
 use Ibexa\Contracts\Core\Repository\Events\Language\CreateLanguageEvent;
-use Ibexa\Contracts\Core\Repository\Events\Language\DeleteLanguageEvent;
 use Ibexa\Contracts\Core\Repository\Events\Language\UpdateLanguageNameEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -45,7 +45,7 @@ final class LanguageListener implements EventSubscriberInterface
         return [
             CreateLanguageEvent::class => 'onCreated',
             UpdateLanguageNameEvent::class => 'onUpdated',
-            DeleteLanguageEvent::class => 'onDeleted',
+            BeforeDeleteLanguageEvent::class => 'onBeforeDeleted',
         ];
     }
 
@@ -89,13 +89,13 @@ final class LanguageListener implements EventSubscriberInterface
         $this->generateMigration($language, 'update');
     }
 
-    public function onDeleted(DeleteLanguageEvent $event): void
+    public function onBeforeDeleted(BeforeDeleteLanguageEvent $event): void
     {
         if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('language')) {
             return;
         }
 
-        $this->logger->info('IbexaAutomaticMigrationsBundle: DeleteLanguageEvent received', ['event' => get_class($event)]);
+        $this->logger->info('IbexaAutomaticMigrationsBundle: BeforeDeleteLanguageEvent received', ['event' => get_class($event)]);
 
         // Skip in CLI to prevent creating redundant migrations when executing migrations that delete languages
         if ($this->isCli) {
@@ -104,7 +104,7 @@ final class LanguageListener implements EventSubscriberInterface
         }
 
         $language = $event->getLanguage();
-        $this->logger->info('DeleteLanguageEvent received', ['id' => $language->id, 'languageCode' => $language->languageCode, 'name' => $language->name]);
+        $this->logger->info('BeforeDeleteLanguageEvent received', ['id' => $language->id, 'languageCode' => $language->languageCode, 'name' => $language->name]);
 
         // Generate delete migration BEFORE the language is deleted
         $this->generateMigration($language, 'delete');

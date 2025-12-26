@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace vardumper\IbexaAutomaticMigrationsBundle\EventListener;
 
+use Ibexa\Contracts\Core\Repository\Events\User\BeforeDeleteUserEvent;
 use Ibexa\Contracts\Core\Repository\Events\User\CreateUserEvent;
-use Ibexa\Contracts\Core\Repository\Events\User\DeleteUserEvent;
 use Ibexa\Contracts\Core\Repository\Events\User\UpdateUserEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -45,7 +45,7 @@ final class UserListener implements EventSubscriberInterface
         return [
             CreateUserEvent::class => 'onCreated',
             UpdateUserEvent::class => 'onUpdated',
-            DeleteUserEvent::class => 'onDeleted',
+            BeforeDeleteUserEvent::class => 'onBeforeDeleted',
         ];
     }
 
@@ -103,7 +103,7 @@ final class UserListener implements EventSubscriberInterface
         $this->generateMigration($user, 'update');
     }
 
-    public function onDeleted(DeleteUserEvent $event): void
+    public function onBeforeDeleted(BeforeDeleteUserEvent $event): void
     {
         if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('user')) {
             return;
@@ -117,7 +117,7 @@ final class UserListener implements EventSubscriberInterface
             return;
         }
 
-        $this->logger->info('IbexaAutomaticMigrationsBundle: DeleteUserEvent received', ['event' => get_class($event)]);
+        $this->logger->info('IbexaAutomaticMigrationsBundle: BeforeDeleteUserEvent received', ['event' => get_class($event)]);
 
         // Skip in CLI to prevent creating redundant migrations when executing migrations that delete users
         if ($this->isCli) {
@@ -125,7 +125,7 @@ final class UserListener implements EventSubscriberInterface
             return;
         }
 
-        $this->logger->info('DeleteUserEvent received', ['id' => $user->id, 'login' => $user->login]);
+        $this->logger->info('BeforeDeleteUserEvent received', ['id' => $user->id, 'login' => $user->login]);
 
         // Generate delete migration BEFORE the user is deleted
         $this->generateMigration($user, 'delete');
@@ -139,8 +139,8 @@ final class UserListener implements EventSubscriberInterface
         }
 
         // Skip users that are likely created from frontend registration
-        // This is a heuristic - we assume users with login containing '@' and no special groups are frontend users
-        if (str_contains($user->login, '@') && empty($user->getUserGroups())) {
+        // This is a heuristic - we assume users with login containing '@' are frontend users
+        if (str_contains($user->login, '@')) {
             return true;
         }
 

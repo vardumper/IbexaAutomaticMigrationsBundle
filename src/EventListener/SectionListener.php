@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace vardumper\IbexaAutomaticMigrationsBundle\EventListener;
 
+use Ibexa\Contracts\Core\Repository\Events\Section\BeforeDeleteSectionEvent;
 use Ibexa\Contracts\Core\Repository\Events\Section\CreateSectionEvent;
-use Ibexa\Contracts\Core\Repository\Events\Section\DeleteSectionEvent;
 use Ibexa\Contracts\Core\Repository\Events\Section\UpdateSectionEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -73,8 +73,8 @@ final class SectionListener
         $this->generateMigration($event->getSection(), 'update');
     }
 
-    #[AsEventListener(DeleteSectionEvent::class)]
-    public function onDeleted(DeleteSectionEvent $event): void
+    #[AsEventListener(BeforeDeleteSectionEvent::class)]
+    public function onBeforeDeleted(BeforeDeleteSectionEvent $event): void
     {
         if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('section')) {
             return;

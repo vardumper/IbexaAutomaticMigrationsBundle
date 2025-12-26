@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace vardumper\IbexaAutomaticMigrationsBundle\EventListener;
 
 use Ibexa\Contracts\Core\Repository\Events\URLAlias\CreateUrlAliasEvent;
+use Ibexa\Contracts\Core\Repository\Events\URLWildcard\CreateEvent as CreateUrlWildcardEvent;
+use Ibexa\Contracts\Core\Repository\Events\URLWildcard\RemoveEvent as RemoveUrlWildcardEvent;
+use Ibexa\Contracts\Core\Repository\Events\URLWildcard\UpdateEvent as UpdateUrlWildcardEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -41,13 +44,16 @@ final class UrlListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            CreateUrlAliasEvent::class => 'onCreated',
+            CreateUrlAliasEvent::class => 'onAliasCreated',
+            CreateUrlWildcardEvent::class => 'onWildcardCreated',
+            UpdateUrlWildcardEvent::class => 'onWildcardUpdated',
+            RemoveUrlWildcardEvent::class => 'onWildcardRemoved',
             // Note: URL aliases are typically not updated or deleted through admin interface in the same way
             // Add other events if needed
         ];
     }
 
-    public function onCreated(CreateUrlAliasEvent $event): void
+    public function onAliasCreated(CreateUrlAliasEvent $event): void
     {
         if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('url')) {
             return;
@@ -62,31 +68,105 @@ final class UrlListener implements EventSubscriberInterface
         }
 
         $urlAlias = $event->getUrlAlias();
-        $this->logger->info('CreateUrlAliasEvent received', ['id' => $urlAlias->id, 'path' => $urlAlias->path, 'languageCode' => $urlAlias->languageCode]);
+        $this->logger->info('CreateUrlAliasEvent received', ['id' => $urlAlias->id, 'path' => $urlAlias->path, 'languageCodes' => $urlAlias->languageCodes]);
 
-        $this->generateMigration($urlAlias, 'create');
+        $this->generateMigration($urlAlias, 'create', 'url_alias');
     }
 
-    private function generateMigration(\Ibexa\Contracts\Core\Repository\Values\Content\URLAlias $urlAlias, string $mode): void
+    public function onWildcardCreated(CreateUrlWildcardEvent $event): void
     {
-        $this->logger->info('Starting URL alias migration generation', ['mode' => $mode, 'path' => $urlAlias->path, 'id' => $urlAlias->id]);
+        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('url')) {
+            return;
+        }
 
+        $this->logger->info('IbexaAutomaticMigrationsBundle: CreateUrlWildcardEvent received', ['event' => get_class($event)]);
+
+        // Skip in CLI to prevent creating redundant migrations when executing migrations that create/update URL wildcards
+        if ($this->isCli) {
+            $this->logger->info('IbexaAutomaticMigrationsBundle: Skipping in CLI to avoid redundant migrations during execution');
+            return;
+        }
+
+        $urlWildcard = $event->getUrlWildcard();
+        $this->logger->info('CreateUrlWildcardEvent received', ['id' => $urlWildcard->id, 'source' => $urlWildcard->sourceUrl, 'destination' => $urlWildcard->destinationUrl]);
+
+        // Note: URL wildcards are not supported for automatic migration generation
+        // because the underlying migration bundle doesn't support generating them
+        $this->logger->warning('IbexaAutomaticMigrationsBundle: URL wildcards are not supported for automatic migration generation');
+        return;
+    }
+
+    public function onWildcardUpdated(UpdateUrlWildcardEvent $event): void
+    {
+        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('url')) {
+            return;
+        }
+
+        $this->logger->info('IbexaAutomaticMigrationsBundle: UpdateUrlWildcardEvent received', ['event' => get_class($event)]);
+
+        // Skip in CLI to prevent creating redundant migrations when executing migrations that create/update URL wildcards
+        if ($this->isCli) {
+            $this->logger->info('IbexaAutomaticMigrationsBundle: Skipping in CLI to avoid redundant migrations during execution');
+            return;
+        }
+
+        $urlWildcard = $event->getUrlWildcard();
+        $this->logger->info('UpdateUrlWildcardEvent received', ['id' => $urlWildcard->id, 'source' => $urlWildcard->sourceUrl, 'destination' => $urlWildcard->destinationUrl]);
+
+        // Note: URL wildcards are not supported for automatic migration generation
+        // because the underlying migration bundle doesn't support generating them
+        $this->logger->warning('IbexaAutomaticMigrationsBundle: URL wildcards are not supported for automatic migration generation');
+        return;
+    }
+
+    public function onWildcardRemoved(RemoveUrlWildcardEvent $event): void
+    {
+        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('url')) {
+            return;
+        }
+
+        $this->logger->info('IbexaAutomaticMigrationsBundle: RemoveUrlWildcardEvent received', ['event' => get_class($event)]);
+
+        // Skip in CLI to prevent creating redundant migrations when executing migrations that create/update URL wildcards
+        if ($this->isCli) {
+            $this->logger->info('IbexaAutomaticMigrationsBundle: Skipping in CLI to avoid redundant migrations during execution');
+            return;
+        }
+
+        $urlWildcard = $event->getUrlWildcard();
+        $this->logger->info('RemoveUrlWildcardEvent received', ['id' => $urlWildcard->id, 'source' => $urlWildcard->sourceUrl, 'destination' => $urlWildcard->destinationUrl]);
+
+        // Note: URL wildcards are not supported for automatic migration generation
+        // because the underlying migration bundle doesn't support generating them
+        $this->logger->warning('IbexaAutomaticMigrationsBundle: URL wildcards are not supported for automatic migration generation');
+        return;
+    }
+
+    private function generateMigration(\Ibexa\Contracts\Core\Repository\Values\Content\URLAlias|\Ibexa\Contracts\Core\Repository\Values\Content\URLWildcard $entity, string $mode, string $type): void
+    {
         if ($this->mode !== 'kaliop' && $this->mode !== 'ibexa') {
             $this->logger->info('Skipping migration generation - not using kaliop or ibexa mode', ['current_mode' => $this->mode]);
             return;
         }
 
         try {
-            $matchValue = $urlAlias->path;
-            $name = 'auto_url_' . $mode . '_' . md5((string) $matchValue); // Use hash since paths can contain special characters
+            if ($entity instanceof \Ibexa\Contracts\Core\Repository\Values\Content\URLAlias) {
+                $matchValue = $entity->path;
+                $matchType = 'path';
+            } elseif ($entity instanceof \Ibexa\Contracts\Core\Repository\Values\Content\URLWildcard) {
+                $matchValue = (string) $entity->id;
+                $matchType = 'url_id';
+            }
+
+            $name = 'auto_' . str_replace('_', '', $type) . '_' . $mode . '_' . md5($matchValue . $type);
 
             if ($this->mode === 'kaliop') {
                 $inputArray = [
                     '--format' => 'yml',
-                    '--type' => 'url_alias',
+                    '--type' => $type,
                     '--mode' => $mode,
-                    '--match-type' => 'path',
-                    '--match-value' => (string) $matchValue,
+                    '--match-type' => $matchType,
+                    '--match-value' => $matchValue,
                     'bundle' => $this->destination,
                     'name' => $name,
                 ];
@@ -95,10 +175,10 @@ final class UrlListener implements EventSubscriberInterface
                 $now = new \DateTime();
                 $inputArray = [
                     '--format' => 'yaml',
-                    '--type' => 'url_alias',
+                    '--type' => $type,
                     '--mode' => $mode,
-                    '--match-property' => 'path',
-                    '--value' => (string) $matchValue,
+                    '--match-property' => $matchType,
+                    '--value' => $matchValue,
                     '--file' => $now->format('Y_m_d_H_i_s_') . $name . '.yaml',
                 ];
                 $command = 'ibexa:migrations:generate';
@@ -120,7 +200,7 @@ final class UrlListener implements EventSubscriberInterface
 
             $process->run();
             $code = $process->getExitCode();
-            $this->logger->info('URL alias migration generate process finished (' . $mode . ')', ['name' => $name, 'code' => $code, 'output' => $process->getOutput(), 'error' => $process->getErrorOutput()]);
+            $this->logger->info('URL migration generate process finished (' . $mode . ')', ['name' => $name, 'type' => $type, 'code' => $code, 'output' => $process->getOutput(), 'error' => $process->getErrorOutput()]);
             if ($code == 0) {
                 if ($this->mode === 'ibexa') {
                     $fileName = $inputArray['--file'];
@@ -186,10 +266,10 @@ final class UrlListener implements EventSubscriberInterface
                     $this->logger->warning('Failed to mark migration as executed', ['exception' => $e->getMessage()]);
                 }
             } else {
-                $this->logger->error('URL alias migration generation failed', ['code' => $code, 'error' => $process->getErrorOutput()]);
+                $this->logger->error('URL migration generation failed', ['code' => $code, 'error' => $process->getErrorOutput()]);
             }
         } catch (\Throwable $e) {
-            $this->logger->error('Failed to generate URL alias migration programmatically', ['mode' => $mode, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            $this->logger->error('Failed to generate URL migration programmatically', ['mode' => $mode, 'type' => $type, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
         }
     }
 }
