@@ -125,7 +125,6 @@ final class MigrationsController extends Controller
             $settings['types']['content_type'] = $request->request->getBoolean('content_type');
             $settings['types']['content_type_group'] = $request->request->getBoolean('content_type_group');
             $settings['types']['section'] = $request->request->getBoolean('section');
-            $settings['types']['lock'] = $request->request->getBoolean('lock');
             $settings['types']['object_state'] = $request->request->getBoolean('object_state');
             $settings['types']['object_state_group'] = $request->request->getBoolean('object_state_group');
 
