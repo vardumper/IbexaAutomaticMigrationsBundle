@@ -8,7 +8,6 @@ use Ibexa\Contracts\Core\Repository\Events\ObjectState\CreateObjectStateEvent;
 use Ibexa\Contracts\Core\Repository\Events\ObjectState\DeleteObjectStateEvent;
 use Ibexa\Contracts\Core\Repository\Events\ObjectState\UpdateObjectStateEvent;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Process\Process;
@@ -23,13 +22,13 @@ final class ObjectStateListener implements EventSubscriberInterface
     private string $destination;
     private ContainerInterface $container;
     private array $consoleCommand;
+    /** @var array<string, int> */
+    private array $recentGenerations = [];
 
     public function __construct(
         private readonly LoggerInterface $logger,
         private readonly SettingsService $settingsService,
-        #[Autowire('%kernel.project_dir%')]
         string $projectDir,
-        #[Autowire(service: 'service_container')]
         ContainerInterface $container
     ) {
         $this->container = $container;
@@ -54,11 +53,12 @@ final class ObjectStateListener implements EventSubscriberInterface
 
     public function onCreated(CreateObjectStateEvent $event): void
     {
+        $this->logger->info('IbexaAutomaticMigrationsBundle: CreateObjectStateEvent received', ['event' => get_class($event)]);
+
         if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('object_state')) {
+            $this->logger->info('ObjectStateListener: settings not enabled');
             return;
         }
-
-        $this->logger->info('IbexaAutomaticMigrationsBundle: CreateObjectStateEvent received', ['event' => get_class($event)]);
 
         // Skip in CLI to prevent creating redundant migrations when executing migrations that create/update object states
         if ($this->isCli) {
@@ -67,7 +67,15 @@ final class ObjectStateListener implements EventSubscriberInterface
         }
 
         $objectState = $event->getObjectState();
-        $this->logger->info('CreateObjectStateEvent received', ['id' => $objectState->id, 'identifier' => $objectState->identifier]);
+        $this->logger->info('CreateObjectStateEvent received', ['id' => $objectState->id, 'identifier' => $objectState->identifier, 'group_id' => $event->getObjectStateGroup()->id]);
+
+        $key = $event->getObjectStateGroup()->identifier . '_' . $objectState->identifier;
+        $now = time();
+        if (isset($this->recentGenerations[$key]) && ($now - $this->recentGenerations[$key]) < 30) {
+            $this->logger->info('Skipping duplicate object state creation event', ['key' => $key, 'time_diff' => $now - $this->recentGenerations[$key]]);
+            return;
+        }
+        $this->recentGenerations[$key] = $now;
 
         $this->generateMigration($objectState, 'create');
     }

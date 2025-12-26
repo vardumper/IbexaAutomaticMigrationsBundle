@@ -39,6 +39,7 @@ final class ObjectStateGroupListener implements EventSubscriberInterface
         $this->isCli = PHP_SAPI === 'cli';
         $this->consoleCommand = ['php', '-d', 'memory_limit=512M', $this->projectDir . '/bin/console'];
         $this->mode = Helper::determineMode();
+        $this->logger->info('ObjectStateGroupListener detected migration mode', ['mode' => $this->mode]);
         $this->destination = Helper::determineDestination($this->projectDir);
         if (!is_dir($this->destination)) {
             mkdir($this->destination, 0777, true);

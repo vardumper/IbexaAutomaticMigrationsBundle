@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace vardumper\IbexaAutomaticMigrationsBundle\Helper;
@@ -10,10 +11,11 @@ final class Helper
 
     public static function determineMode(): ?string
     {
-        if (class_exists('Ibexa\\Bundle\\Migration\\Command\\GenerateCommand')) {
+        // Force autoloader to load the classes
+        if (class_exists('Ibexa\\Bundle\\Migration\\Command\\GenerateCommand', true)) {
             return 'ibexa';
         }
-        if (class_exists('Kaliop\\IbexaMigrationBundle\\Command\\GenerateCommand')) {
+        if (class_exists('Kaliop\\IbexaMigrationBundle\\Command\\GenerateCommand', true)) {
             return 'kaliop';
         }
         return null;

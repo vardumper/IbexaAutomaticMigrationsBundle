@@ -44,10 +44,10 @@ services:
     arguments:
       - '@logger'
       - '@ibexa_automatic_migrations.settings_service'
+      - '%kernel.project_dir%'
+      - '@service_container'
     tags:
-      - { name: kernel.event_listener, event: 'Ibexa\Contracts\Core\Repository\Events\ObjectState\CreateObjectStateEvent', method: onCreated }
-      - { name: kernel.event_listener, event: 'Ibexa\Contracts\Core\Repository\Events\ObjectState\UpdateObjectStateEvent', method: onUpdated }
-      - { name: kernel.event_listener, event: 'Ibexa\Contracts\Core\Repository\Events\ObjectState\DeleteObjectStateEvent', method: onDeleted }
+      - { name: kernel.event_subscriber }
   ibexa_automatic_migrations.object_state_group_listener:
     class: vardumper\IbexaAutomaticMigrationsBundle\EventListener\ObjectStateGroupListener
     autoconfigure: true
