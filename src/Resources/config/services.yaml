@@ -57,6 +57,58 @@ services:
       - '@logger'
       - '@ibexa_automatic_migrations.settings_service'
 
+  ibexa_automatic_migrations.user_listener:
+    class: vardumper\IbexaAutomaticMigrationsBundle\EventListener\UserListener
+    autoconfigure: true
+    autowire: true
+    public: false
+    arguments:
+      - '@logger'
+      - '@ibexa_automatic_migrations.settings_service'
+      - '%kernel.project_dir%'
+      - '@service_container'
+    tags:
+      - { name: kernel.event_subscriber }
+
+  ibexa_automatic_migrations.role_listener:
+    class: vardumper\IbexaAutomaticMigrationsBundle\EventListener\RoleListener
+    autoconfigure: true
+    autowire: true
+    public: false
+    arguments:
+      - '@logger'
+      - '@ibexa_automatic_migrations.settings_service'
+      - '%kernel.project_dir%'
+      - '@service_container'
+    tags:
+      - { name: kernel.event_subscriber }
+
+  ibexa_automatic_migrations.language_listener:
+    class: vardumper\IbexaAutomaticMigrationsBundle\EventListener\LanguageListener
+    autoconfigure: true
+    autowire: true
+    public: false
+    arguments:
+      - '@logger'
+      - '@ibexa_automatic_migrations.settings_service'
+      - '%kernel.project_dir%'
+      - '@service_container'
+    tags:
+      - { name: kernel.event_subscriber }
+
+  ibexa_automatic_migrations.url_listener:
+    class: vardumper\IbexaAutomaticMigrationsBundle\EventListener\UrlListener
+    autoconfigure: true
+    autowire: true
+    public: false
+    arguments:
+      - '@logger'
+      - '@ibexa_automatic_migrations.settings_service'
+      - '%kernel.project_dir%'
+      - '@service_container'
+    tags:
+      - { name: kernel.event_subscriber }
+
   ibexa_automatic_migrations.menu_subscriber:
     class: vardumper\IbexaAutomaticMigrationsBundle\EventSubscriber\MigrationsMenuSubscriber
     autoconfigure: true

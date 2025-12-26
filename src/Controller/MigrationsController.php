@@ -127,6 +127,10 @@ final class MigrationsController extends Controller
             $settings['types']['section'] = $request->request->getBoolean('section');
             $settings['types']['object_state'] = $request->request->getBoolean('object_state');
             $settings['types']['object_state_group'] = $request->request->getBoolean('object_state_group');
+            $settings['types']['user'] = $request->request->getBoolean('user');
+            $settings['types']['role'] = $request->request->getBoolean('role');
+            $settings['types']['language'] = $request->request->getBoolean('language');
+            $settings['types']['url'] = $request->request->getBoolean('url');
 
             $this->settingsService->saveSettings($settings);
 
