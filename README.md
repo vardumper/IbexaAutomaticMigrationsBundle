@@ -1,3 +1,6 @@
+[![Latest Stable Version](https://poser.pugx.org/vardumper/IbexaAutomaticMigrationsBundle/v/stable)](https://packagist.org/packages/vardumper/IbexaAutomaticMigrationsBundle) 
+[![Total Downloads](https://poser.pugx.org/vardumper/IbexaAutomaticMigrationsBundle/downloads)](https://packagist.org/packages/vardumper/IbexaAutomaticMigrationsBundle) 
+
 # IbexaAutomaticMigrationsBundle
 
 This is a bundle for Ibexa DXP. It automatically creates migrations for content types and content type groups.
