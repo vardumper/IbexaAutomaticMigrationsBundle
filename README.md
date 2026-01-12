@@ -1,7 +1,21 @@
-[![Latest Stable Version](https://poser.pugx.org/vardumper/IbexaAutomaticMigrationsBundle/v/stable)](https://packagist.org/packages/vardumper/IbexaAutomaticMigrationsBundle) 
-[![Total Downloads](https://poser.pugx.org/vardumper/IbexaAutomaticMigrationsBundle/downloads)](https://packagist.org/packages/vardumper/IbexaAutomaticMigrationsBundle) 
+<table align="center" style="border-collapse:collapse !important; border:none !important;">
+  <tr style="border:0px none; border-top: 0px none !important;">
+    <td align="center" valign="middle" style="padding:0 1rem; border:none !important;">
+      <a href="https://ibexa.co" target="_blank">
+        <img src="https://vardumper.github.io/extended-htmldocument/logo-ibexa.svg" style="display:block; height:75px; width:auto; max-width:300px;" alt="Ibexa Logo" />
+      </a>
+    </td>
+    <td align="center" valign="middle" style="padding:0 1rem; border:none !important;">
+      <a href="https://www.php.net/manual/de/class.dom-htmldocument.php" target="_blank">
+        <img src="https://vardumper.github.io/extended-htmldocument/data-migration.png" style="display:block; height:95px; width:auto; max-width:220px;" alt="Database Migrations Icon" />
+      </a>
+    </td>
+  </tr>
+</table>
+<h1 align="center">IbexaAutomaticMigrationsBundle</h1>
 
-# IbexaAutomaticMigrationsBundle
+<p align="center" dir="auto"><a href="https://packagist.org/packages/vardumper/IbexaAutomaticMigrationsBundle" rel="nofollow"><img src="https://camo.githubusercontent.com/a9698e608447f18c34de96521994c364de1fcaf63be390eefad01b7356d9c7c4/68747470733a2f2f706f7365722e707567782e6f72672f76617264756d7065722f49626578614175746f6d617469634d6967726174696f6e7342756e646c652f762f737461626c65" alt="Latest Stable Version" data-canonical-src="https://poser.pugx.org/vardumper/IbexaAutomaticMigrationsBundle/v/stable" style="max-width: 100%;"></a>
+<a href="https://packagist.org/packages/vardumper/IbexaAutomaticMigrationsBundle" rel="nofollow"><img src="https://camo.githubusercontent.com/85c575ce287b352b37a4b95b535df0beda5138fe7ff9395210e3d8167c104950/68747470733a2f2f706f7365722e707567782e6f72672f76617264756d7065722f49626578614175746f6d617469634d6967726174696f6e7342756e646c652f646f776e6c6f616473" alt="Total Downloads" data-canonical-src="https://poser.pugx.org/vardumper/IbexaAutomaticMigrationsBundle/downloads" style="max-width: 100%;"></a></p>
 
 This is a bundle for Ibexa DXP. It automatically creates migrations for content types and content type groups.
 The goal is to eliminate the need to manually create migrations or test them – instead have Ibexa auto-generate them for us whenever content types change.
