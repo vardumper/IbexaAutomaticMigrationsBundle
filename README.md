@@ -60,6 +60,13 @@ return [
 ];
 ```
 
+Register the backend controller. Create a file called `config/routes/dev/ibexa_automatic_migrations.yaml` with this content:
+```yaml
+ibexa_automatic_migrations:
+    resource: '@IbexaAutomaticMigrationsBundle/src/Controller/'
+    type: attribute
+```
+
 ## Testing
 
 This bundle uses [Pest](https://pestphp.com/) for testing.
