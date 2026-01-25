@@ -20,7 +20,7 @@
     "nyholm/psr7": "^1.8.2"
   },
   "require-dev": {
-    "mrk-te/ibexa-migration-bundle2": "^1.0|^2.0",
+    "mrk-te/ibexa-migration-bundle2": "^1.0|^2.0|^3.0",
     "phpstan/phpstan": "^2.1.33",
     "friendsofphp/php-cs-fixer": "^3.92.3",
     "brainmaestro/composer-git-hooks": "dev-master",
