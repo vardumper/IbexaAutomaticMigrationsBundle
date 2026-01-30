@@ -11,7 +11,7 @@
 |
 */
 
-uses()->in('Feature');
+uses(PHPUnit\Framework\TestCase::class)->in('Feature');
 
 /*
 |--------------------------------------------------------------------------

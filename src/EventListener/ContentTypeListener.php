@@ -12,6 +12,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Process\Process;
 use vardumper\IbexaAutomaticMigrationsBundle\Helper\Helper;
+use vardumper\IbexaAutomaticMigrationsBundle\Service\MigrationModeDeterminer;
 
 final class ContentTypeListener
 {
@@ -21,13 +22,15 @@ final class ContentTypeListener
     private string $destination;
     private ContainerInterface $container;
     private array $consoleCommand;
+    private MigrationModeDeterminer $modeDeterminer;
 
     public function __construct(
         private readonly LoggerInterface $logger,
         #[Autowire('%kernel.project_dir%')]
         string $projectDir,
         #[Autowire(service: 'service_container')]
-        ContainerInterface $container
+        ContainerInterface $container,
+        ?MigrationModeDeterminer $modeDeterminer = null
     ) {
         $this->container = $container;
         $this->projectDir = rtrim($projectDir, DIRECTORY_SEPARATOR);
@@ -38,7 +41,10 @@ final class ContentTypeListener
         if (!is_dir($this->destination)) {
             mkdir($this->destination, 0777, true);
         }
+        $this->modeDeterminer = $modeDeterminer ?? new MigrationModeDeterminer();
     }
+
+    // ...existing code...
 
     #[AsEventListener(PublishContentTypeDraftEvent::class)]
     public function onIbexaPublishContentTypeDraft(PublishContentTypeDraftEvent $event): void
@@ -60,27 +66,19 @@ final class ContentTypeListener
         try {
             $publishedContentType = $contentTypeService->loadContentType($contentTypeDraft->id);
             $this->logger->info('Published content type loaded successfully', ['id' => $publishedContentType->id, 'identifier' => $publishedContentType->identifier]);
-            
-            // Determine if this is a new content type or an update to an existing one
-            // Check if there are existing migration files for this content type identifier
-            $patternBase = $this->destination . DIRECTORY_SEPARATOR . '*_content_type_*_' . $publishedContentType->identifier;
-            $existingFiles = array_merge(glob($patternBase . '.yml') ?: [], glob($patternBase . '.yaml') ?: []);
-            $isNewContentType = empty($existingFiles);
-            $mode = $isNewContentType ? 'create' : 'update';
-            
-            $this->logger->info('Determined migration mode based on existing files', [
-                'mode' => $mode,
-                'identifier' => $publishedContentType->identifier,
-                'existing_files_count' => count($existingFiles),
-                'is_new' => $isNewContentType
-            ]);
-            
-            // Only generate migrations for new content types to avoid environment-specific issues
-            if (!$isNewContentType) {
+
+            // Determine migration mode (create|update) based on repository lookup by identifier.
+            // Note: events may be dispatched after the repository change, so this can only
+            // infer the current state; we treat existence in the repository as an "update".
+            $mode = $this->modeDeterminer->determineCreateOrUpdateMode($contentTypeDraft, $contentTypeService);
+            $this->logger->info('Determined migration mode', ['mode' => $mode, 'identifier' => $publishedContentType->identifier]);
+
+            // Preserve previous behavior: only generate migrations for new content types
+            if ($mode !== 'create') {
                 $this->logger->info('Skipping migration generation for update of existing content type', ['identifier' => $publishedContentType->identifier]);
                 return;
             }
-            
+
             $this->generateMigration($publishedContentType, $mode);
         } catch (\Throwable $e) {
             $this->logger->error('Failed to load published content type by ID', ['id' => $contentTypeDraft->id, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);

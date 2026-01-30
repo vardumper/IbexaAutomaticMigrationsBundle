@@ -25,7 +25,8 @@
     "friendsofphp/php-cs-fixer": "^3.92.3",
     "brainmaestro/composer-git-hooks": "dev-master",
     "rector/swiss-knife": "^2.3.3",
-    "symplify/easy-coding-standard": "^13.0"
+    "symplify/easy-coding-standard": "^13.0",
+    "pestphp/pest": "*"
   },
   "autoload": {
     "psr-4": {
@@ -49,7 +50,8 @@
   },
   "config": {
     "allow-plugins": {
-      "php-http/discovery": true
+      "php-http/discovery": true,
+      "pestphp/pest-plugin": true
     }
   },
   "funding": [
