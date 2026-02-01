@@ -12,7 +12,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Process\Process;
 use vardumper\IbexaAutomaticMigrationsBundle\Helper\Helper;
-use vardumper\IbexaAutomaticMigrationsBundle\Service\MigrationModeDeterminer;
 
 final class ContentTypeListener
 {
@@ -22,15 +21,13 @@ final class ContentTypeListener
     private string $destination;
     private ContainerInterface $container;
     private array $consoleCommand;
-    private MigrationModeDeterminer $modeDeterminer;
 
     public function __construct(
         private readonly LoggerInterface $logger,
         #[Autowire('%kernel.project_dir%')]
         string $projectDir,
         #[Autowire(service: 'service_container')]
-        ContainerInterface $container,
-        ?MigrationModeDeterminer $modeDeterminer = null
+        ContainerInterface $container
     ) {
         $this->container = $container;
         $this->projectDir = rtrim($projectDir, DIRECTORY_SEPARATOR);
@@ -41,10 +38,7 @@ final class ContentTypeListener
         if (!is_dir($this->destination)) {
             mkdir($this->destination, 0777, true);
         }
-        $this->modeDeterminer = $modeDeterminer ?? new MigrationModeDeterminer();
     }
-
-    // ...existing code...
 
     #[AsEventListener(PublishContentTypeDraftEvent::class)]
     public function onIbexaPublishContentTypeDraft(PublishContentTypeDraftEvent $event): void
@@ -58,30 +52,29 @@ final class ContentTypeListener
         }
 
         $contentTypeDraft = $event->getContentTypeDraft();
-        $this->logger->info('Ibexa PublishContentTypeDraftEvent received', ['id' => $contentTypeDraft->id, 'identifier' => $contentTypeDraft->identifier]);
+        $this->logger->info('PublishContentTypeDraftEvent received', ['id' => $contentTypeDraft->id, 'identifier' => $contentTypeDraft->identifier]);
 
-        // After publishing, try to load the published content type by ID instead of identifier
-        // since the identifier might change during publishing
+        // Load the published content type (with the new values after publishing)
         $contentTypeService = $this->container->get('ibexa.api.service.content_type');
         try {
             $publishedContentType = $contentTypeService->loadContentType($contentTypeDraft->id);
             $this->logger->info('Published content type loaded successfully', ['id' => $publishedContentType->id, 'identifier' => $publishedContentType->identifier]);
-
-            // Determine migration mode (create|update) based on repository lookup by identifier.
-            // Note: events may be dispatched after the repository change, so this can only
-            // infer the current state; we treat existence in the repository as an "update".
-            $mode = $this->modeDeterminer->determineCreateOrUpdateMode($contentTypeDraft, $contentTypeService);
-            $this->logger->info('Determined migration mode', ['mode' => $mode, 'identifier' => $publishedContentType->identifier]);
-
-            // Preserve previous behavior: only generate migrations for new content types
-            if ($mode !== 'create') {
-                $this->logger->info('Skipping migration generation for update of existing content type', ['identifier' => $publishedContentType->identifier]);
-                return;
-            }
-
+            
+            // Check if a CREATE migration was ever executed for this identifier
+            // This tells us if it's new or an update
+            $hasExecutedCreate = $this->hasExecutedCreateMigration($publishedContentType->identifier);
+            $mode = $hasExecutedCreate ? 'update' : 'create';
+            
+            $this->logger->info('Determined migration mode based on executed migrations', [
+                'mode' => $mode,
+                'identifier' => $publishedContentType->identifier,
+                'has_executed_create' => $hasExecutedCreate
+            ]);
+            
+            // Generate migration for both creates and updates (with the published/new values)
             $this->generateMigration($publishedContentType, $mode);
         } catch (\Throwable $e) {
-            $this->logger->error('Failed to load published content type by ID', ['id' => $contentTypeDraft->id, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            $this->logger->error('Failed to process published content type', ['id' => $contentTypeDraft->id, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
         }
     }
 
@@ -104,6 +97,59 @@ final class ContentTypeListener
     }
 
 
+
+    private function hasExecutedCreateMigration(string $identifier): bool
+    {
+        try {
+            $conn = $this->container->get('doctrine.dbal.default_connection');
+            
+            if ($this->mode === 'kaliop') {
+                $table = 'kaliop_migrations';
+                $column = 'migration';
+                $statusColumn = 'status';
+                $executedStatus = 2; // STATUS_DONE
+                
+                // Check if any executed CREATE migration exists for this identifier
+                $sql = "SELECT COUNT(*) as count FROM $table WHERE $column LIKE ? AND $statusColumn = ?";
+                $result = $conn->executeQuery($sql, [
+                    '%_content_type_create_' . $identifier . '.%',
+                    $executedStatus,
+                ])->fetchAssociative();
+            } elseif ($this->mode === 'ibexa') {
+                $table = 'ibexa_migrations';
+                $column = 'name';
+                $executedAtColumn = 'executed_at';
+                
+                // Check if any executed CREATE migration exists for this identifier
+                // A migration is considered executed if executed_at is not null
+                $sql = "SELECT COUNT(*) as count FROM $table WHERE $column LIKE ? AND $executedAtColumn IS NOT NULL";
+                $result = $conn->executeQuery($sql, [
+                    '%_auto_content_type_create_' . $identifier . '.%',
+                ])->fetchAssociative();
+            } else {
+                // If mode is not set, assume no executed migration exists
+                return false;
+            }
+            
+            $count = (int)($result['count'] ?? 0);
+            $this->logger->info('Checked for executed CREATE migrations', [
+                'identifier' => $identifier,
+                'mode' => $this->mode,
+                'count' => $count
+            ]);
+            
+            // Return true if any executed CREATE migration was found
+            return $count > 0;
+        } catch (\Throwable $e) {
+            $this->logger->warning('Failed to check for executed CREATE migrations', [
+                'exception' => $e->getMessage(),
+                'mode' => $this->mode,
+                'identifier' => $identifier
+            ]);
+            // If we can't check the DB, assume no executed migration exists (safer default)
+            return false;
+        }
+    }
 
     private function generateMigration(\Ibexa\Contracts\Core\Repository\Values\ContentType\ContentType|\Ibexa\Contracts\Core\Repository\Values\ContentType\ContentTypeDraft $contentType, string $mode): void
     {
