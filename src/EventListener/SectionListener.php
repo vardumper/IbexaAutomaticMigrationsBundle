@@ -48,7 +48,8 @@ final class SectionListener
     #[AsEventListener(CreateSectionEvent::class)]
     public function onCreated(CreateSectionEvent $event): void
     {
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('section')) {
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev' || !$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('section')) {
             return;
         }
 
@@ -62,7 +63,8 @@ final class SectionListener
     #[AsEventListener(UpdateSectionEvent::class)]
     public function onUpdated(UpdateSectionEvent $event): void
     {
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('section')) {
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev' || !$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('section')) {
             return;
         }
 
@@ -76,7 +78,8 @@ final class SectionListener
     #[AsEventListener(BeforeDeleteSectionEvent::class)]
     public function onBeforeDeleted(BeforeDeleteSectionEvent $event): void
     {
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('section')) {
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev' || !$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('section')) {
             return;
         }
 

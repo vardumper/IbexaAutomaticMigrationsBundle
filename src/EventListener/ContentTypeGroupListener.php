@@ -48,7 +48,8 @@ final class ContentTypeGroupListener
     #[AsEventListener(CreateContentTypeGroupEvent::class)]
     public function onCreated(CreateContentTypeGroupEvent $event): void
     {
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('content_type_group')) {
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev' || !$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('content_type_group')) {
             return;
         }
 
@@ -175,7 +176,8 @@ final class ContentTypeGroupListener
     #[AsEventListener(UpdateContentTypeGroupEvent::class)]
     public function onUpdated(UpdateContentTypeGroupEvent $event): void
     {
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('content_type_group')) {
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev' || !$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('content_type_group')) {
             return;
         }
 
@@ -303,7 +305,8 @@ final class ContentTypeGroupListener
     #[AsEventListener(DeleteContentTypeGroupEvent::class)]
     public function onDeleted(DeleteContentTypeGroupEvent $event): void
     {
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('content_type_group')) {
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev' || !$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('content_type_group')) {
             return;
         }
 

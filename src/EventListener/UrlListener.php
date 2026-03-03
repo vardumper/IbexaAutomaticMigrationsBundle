@@ -55,7 +55,8 @@ final class UrlListener implements EventSubscriberInterface
 
     public function onAliasCreated(CreateUrlAliasEvent $event): void
     {
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('url')) {
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev' || !$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('url')) {
             return;
         }
 
@@ -75,7 +76,8 @@ final class UrlListener implements EventSubscriberInterface
 
     public function onWildcardCreated(CreateUrlWildcardEvent $event): void
     {
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('url')) {
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev' || !$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('url')) {
             return;
         }
 
@@ -98,7 +100,8 @@ final class UrlListener implements EventSubscriberInterface
 
     public function onWildcardUpdated(UpdateUrlWildcardEvent $event): void
     {
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('url')) {
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev' || !$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('url')) {
             return;
         }
 
@@ -121,7 +124,8 @@ final class UrlListener implements EventSubscriberInterface
 
     public function onWildcardRemoved(RemoveUrlWildcardEvent $event): void
     {
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('url')) {
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev' || !$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('url')) {
             return;
         }
 

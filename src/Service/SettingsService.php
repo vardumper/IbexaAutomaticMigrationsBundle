@@ -14,7 +14,7 @@ final class SettingsService
 
     public function __construct(
         #[Autowire('%kernel.project_dir%')]
-        private readonly string $projectDir,
+        string $projectDir,
         private readonly bool $defaultEnabled,
         private readonly array $defaultTypes,
     ) {
@@ -46,6 +46,11 @@ final class SettingsService
 
     public function isEnabled(): bool
     {
+        // Only enable automatic migrations in dev environment
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev') {
+            return false;
+        }
         return $this->getSettings()['enabled'];
     }
 

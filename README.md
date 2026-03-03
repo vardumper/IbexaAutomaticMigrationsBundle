@@ -51,12 +51,13 @@ composer require vardumper/ibexa-automatic-migrations-bundle:dev-main
 ```
 
 ### 2. Register the bundle in your `config/bundles.php`:
-Remember not to activate this bundle for all environments, usually your development environment is where you want to configure things and have these changes applied elsewehere by executing migrations.
+Remember that even though you activate this bundle for all to activate this bundle for all environments, only when `APP_ENV` is set to `dev` it will create migration files.
+To configure which kind of migration files will be created, head to Admin > Migrations > Settings, make changes and save the Bundle settings.
 
 ```php
 return [
     // ...
-    vardumper\IbexaAutomaticMigrationsBundle\IbexaAutomaticMigrationsBundle::class => ['dev' => true],
+    vardumper\IbexaAutomaticMigrationsBundle\IbexaAutomaticMigrationsBundle::class => ['all' => true],
 ];
 ```
 
@@ -91,7 +92,6 @@ Then run the tests:
 - `tests/Feature/ContentTypeListenerTest.php` - Unit tests for the ContentTypeListener class
 
 ## Roadmap
-* Display Migrations and their status in the amdin panel (for admin users only)
 * Allow admins to execute pending migrations in the admin panel
 * Support more types of migrations, not only content types are relevant, but Languages, Sections, etc.
-* Allow the user to select (via admin panel and/or configuration file) which data points migrations are created for
+* Determine or allow configuring which Migration Bundle one wants to use (if kaliop and ibexa bundles are installed)

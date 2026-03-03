@@ -55,8 +55,9 @@ final class ObjectStateListener implements EventSubscriberInterface
     {
         $this->logger->info('IbexaAutomaticMigrationsBundle: CreateObjectStateEvent received', ['event' => get_class($event)]);
 
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('object_state')) {
-            $this->logger->info('ObjectStateListener: settings not enabled');
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev' || !$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('object_state')) {
+            $this->logger->info('ObjectStateListener: settings not enabled or not in dev');
             return;
         }
 
@@ -82,7 +83,8 @@ final class ObjectStateListener implements EventSubscriberInterface
 
     public function onUpdated(UpdateObjectStateEvent $event): void
     {
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('object_state')) {
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev' || !$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('object_state')) {
             return;
         }
 
@@ -102,7 +104,8 @@ final class ObjectStateListener implements EventSubscriberInterface
 
     public function onDeleted(DeleteObjectStateEvent $event): void
     {
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('object_state')) {
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev' || !$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('object_state')) {
             return;
         }
 

@@ -49,6 +49,11 @@ final class ContentTypeListener
     #[AsEventListener(PublishContentTypeDraftEvent::class)]
     public function onIbexaPublishContentTypeDraft(PublishContentTypeDraftEvent $event): void
     {
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev') {
+            $this->logger->info('IbexaAutomaticMigrationsBundle: Skipping migration generation, not in dev environment');
+            return;
+        }
         $this->logger->info('IbexaAutomaticMigrationsBundle: PublishContentTypeDraftEvent received', ['event' => get_class($event)]);
 
         // Skip in CLI to prevent creating redundant migrations when executing migrations that create/update content types
@@ -88,6 +93,11 @@ final class ContentTypeListener
     #[AsEventListener(BeforeDeleteContentTypeEvent::class)]
     public function onIbexaBeforeDeleteContentType(BeforeDeleteContentTypeEvent $event): void
     {
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev') {
+            $this->logger->info('IbexaAutomaticMigrationsBundle: Skipping migration generation, not in dev environment');
+            return;
+        }
         $this->logger->info('IbexaAutomaticMigrationsBundle: BeforeDeleteContentTypeEvent received', ['event' => get_class($event)]);
 
         // Skip in CLI to prevent creating redundant migrations when executing migrations that delete content types

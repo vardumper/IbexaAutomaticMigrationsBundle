@@ -53,7 +53,8 @@ final class RoleListener implements EventSubscriberInterface
 
     public function onCreated(CreateRoleEvent $event): void
     {
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('role')) {
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev' || !$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('role')) {
             return;
         }
 
@@ -73,7 +74,8 @@ final class RoleListener implements EventSubscriberInterface
 
     public function onPublished(PublishRoleDraftEvent $event): void
     {
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('role')) {
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev' || !$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('role')) {
             return;
         }
 
@@ -113,7 +115,8 @@ final class RoleListener implements EventSubscriberInterface
 
     public function onUpdated(UpdateRoleDraftEvent $event): void
     {
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('role')) {
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev' || !$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('role')) {
             return;
         }
 
@@ -133,7 +136,8 @@ final class RoleListener implements EventSubscriberInterface
 
     public function onBeforeDeleted(BeforeDeleteRoleEvent $event): void
     {
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('role')) {
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev' || !$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('role')) {
             return;
         }
 

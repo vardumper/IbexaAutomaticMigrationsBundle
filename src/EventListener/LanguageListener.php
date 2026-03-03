@@ -51,7 +51,8 @@ final class LanguageListener implements EventSubscriberInterface
 
     public function onCreated(CreateLanguageEvent $event): void
     {
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('language')) {
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev' || !$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('language')) {
             return;
         }
 
@@ -71,7 +72,8 @@ final class LanguageListener implements EventSubscriberInterface
 
     public function onUpdated(UpdateLanguageNameEvent $event): void
     {
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('language')) {
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev' || !$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('language')) {
             return;
         }
 
@@ -91,7 +93,8 @@ final class LanguageListener implements EventSubscriberInterface
 
     public function onBeforeDeleted(BeforeDeleteLanguageEvent $event): void
     {
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('language')) {
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev' || !$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('language')) {
             return;
         }
 

@@ -51,7 +51,8 @@ final class UserListener implements EventSubscriberInterface
 
     public function onCreated(CreateUserEvent $event): void
     {
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('user')) {
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev' || !$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('user')) {
             return;
         }
 
@@ -78,7 +79,8 @@ final class UserListener implements EventSubscriberInterface
 
     public function onUpdated(UpdateUserEvent $event): void
     {
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('user')) {
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev' || !$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('user')) {
             return;
         }
 
@@ -105,7 +107,8 @@ final class UserListener implements EventSubscriberInterface
 
     public function onBeforeDeleted(BeforeDeleteUserEvent $event): void
     {
-        if (!$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('user')) {
+        $env = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null;
+        if ($env !== 'dev' || !$this->settingsService->isEnabled() || !$this->settingsService->isTypeEnabled('user')) {
             return;
         }
 
