@@ -128,6 +128,9 @@ final class ContentTypeGroupListener
                     }
                 }
                 $fullPath = $this->destination . DIRECTORY_SEPARATOR . $fileName;
+                if ($this->mode === 'kaliop' && !Helper::fixKaliopMigrationYaml($fullPath, $this->logger)) {
+                    return;
+                }
                 $md5 = file_exists($fullPath) ? md5_file($fullPath) : null;
                 try {
                     $affected = 0;
@@ -257,6 +260,9 @@ final class ContentTypeGroupListener
                     }
                 }
                 $fullPath = $this->destination . DIRECTORY_SEPARATOR . $fileName;
+                if ($this->mode === 'kaliop' && !Helper::fixKaliopMigrationYaml($fullPath, $this->logger)) {
+                    return;
+                }
                 $md5 = file_exists($fullPath) ? md5_file($fullPath) : null;
                 try {
                     $affected = 0;
@@ -334,6 +340,9 @@ final class ContentTypeGroupListener
             $yaml = Yaml::dump($data);
             $fullPath = $this->destination . DIRECTORY_SEPARATOR . $fileName;
             file_put_contents($fullPath, $yaml);
+            if ($this->mode === 'kaliop' && !Helper::fixKaliopMigrationYaml($fullPath, $this->logger)) {
+                return;
+            }
             try {
                 /** @var Connection $conn */
                 $conn = $this->container->get('doctrine.dbal.default_connection');

@@ -204,6 +204,9 @@ final class ObjectStateListener implements EventSubscriberInterface
                 }
 
                 $fullPath = $this->destination . DIRECTORY_SEPARATOR . $fileName;
+                if ($this->mode === 'kaliop' && !Helper::fixKaliopMigrationYaml($fullPath, $this->logger)) {
+                    return;
+                }
                 $md5 = md5_file($fullPath);
                 try {
                     if ($this->mode === 'ibexa') {
