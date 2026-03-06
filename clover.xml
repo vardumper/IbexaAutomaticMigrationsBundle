@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1772798447">
-  <project timestamp="1772798447" name="Clover Coverage">
+<coverage generated="1772804885">
+  <project timestamp="1772804885" name="Clover Coverage">
     <package name="vardumper\IbexaAutomaticMigrationsBundle\Controller">
       <file name="/home/erik-poehler/Sites/IbexaAutomaticMigrationsBundle/src/Controller/MigrationsController.php">
         <class name="vardumper\IbexaAutomaticMigrationsBundle\Controller\MigrationsController" namespace="vardumper\IbexaAutomaticMigrationsBundle\Controller">
