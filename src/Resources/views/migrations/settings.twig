@@ -58,6 +58,14 @@
                         <div class="ibexa-form-group__fields" style="margin-bottom: 2rem;">
                             <div class="ibexa-field">
                                 <div class="ibexa-field__input-wrapper" style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="content" name="content" value="1" class="ibexa-input ibexa-input--checkbox" {{ settings.types.content ? 'checked' : '' }}>
+                                    <label class="ibexa-field__label ibexa-field__label--checkbox" for="content" style="margin-left: 0.5rem;">
+                                        {{ 'Content'|trans }}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="ibexa-field">
+                                <div class="ibexa-field__input-wrapper" style="display: flex; align-items: center;">
                                     <input type="checkbox" id="content_type" name="content_type" value="1" class="ibexa-input ibexa-input--checkbox" {{ settings.types.content_type ? 'checked' : '' }}>
                                     <label class="ibexa-field__label ibexa-field__label--checkbox" for="content_type" style="margin-left: 0.5rem;">
                                         {{ 'Content Types'|trans }}

@@ -122,6 +122,7 @@ final class MigrationsController extends Controller
 
         if ($request->isMethod('POST')) {
             $settings['enabled'] = $request->request->getBoolean('enabled');
+            $settings['types']['content'] = $request->request->getBoolean('content');
             $settings['types']['content_type'] = $request->request->getBoolean('content_type');
             $settings['types']['content_type_group'] = $request->request->getBoolean('content_type_group');
             $settings['types']['section'] = $request->request->getBoolean('section');

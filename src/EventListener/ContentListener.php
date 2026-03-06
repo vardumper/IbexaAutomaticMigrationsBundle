@@ -7,9 +7,9 @@ namespace vardumper\IbexaAutomaticMigrationsBundle\EventListener;
 use Ibexa\Contracts\Core\Repository\Events\Content\BeforeDeleteContentEvent;
 use Ibexa\Contracts\Core\Repository\Events\Content\CreateContentEvent;
 use Ibexa\Contracts\Core\Repository\Events\Content\UpdateContentEvent;
+use Ibexa\Contracts\Core\Repository\Values\Content\ContentInfo;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Process\Process;
 use vardumper\IbexaAutomaticMigrationsBundle\Helper\Helper;
@@ -21,17 +21,13 @@ final class ContentListener
     private string $projectDir;
     private string $destination;
     private array $consoleCommand;
-    private ContainerInterface $container;
 
     public function __construct(
         private readonly LoggerInterface $logger,
         private readonly \vardumper\IbexaAutomaticMigrationsBundle\Service\SettingsService $settingsService,
         #[Autowire('%kernel.project_dir%')]
         string $projectDir,
-        #[Autowire(service: 'service_container')]
-        ContainerInterface $container
     ) {
-        $this->container = $container;
         $this->projectDir = rtrim($projectDir, DIRECTORY_SEPARATOR);
         $this->isCli = PHP_SAPI === 'cli';
         $this->consoleCommand = ['php', '-d', 'memory_limit=512M', $this->projectDir . '/bin/console'];
@@ -50,19 +46,15 @@ final class ContentListener
         }
 
         $content = $event->getContent();
-        if (!$content) {
+
+        if (!$this->settingsService->isTypeEnabled('content')) {
             return;
         }
-
-        $identifier = $content->contentInfo->contentTypeIdentifier ?? null;
-        // Only handle specific content types when enabled in settings
-        if ($identifier && $this->settingsService->isTypeEnabled($identifier)) {
-            if ($this->isCli) {
-                $this->logger->info('Skipping content migration generation in CLI');
-                return;
-            }
-            $this->generateMigration($content, 'create');
+        if ($this->isCli) {
+            $this->logger->info('Skipping content migration generation in CLI');
+            return;
         }
+        $this->generateMigration($content->contentInfo, 'create');
     }
 
     #[AsEventListener(UpdateContentEvent::class)]
@@ -73,18 +65,15 @@ final class ContentListener
         }
 
         $content = $event->getContent();
-        if (!$content) {
+
+        if (!$this->settingsService->isTypeEnabled('content')) {
             return;
         }
-
-        $identifier = $content->contentInfo->contentTypeIdentifier ?? null;
-        if ($identifier && $this->settingsService->isTypeEnabled($identifier)) {
-            if ($this->isCli) {
-                $this->logger->info('Skipping content migration generation in CLI');
-                return;
-            }
-            $this->generateMigration($content, 'update');
+        if ($this->isCli) {
+            $this->logger->info('Skipping content migration generation in CLI');
+            return;
         }
+        $this->generateMigration($content->contentInfo, 'update');
     }
 
     #[AsEventListener(BeforeDeleteContentEvent::class)]
@@ -94,28 +83,25 @@ final class ContentListener
             return;
         }
 
-        $content = $event->getContent();
-        if (!$content) {
+        $contentInfo = $event->getContentInfo();
+
+        if (!$this->settingsService->isTypeEnabled('content')) {
             return;
         }
-
-        $identifier = $content->contentInfo->contentTypeIdentifier ?? null;
-        if ($identifier && $this->settingsService->isTypeEnabled($identifier)) {
-            if ($this->isCli) {
-                $this->logger->info('Skipping content migration generation in CLI');
-                return;
-            }
-            // For delete we generate BEFORE deletion
-            $this->generateMigration($content, 'delete');
+        if ($this->isCli) {
+            $this->logger->info('Skipping content migration generation in CLI');
+            return;
         }
+        // For delete we generate BEFORE deletion
+        $this->generateMigration($contentInfo, 'delete');
     }
 
-    private function generateMigration($content, string $mode): void
+    private function generateMigration(ContentInfo $contentInfo, string $mode): void
     {
         try {
-            $contentId = $content->contentInfo->id ?? null;
-            $locationId = $content->contentInfo->mainLocationId ?? null;
-            $matchValue = $contentId ?? $locationId;
+            $contentId = $contentInfo->id;
+            $locationId = $contentInfo->mainLocationId ?? null;
+            $matchValue = $contentId !== 0 ? $contentId : $locationId;
             $name = 'auto_content_' . $mode . '_' . (string)$matchValue;
 
             if ($this->mode === 'kaliop') {
@@ -123,7 +109,7 @@ final class ContentListener
                     '--format' => 'yml',
                     '--type' => 'content',
                     '--mode' => $mode,
-                    '--match-type' => $contentId ? 'content_id' : 'location_id',
+                    '--match-type' => $contentId !== 0 ? 'content_id' : 'location_id',
                     '--match-value' => (string)$matchValue,
                     'bundle' => $this->destination,
                     'name' => $name,
@@ -135,7 +121,7 @@ final class ContentListener
                     '--format' => 'yaml',
                     '--type' => 'content',
                     '--mode' => $mode,
-                    '--match-property' => $contentId ? 'content_id' : 'location_id',
+                    '--match-property' => $contentId !== 0 ? 'content_id' : 'location_id',
                     '--value' => (string)$matchValue,
                     '--file' => $now->format('Y_m_d_H_i_s_') . $name . '.yaml',
                 ];
