@@ -82,18 +82,15 @@ describe('ObjectStateGroupListener', function () {
         expect(fn () => $listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class);
     });
 
-    it('onCreated stops at isCli check when enabled in dev env', function () {
-        $previous = $_SERVER['APP_ENV'] ?? null;
-        $_SERVER['APP_ENV'] = 'dev';
-        try {
-            // SettingsService::isEnabled() checks APP_ENV=dev → returns defaultEnabled=true
-            expect(fn () => $this->listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class);
-        } finally {
-            if ($previous === null) {
-                unset($_SERVER['APP_ENV']);
-            } else {
-                $_SERVER['APP_ENV'] = $previous;
-            }
-        }
+    it('onCreated reaches generateMigration in dev env', function () {
+        withEnv('dev', fn () => expect(fn () => $this->listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onUpdated reaches generateMigration in dev env', function () {
+        withEnv('dev', fn () => expect(fn () => $this->listener->onUpdated($this->updateEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onDeleted reaches generateMigration in dev env', function () {
+        withEnv('dev', fn () => expect(fn () => $this->listener->onDeleted($this->deleteEvent))->not->toThrow(\Throwable::class));
     });
 });

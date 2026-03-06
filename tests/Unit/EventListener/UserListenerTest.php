@@ -11,24 +11,6 @@ use Ibexa\Contracts\Core\Repository\Values\User\UserUpdateStruct;
 use Psr\Log\NullLogger;
 use vardumper\IbexaAutomaticMigrationsBundle\EventListener\UserListener;
 
-/**
- * Run a callable with APP_ENV temporarily set to $env.
- */
-function withEnv(string $env, callable $fn): void
-{
-    $previous = $_SERVER['APP_ENV'] ?? null;
-    $_SERVER['APP_ENV'] = $env;
-    try {
-        $fn();
-    } finally {
-        if ($previous === null) {
-            unset($_SERVER['APP_ENV']);
-        } else {
-            $_SERVER['APP_ENV'] = $previous;
-        }
-    }
-}
-
 describe('UserListener', function () {
     beforeEach(function () {
         $this->tmpDir = makeTmpDir();

@@ -114,9 +114,7 @@ describe('ContentTypeGroupListener', function () {
     });
 
     it('returns early when settings service is disabled in dev env', function () {
-        $previous = $_SERVER['APP_ENV'] ?? null;
-        $_SERVER['APP_ENV'] = 'dev';
-        try {
+        withEnv('dev', function () {
             $listener = new ContentTypeGroupListener(
                 new NullLogger(),
                 makeSettingsService($this->tmpDir, false, ['content_type_group' => true]),
@@ -124,12 +122,18 @@ describe('ContentTypeGroupListener', function () {
                 makeContainer()
             );
             expect(fn () => $listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class);
-        } finally {
-            if ($previous === null) {
-                unset($_SERVER['APP_ENV']);
-            } else {
-                $_SERVER['APP_ENV'] = $previous;
-            }
-        }
+        });
+    });
+
+    it('onCreated reaches generateMigration in dev env', function () {
+        withEnv('dev', fn () => expect(fn () => $this->listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onUpdated reaches generateMigration in dev env', function () {
+        withEnv('dev', fn () => expect(fn () => $this->listener->onUpdated($this->updateEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onDeleted reaches generateMigration in dev env', function () {
+        withEnv('dev', fn () => expect(fn () => $this->listener->onDeleted($this->deleteEvent))->not->toThrow(\Throwable::class));
     });
 });

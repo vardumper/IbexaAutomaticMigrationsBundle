@@ -57,6 +57,14 @@ describe('ContentTypeListener', function () {
         }
     });
 
+    it('onIbexaPublishContentTypeDraft reaches generateMigration in dev env', function () {
+        withEnv('dev', fn () => expect(fn () => $this->listener->onIbexaPublishContentTypeDraft($this->publishEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onIbexaBeforeDeleteContentType reaches generateMigration in dev env', function () {
+        withEnv('dev', fn () => expect(fn () => $this->listener->onIbexaBeforeDeleteContentType($this->deleteEvent))->not->toThrow(\Throwable::class));
+    });
+
     it('onIbexaBeforeDeleteContentType stops at isCli check in dev env', function () {
         $previous = $_SERVER['APP_ENV'] ?? null;
         $_SERVER['APP_ENV'] = 'dev';

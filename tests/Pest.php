@@ -118,3 +118,22 @@ function removeTmpDir(string $dir): void
     }
     rmdir($dir);
 }
+
+/**
+ * Run a callable with APP_ENV temporarily set to the given value.
+ * Restores the previous value (or unsets it) in a finally block.
+ */
+function withEnv(string $env, callable $fn): void
+{
+    $previous = $_SERVER['APP_ENV'] ?? null;
+    $_SERVER['APP_ENV'] = $env;
+    try {
+        $fn();
+    } finally {
+        if ($previous === null) {
+            unset($_SERVER['APP_ENV']);
+        } else {
+            $_SERVER['APP_ENV'] = $previous;
+        }
+    }
+}

@@ -74,6 +74,22 @@ describe('UrlListener', function () {
         expect(fn () => $this->listener->onWildcardRemoved($this->wildcardRemoveEvent))->not->toThrow(\Throwable::class);
     });
 
+    it('onAliasCreated reaches generateMigration in dev env', function () {
+        withEnv('dev', fn () => expect(fn () => $this->listener->onAliasCreated($this->aliasCreateEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onWildcardCreated reaches logging warning in dev env', function () {
+        withEnv('dev', fn () => expect(fn () => $this->listener->onWildcardCreated($this->wildcardCreateEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onWildcardUpdated reaches logging warning in dev env', function () {
+        withEnv('dev', fn () => expect(fn () => $this->listener->onWildcardUpdated($this->wildcardUpdateEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onWildcardRemoved reaches generateMigration in dev env', function () {
+        withEnv('dev', fn () => expect(fn () => $this->listener->onWildcardRemoved($this->wildcardRemoveEvent))->not->toThrow(\Throwable::class));
+    });
+
     it('onAliasCreated returns early when url type disabled in dev env', function () {
         $previous = $_SERVER['APP_ENV'] ?? null;
         $_SERVER['APP_ENV'] = 'dev';

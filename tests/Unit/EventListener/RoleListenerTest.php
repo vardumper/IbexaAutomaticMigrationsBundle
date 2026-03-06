@@ -106,17 +106,19 @@ describe('RoleListener', function () {
         }
     });
 
-    it('onCreated stops at isCli check in dev env with enabled settings', function () {
-        $previous = $_SERVER['APP_ENV'] ?? null;
-        $_SERVER['APP_ENV'] = 'dev';
-        try {
-            expect(fn () => $this->listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class);
-        } finally {
-            if ($previous === null) {
-                unset($_SERVER['APP_ENV']);
-            } else {
-                $_SERVER['APP_ENV'] = $previous;
-            }
-        }
+    it('onCreated reaches generateMigration in dev env', function () {
+        withEnv('dev', fn () => expect(fn () => $this->listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onPublished reaches generateMigration in dev env', function () {
+        withEnv('dev', fn () => expect(fn () => $this->listener->onPublished($this->publishEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onUpdated reaches generateMigration in dev env', function () {
+        withEnv('dev', fn () => expect(fn () => $this->listener->onUpdated($this->updateEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onBeforeDeleted reaches generateMigration in dev env', function () {
+        withEnv('dev', fn () => expect(fn () => $this->listener->onBeforeDeleted($this->deleteEvent))->not->toThrow(\Throwable::class));
     });
 });
