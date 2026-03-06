@@ -57,4 +57,31 @@ describe('MigrationsMenuSubscriber', function () {
 
         $subscriber->onMainMenuConfigure($event);
     });
+
+    it('onMainMenuConfigure adds menu item when permission is granted', function () {
+        $permissionResolver = $this->createStub(PermissionResolver::class);
+        $permissionResolver->method('hasAccess')->willReturn(true);
+
+        $addChildCallCount = 0;
+        $childMenu = $this->createMock(ItemInterface::class);
+        $childMenu->method('addChild')->willReturnCallback(function () use (&$addChildCallCount, &$childMenu) {
+            $addChildCallCount++;
+            return $childMenu;
+        });
+
+        $menuFactory = $this->createStub(MenuItemFactory::class);
+        $menuFactory->method('createItem')->willReturn($this->createStub(ItemInterface::class));
+
+        $subscriber = new MigrationsMenuSubscriber($menuFactory, $permissionResolver);
+
+        $menu = $this->createStub(ItemInterface::class);
+        $menu->method('getChild')->willReturn($childMenu);
+
+        $factory = $this->createStub(\Knp\Menu\FactoryInterface::class);
+        $event = new ConfigureMenuEvent($factory, $menu, []);
+
+        $subscriber->onMainMenuConfigure($event);
+
+        expect($addChildCallCount)->toBe(1);
+    });
 });

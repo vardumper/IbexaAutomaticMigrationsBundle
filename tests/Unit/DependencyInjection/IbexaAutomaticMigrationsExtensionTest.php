@@ -35,4 +35,23 @@ describe('IbexaAutomaticMigrationsExtension', function () {
         $registeredPath = key($paths);
         expect(str_contains($registeredPath, 'Resources/views'))->toBeTrue();
     });
+
+    it('load sets ibexa_automatic_migrations parameters', function () {
+        $container = new ContainerBuilder();
+        $ext = new IbexaAutomaticMigrationsExtension();
+
+        $ext->load([[]], $container);
+
+        expect($container->hasParameter('ibexa_automatic_migrations.enabled'))->toBeTrue();
+        expect($container->hasParameter('ibexa_automatic_migrations.types'))->toBeTrue();
+    });
+
+    it('load registers settings service in the container', function () {
+        $container = new ContainerBuilder();
+        $ext = new IbexaAutomaticMigrationsExtension();
+
+        $ext->load([[]], $container);
+
+        expect($container->hasDefinition('ibexa_automatic_migrations.settings_service'))->toBeTrue();
+    });
 });

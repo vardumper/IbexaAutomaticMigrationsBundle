@@ -294,4 +294,52 @@ YAML;
         expect(substr_count($content, 'match_tolerate_misses:'))->toBe(1);
         expect($content)->toContain('    match_tolerate_misses: true');
     });
+
+    it('returns true when file cannot be read', function () {
+        set_error_handler(fn () => true, E_WARNING);
+        try {
+            $result = Helper::fixKaliopMigrationYaml('/nonexistent_test_path_xyz/file.yml', new NullLogger());
+            expect($result)->toBeTrue();
+        } finally {
+            restore_error_handler();
+        }
+    });
+
+    it('inserts field-settings at correct position when block ends with blank line and has no validator-configuration', function () {
+        // The block collector includes trailing empty lines; the while loop on line 134
+        // must back up past the trailing blank before splicing field-settings in.
+        $yaml = "-\n    type: content_type\n    mode: create\n    attributes:\n        -\n            identifier: title\n            type: ibexa_string\n\n        -\n            identifier: body\n            type: ibexa_richtext\n";
+        file_put_contents($this->tmpFile, $yaml);
+
+        $result = Helper::fixKaliopMigrationYaml($this->tmpFile, new NullLogger());
+        $content = file_get_contents($this->tmpFile);
+
+        expect($result)->toBeTrue();
+        expect($content)->toContain('            field-settings: {  }');
+    });
+
+    it('inserts validator-configuration at correct position when ibexa_boolean block ends with blank line', function () {
+        // Block has field-settings but no validator-configuration, and ends with a blank line;
+        // the while loop on line 143 must back up past the trailing blank.
+        $yaml = "-\n    type: content_type\n    mode: create\n    attributes:\n        -\n            identifier: active\n            type: ibexa_boolean\n            field-settings: {  }\n\n        -\n            identifier: body\n            type: ibexa_richtext\n";
+        file_put_contents($this->tmpFile, $yaml);
+
+        $result = Helper::fixKaliopMigrationYaml($this->tmpFile, new NullLogger());
+        $content = file_get_contents($this->tmpFile);
+
+        expect($result)->toBeTrue();
+        expect($content)->toContain('            validator-configuration: {  }');
+    });
+
+    it('inserts match_tolerate_misses before sibling key that follows match block', function () {
+        // A non-8-space-indented key immediately after match: triggers the elseif branch (lines 205-207).
+        $yaml = "-\n    type: content_type\n    mode: delete\n    match:\n    content_type_identifier: some_type\n";
+        file_put_contents($this->tmpFile, $yaml);
+
+        $result = Helper::fixKaliopMigrationYaml($this->tmpFile, new NullLogger());
+        $content = file_get_contents($this->tmpFile);
+
+        expect($result)->toBeTrue();
+        expect($content)->toContain('    match_tolerate_misses: true');
+    });
 });
