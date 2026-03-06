@@ -29,7 +29,7 @@ final class ContentListener
         string $projectDir,
     ) {
         $this->projectDir = rtrim($projectDir, DIRECTORY_SEPARATOR);
-        $this->isCli = PHP_SAPI === 'cli';
+        $this->isCli = PHP_SAPI === 'cli' && ($_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null) !== 'testing';
         $this->consoleCommand = ['php', '-d', 'memory_limit=512M', $this->projectDir . '/bin/console'];
         $this->mode = Helper::determineMode();
         $this->destination = Helper::determineDestination($this->projectDir);
