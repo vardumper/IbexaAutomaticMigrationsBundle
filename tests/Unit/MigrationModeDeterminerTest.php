@@ -58,4 +58,61 @@ describe('MigrationModeDeterminer', function () {
         $determiner = new MigrationModeDeterminer();
         expect($determiner->determineCreateOrUpdateMode($draft, $service))->toBe('update');
     });
+
+    it('returns create when identifier comes from getIdentifier() method and type not found', function () {
+        $draft = new class() {
+            public function getIdentifier(): string
+            {
+                return 'method_type';
+            }
+        };
+        $service = new class() {
+            public function loadContentTypeByIdentifier($identifier)
+            {
+                return null;
+            }
+        };
+        $determiner = new MigrationModeDeterminer();
+        expect($determiner->determineCreateOrUpdateMode($draft, $service))->toBe('create');
+    });
+
+    it('returns update when identifier comes from getIdentifier() method and type found', function () {
+        $draft = new class() {
+            public function getIdentifier(): string
+            {
+                return 'existing_method_type';
+            }
+        };
+        $service = new class() {
+            public function loadContentTypeByIdentifier($identifier)
+            {
+                return (object)['id' => 42];
+            }
+        };
+        $determiner = new MigrationModeDeterminer();
+        expect($determiner->determineCreateOrUpdateMode($draft, $service))->toBe('update');
+    });
+
+    it('returns update when service only has loadContentType (no identifier lookup)', function () {
+        $draft = new class() {
+            public string $identifier = 'some_type';
+        };
+        $service = new class() {
+            public function loadContentType($id)
+            {
+                return (object)['id' => $id];
+            }
+        };
+        $determiner = new MigrationModeDeterminer();
+        expect($determiner->determineCreateOrUpdateMode($draft, $service))->toBe('update');
+    });
+
+    it('returns update when service has no recognisable method', function () {
+        $draft = new class() {
+            public string $identifier = 'some_type';
+        };
+        $service = new class() {};
+        $determiner = new MigrationModeDeterminer();
+        expect($determiner->determineCreateOrUpdateMode($draft, $service))->toBe('update');
+    });
 });

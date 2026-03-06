@@ -139,6 +139,25 @@ else
     printf "${RED}Composer audit failed${NC}\n"
 fi
 
+# add pest unit tests. stopping the commit if they fail
+HAS_PEST=false
+PEST="./vendor/bin/pest"
+if [ -x $PEST ]; then
+    HAS_PEST=true
+fi
+printf "${YELLOW}Pest Unit Tests${NC}\n"
+if $HAS_PEST; then
+    if time exec $PEST --testdox --colors=always; then
+      # All good, also re-generate clover.xml
+        $PEST --coverage-clover clover.xml
+        printf "${GREEN}Pest tests passed${NC}\n"
+    else
+      PASS=false
+    fi
+else
+  printf "\npest is required. Install it with:\n\n  ddev composer require --dev pestphp/pest\n\n"
+fi
+
 END_TIME=$(date +%s) # Record the end time
 DURATION=$((END_TIME - START_TIME)) # Calculate the duration
 

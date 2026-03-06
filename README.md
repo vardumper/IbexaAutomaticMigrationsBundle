@@ -86,10 +86,11 @@ Then run the tests:
 ./vendor/bin/pest
 ```
 
-### Test Structure
-
-- `tests/Feature/DeleteMigrationTest.php` - Tests the delete migration generation functionality
-- `tests/Feature/ContentTypeListenerTest.php` - Unit tests for the ContentTypeListener class
+### Coverage Report
+You can also generate a coverage report by running the following command.
+```
+XDEBUG_MODE=coverage vendor/bin/pest --coverage-html=coverage-report
+```
 
 ## Roadmap
 * Allow admins to execute pending migrations in the admin panel

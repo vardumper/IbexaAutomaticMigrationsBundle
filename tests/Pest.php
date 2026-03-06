@@ -47,3 +47,74 @@ function something()
 {
     // ..
 }
+
+/**
+ * Create a minimal ContainerInterface stub for use in EventListener tests.
+ */
+function makeContainer(): \Symfony\Component\DependencyInjection\ContainerInterface
+{
+    return new class() implements \Symfony\Component\DependencyInjection\ContainerInterface {
+        public function get(string $id, int $invalidBehavior = self::EXCEPTION_ON_INVALID_REFERENCE): ?object
+        {
+            return null;
+        }
+        public function has(string $id): bool
+        {
+            return false;
+        }
+        public function initialized(string $id): bool
+        {
+            return false;
+        }
+        public function getParameter(string $name): array|bool|string|int|float|null
+        {
+            return null;
+        }
+        public function hasParameter(string $name): bool
+        {
+            return false;
+        }
+        public function setParameter(string $name, mixed $value): void
+        {
+        }
+        public function set(string $id, ?object $service): void
+        {
+        }
+    };
+}
+
+/**
+ * Create a real SettingsService instance backed by a temp directory.
+ */
+function makeSettingsService(string $tmpDir, bool $enabled = false, array $types = []): \vardumper\IbexaAutomaticMigrationsBundle\Service\SettingsService
+{
+    return new \vardumper\IbexaAutomaticMigrationsBundle\Service\SettingsService($tmpDir, $enabled, $types);
+}
+
+/**
+ * Create a temp directory for tests and return its path. Caller is responsible for cleanup.
+ */
+function makeTmpDir(): string
+{
+    $dir = sys_get_temp_dir() . '/ibm_test_' . uniqid();
+    mkdir($dir, 0777, true);
+    return $dir;
+}
+
+/**
+ * Recursively remove a directory.
+ */
+function removeTmpDir(string $dir): void
+{
+    if (!is_dir($dir)) {
+        return;
+    }
+    $iter = new \RecursiveIteratorIterator(
+        new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS),
+        \RecursiveIteratorIterator::CHILD_FIRST
+    );
+    foreach ($iter as $item) {
+        $item->isDir() ? rmdir((string)$item) : unlink((string)$item);
+    }
+    rmdir($dir);
+}

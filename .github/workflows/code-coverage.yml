@@ -1,0 +1,38 @@
+name: Code Coverage
+on:
+    push:
+    # only trigger if theres a change in src/ directory
+        paths:
+            - '.github/workflows/code-coverage.yml'
+            - 'clover.xml'
+    pull_request:
+        paths:
+            - '.github/workflows/code-coverage.yml'
+            - 'clover.xml'
+    workflow_dispatch:
+
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+
+      - name: Generate code coverage badge
+        run: php bin/generate-coverage-badge.php clover.xml coverage.svg
+
+      - name: Commit badge
+        run: |
+            git config --global user.name 'github-actions[bot]'
+            git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+            git add coverage.svg
+            git commit -am "coverage.svg badge updated" --no-verify
+            git push --no-verify
+        continue-on-error: true # do not fail if nothing changed
