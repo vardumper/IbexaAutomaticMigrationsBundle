@@ -143,7 +143,7 @@ final class UserListener implements EventSubscriberInterface
 
         // Skip users that are likely created from frontend registration
         // This is a heuristic - we assume users with login containing '@' are frontend users
-        if (str_contains($user->login, '@')) {
+        if (is_string($user->login) && str_contains($user->login, '@')) {
             return true;
         }
 

@@ -18,6 +18,7 @@ parameters:
         - '#Instantiated class Ibexa\\Migration\\Metadata\\ExecutionResult not found#'                                                                
         - '#Call to method .* on an unknown class Ibexa\\Migration\\Metadata\\ExecutionResult#'
         - '#Call to protected method create(Stub|Mock)\(\) of class PHPUnit\\Framework\\TestCase#'
+        - '#Call to protected method getMockBuilder\(\) of class PHPUnit\\Framework\\TestCase#'
         - '#Call to protected method never\(\) of class PHPUnit\\Framework\\TestCase#'
         - '#Function app not found#'
     reportUnmatchedIgnoredErrors: false

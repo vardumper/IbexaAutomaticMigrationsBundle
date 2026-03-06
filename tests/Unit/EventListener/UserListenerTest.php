@@ -11,6 +11,24 @@ use Ibexa\Contracts\Core\Repository\Values\User\UserUpdateStruct;
 use Psr\Log\NullLogger;
 use vardumper\IbexaAutomaticMigrationsBundle\EventListener\UserListener;
 
+/**
+ * Run a callable with APP_ENV temporarily set to $env.
+ */
+function withEnv(string $env, callable $fn): void
+{
+    $previous = $_SERVER['APP_ENV'] ?? null;
+    $_SERVER['APP_ENV'] = $env;
+    try {
+        $fn();
+    } finally {
+        if ($previous === null) {
+            unset($_SERVER['APP_ENV']);
+        } else {
+            $_SERVER['APP_ENV'] = $previous;
+        }
+    }
+}
+
 describe('UserListener', function () {
     beforeEach(function () {
         $this->tmpDir = makeTmpDir();
@@ -20,10 +38,21 @@ describe('UserListener', function () {
             $this->tmpDir,
             makeContainer()
         );
-        $user = $this->createStub(User::class);
+
+        // Default user: non-skippable (no @ in login, id != 10, login != 'anonymous')
+        $user = $this->getMockBuilder(User::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $user->method('__get')->willReturnCallback(fn (string $prop) => match ($prop) {
+            'id' => 1,
+            'login' => 'editor',
+            default => null,
+        });
+
         $createStruct = $this->createStub(UserCreateStruct::class);
         $updateStruct = new UserUpdateStruct();
 
+        $this->user = $user;
         $this->createEvent = new CreateUserEvent($user, $createStruct, []);
         $this->updateEvent = new UpdateUserEvent($user, $user, $updateStruct);
         $this->deleteEvent = new BeforeDeleteUserEvent($user);
@@ -73,9 +102,7 @@ describe('UserListener', function () {
     });
 
     it('onCreated returns early when user type disabled in dev env', function () {
-        $previous = $_SERVER['APP_ENV'] ?? null;
-        $_SERVER['APP_ENV'] = 'dev';
-        try {
+        withEnv('dev', function () {
             $listener = new UserListener(
                 new NullLogger(),
                 makeSettingsService($this->tmpDir, true, ['user' => false]),
@@ -83,26 +110,76 @@ describe('UserListener', function () {
                 makeContainer()
             );
             expect(fn () => $listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class);
-        } finally {
-            if ($previous === null) {
-                unset($_SERVER['APP_ENV']);
-            } else {
-                $_SERVER['APP_ENV'] = $previous;
-            }
-        }
+        });
     });
 
-    it('onCreated stops at isCli check in dev env with enabled settings', function () {
-        $previous = $_SERVER['APP_ENV'] ?? null;
-        $_SERVER['APP_ENV'] = 'dev';
-        try {
-            expect(fn () => $this->listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class);
-        } finally {
-            if ($previous === null) {
-                unset($_SERVER['APP_ENV']);
-            } else {
-                $_SERVER['APP_ENV'] = $previous;
-            }
-        }
+    it('onCreated skips anonymous user (id=10) in dev env', function () {
+        $anonUser = $this->getMockBuilder(User::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $anonUser->method('__get')->willReturnCallback(fn (string $prop) => match ($prop) {
+            'id' => 10,
+            'login' => 'anonymous',
+            default => null,
+        });
+        $createStruct = $this->createStub(UserCreateStruct::class);
+        $event = new CreateUserEvent($anonUser, $createStruct, []);
+
+        withEnv('dev', fn () => expect(fn () => $this->listener->onCreated($event))->not->toThrow(\Throwable::class));
+    });
+
+    it('onCreated skips user with @ in login (frontend registration) in dev env', function () {
+        $frontendUser = $this->getMockBuilder(User::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $frontendUser->method('__get')->willReturnCallback(fn (string $prop) => match ($prop) {
+            'id' => 99,
+            'login' => 'user@example.com',
+            default => null,
+        });
+        $createStruct = $this->createStub(UserCreateStruct::class);
+        $event = new CreateUserEvent($frontendUser, $createStruct, []);
+
+        withEnv('dev', fn () => expect(fn () => $this->listener->onCreated($event))->not->toThrow(\Throwable::class));
+    });
+
+    it('onCreated reaches generateMigration for valid user in dev env', function () {
+        withEnv('dev', fn () => expect(fn () => $this->listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onUpdated skips anonymous user in dev env', function () {
+        $anonUser = $this->getMockBuilder(User::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $anonUser->method('__get')->willReturnCallback(fn (string $prop) => match ($prop) {
+            'id' => 10,
+            'login' => 'anonymous',
+            default => null,
+        });
+        $event = new UpdateUserEvent($anonUser, $anonUser, new UserUpdateStruct());
+
+        withEnv('dev', fn () => expect(fn () => $this->listener->onUpdated($event))->not->toThrow(\Throwable::class));
+    });
+
+    it('onUpdated reaches generateMigration for valid user in dev env', function () {
+        withEnv('dev', fn () => expect(fn () => $this->listener->onUpdated($this->updateEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onBeforeDeleted skips anonymous user in dev env', function () {
+        $anonUser = $this->getMockBuilder(User::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $anonUser->method('__get')->willReturnCallback(fn (string $prop) => match ($prop) {
+            'id' => 10,
+            'login' => 'anonymous',
+            default => null,
+        });
+        $event = new BeforeDeleteUserEvent($anonUser);
+
+        withEnv('dev', fn () => expect(fn () => $this->listener->onBeforeDeleted($event))->not->toThrow(\Throwable::class));
+    });
+
+    it('onBeforeDeleted reaches generateMigration for valid user in dev env', function () {
+        withEnv('dev', fn () => expect(fn () => $this->listener->onBeforeDeleted($this->deleteEvent))->not->toThrow(\Throwable::class));
     });
 });
