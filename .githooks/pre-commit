@@ -149,7 +149,7 @@ printf "${YELLOW}Pest Unit Tests${NC}\n"
 if $HAS_PEST; then
     if time exec $PEST --testdox --colors=always; then
       # All good, also re-generate clover.xml
-        $PEST --coverage-clover clover.xml
+        $PEST --coverage --coverage-clover clover.xml
         printf "${GREEN}Pest tests passed${NC}\n"
     else
       PASS=false
