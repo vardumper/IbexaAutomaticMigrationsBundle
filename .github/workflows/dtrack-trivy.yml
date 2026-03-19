@@ -1,6 +1,7 @@
 name: Workflow for Depency Track and Trivy
 env:
   BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 on:
   push:
     paths:
@@ -38,9 +39,9 @@ jobs:
           ls -lart composer.lock
 
       - name: Install trivy
-        run: |
-          sudo apt-get update
-          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin v0.60.0
+        uses: aquasecurity/setup-trivy@v0.2.3
+        with:
+          version: v0.60.0
       - name: Create CycloneDX SBOM with Trivy
         run: trivy fs --skip-files vendor/rector/swiss-knife/vendor/composer/installed.json,vendor/symplify/easy-coding-standard/vendor/composer/installed.json --format cyclonedx --include-dev-deps --output sbom.json --severity HIGH,CRITICAL,MEDIUM --scanners vuln,license,secret --debug ./
 
