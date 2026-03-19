@@ -1,0 +1,6649 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:ac55917c-94ae-4080-ae15-1b4510973d9b",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-03-19T07:19:09+00:00",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "manufacturer": {
+            "name": "Aqua Security Software Ltd."
+          },
+          "group": "aquasecurity",
+          "name": "trivy",
+          "version": "0.69.3"
+        }
+      ]
+    },
+    "component": {
+      "bom-ref": "63757446-363b-480f-b058-687a2d5fd6a3",
+      "type": "application",
+      "name": ".",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:SchemaVersion",
+          "value": "2"
+        }
+      ]
+    }
+  },
+  "components": [
+    {
+      "bom-ref": "7b128a03-a03c-4bec-939f-2e349e2b4053",
+      "type": "application",
+      "name": "composer.lock",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:Class",
+          "value": "lang-pkgs"
+        },
+        {
+          "name": "aquasecurity:trivy:Type",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/api-platform/core@v4.1.28",
+      "type": "library",
+      "name": "api-platform/core",
+      "version": "v4.1.28",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/api-platform/core@v4.1.28",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "api-platform/core@v4.1.28"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/babdev/pagerfanta-bundle@v4.6.0",
+      "type": "library",
+      "name": "babdev/pagerfanta-bundle",
+      "version": "v4.6.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/babdev/pagerfanta-bundle@v4.6.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "babdev/pagerfanta-bundle@v4.6.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/brainmaestro/composer-git-hooks@dev-master",
+      "type": "library",
+      "name": "brainmaestro/composer-git-hooks",
+      "version": "dev-master",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/brainmaestro/composer-git-hooks@dev-master",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "brainmaestro/composer-git-hooks@dev-master"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/brianium/paratest@v7.19.0",
+      "type": "library",
+      "name": "brianium/paratest",
+      "version": "v7.19.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/brianium/paratest@v7.19.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "brianium/paratest@v7.19.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/clue/ndjson-react@v1.3.0",
+      "type": "library",
+      "name": "clue/ndjson-react",
+      "version": "v1.3.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/clue/ndjson-react@v1.3.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "clue/ndjson-react@v1.3.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/clue/stream-filter@v1.7.0",
+      "type": "library",
+      "name": "clue/stream-filter",
+      "version": "v1.7.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/clue/stream-filter@v1.7.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "clue/stream-filter@v1.7.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/composer/package-versions-deprecated@1.11.99.5",
+      "type": "library",
+      "name": "composer/package-versions-deprecated",
+      "version": "1.11.99.5",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/composer/package-versions-deprecated@1.11.99.5",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "composer/package-versions-deprecated@1.11.99.5"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/composer/pcre@3.3.2",
+      "type": "library",
+      "name": "composer/pcre",
+      "version": "3.3.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/composer/pcre@3.3.2",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "composer/pcre@3.3.2"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/composer/semver@3.4.4",
+      "type": "library",
+      "name": "composer/semver",
+      "version": "3.4.4",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/composer/semver@3.4.4",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "composer/semver@3.4.4"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/composer/xdebug-handler@3.0.5",
+      "type": "library",
+      "name": "composer/xdebug-handler",
+      "version": "3.0.5",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/composer/xdebug-handler@3.0.5",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "composer/xdebug-handler@3.0.5"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/doctrine/annotations@2.0.2",
+      "type": "library",
+      "name": "doctrine/annotations",
+      "version": "2.0.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/doctrine/annotations@2.0.2",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "doctrine/annotations@2.0.2"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/doctrine/cache@2.2.0",
+      "type": "library",
+      "name": "doctrine/cache",
+      "version": "2.2.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/doctrine/cache@2.2.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "doctrine/cache@2.2.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/doctrine/collections@2.6.0",
+      "type": "library",
+      "name": "doctrine/collections",
+      "version": "2.6.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/doctrine/collections@2.6.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "doctrine/collections@2.6.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/doctrine/common@3.5.0",
+      "type": "library",
+      "name": "doctrine/common",
+      "version": "3.5.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/doctrine/common@3.5.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "doctrine/common@3.5.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/doctrine/dbal@3.10.5",
+      "type": "library",
+      "name": "doctrine/dbal",
+      "version": "3.10.5",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/doctrine/dbal@3.10.5",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "doctrine/dbal@3.10.5"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/doctrine/deprecations@1.1.6",
+      "type": "library",
+      "name": "doctrine/deprecations",
+      "version": "1.1.6",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/doctrine/deprecations@1.1.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "doctrine/deprecations@1.1.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/doctrine/doctrine-bundle@2.18.2",
+      "type": "library",
+      "name": "doctrine/doctrine-bundle",
+      "version": "2.18.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/doctrine/doctrine-bundle@2.18.2",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "doctrine/doctrine-bundle@2.18.2"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/doctrine/event-manager@2.1.1",
+      "type": "library",
+      "name": "doctrine/event-manager",
+      "version": "2.1.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/doctrine/event-manager@2.1.1",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "doctrine/event-manager@2.1.1"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/doctrine/inflector@2.1.0",
+      "type": "library",
+      "name": "doctrine/inflector",
+      "version": "2.1.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/doctrine/inflector@2.1.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "doctrine/inflector@2.1.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/doctrine/instantiator@2.1.0",
+      "type": "library",
+      "name": "doctrine/instantiator",
+      "version": "2.1.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/doctrine/instantiator@2.1.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "doctrine/instantiator@2.1.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/doctrine/lexer@3.0.1",
+      "type": "library",
+      "name": "doctrine/lexer",
+      "version": "3.0.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/doctrine/lexer@3.0.1",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "doctrine/lexer@3.0.1"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/doctrine/orm@2.20.9",
+      "type": "library",
+      "name": "doctrine/orm",
+      "version": "2.20.9",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/doctrine/orm@2.20.9",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "doctrine/orm@2.20.9"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/doctrine/persistence@3.4.3",
+      "type": "library",
+      "name": "doctrine/persistence",
+      "version": "3.4.3",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/doctrine/persistence@3.4.3",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "doctrine/persistence@3.4.3"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/doctrine/sql-formatter@1.5.4",
+      "type": "library",
+      "name": "doctrine/sql-formatter",
+      "version": "1.5.4",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/doctrine/sql-formatter@1.5.4",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "doctrine/sql-formatter@1.5.4"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/egulias/email-validator@4.0.4",
+      "type": "library",
+      "name": "egulias/email-validator",
+      "version": "4.0.4",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/egulias/email-validator@4.0.4",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "egulias/email-validator@4.0.4"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/evenement/evenement@v3.0.2",
+      "type": "library",
+      "name": "evenement/evenement",
+      "version": "v3.0.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/evenement/evenement@v3.0.2",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "evenement/evenement@v3.0.2"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/fidry/cpu-core-counter@1.3.0",
+      "type": "library",
+      "name": "fidry/cpu-core-counter",
+      "version": "1.3.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/fidry/cpu-core-counter@1.3.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "fidry/cpu-core-counter@1.3.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/filp/whoops@2.18.4",
+      "type": "library",
+      "name": "filp/whoops",
+      "version": "2.18.4",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/filp/whoops@2.18.4",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "filp/whoops@2.18.4"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/friendsofphp/php-cs-fixer@v3.94.2",
+      "type": "library",
+      "name": "friendsofphp/php-cs-fixer",
+      "version": "v3.94.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/friendsofphp/php-cs-fixer@v3.94.2",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "friendsofphp/php-cs-fixer@v3.94.2"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/friendsofphp/proxy-manager-lts@v1.0.19",
+      "type": "library",
+      "name": "friendsofphp/proxy-manager-lts",
+      "version": "v1.0.19",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/friendsofphp/proxy-manager-lts@v1.0.19",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "friendsofphp/proxy-manager-lts@v1.0.19"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/friendsofsymfony/http-cache-bundle@3.4.0",
+      "type": "library",
+      "name": "friendsofsymfony/http-cache-bundle",
+      "version": "3.4.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/friendsofsymfony/http-cache-bundle@3.4.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "friendsofsymfony/http-cache-bundle@3.4.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/friendsofsymfony/http-cache@3.2.0",
+      "type": "library",
+      "name": "friendsofsymfony/http-cache",
+      "version": "3.2.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/friendsofsymfony/http-cache@3.2.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "friendsofsymfony/http-cache@3.2.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/friendsofsymfony/jsrouting-bundle@3.6.1",
+      "type": "library",
+      "name": "friendsofsymfony/jsrouting-bundle",
+      "version": "3.6.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/friendsofsymfony/jsrouting-bundle@3.6.1",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "friendsofsymfony/jsrouting-bundle@3.6.1"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/guzzlehttp/promises@2.3.0",
+      "type": "library",
+      "name": "guzzlehttp/promises",
+      "version": "2.3.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/guzzlehttp/promises@2.3.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "guzzlehttp/promises@2.3.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/ibexa/admin-ui@v5.0.6",
+      "type": "library",
+      "name": "ibexa/admin-ui",
+      "version": "v5.0.6",
+      "licenses": [
+        {
+          "license": {
+            "name": "GPL-2.0-only OR proprietary"
+          }
+        }
+      ],
+      "purl": "pkg:composer/ibexa/admin-ui@v5.0.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "ibexa/admin-ui@v5.0.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/ibexa/content-forms@v5.0.6",
+      "type": "library",
+      "name": "ibexa/content-forms",
+      "version": "v5.0.6",
+      "licenses": [
+        {
+          "license": {
+            "name": "GPL-2.0-only OR proprietary"
+          }
+        }
+      ],
+      "purl": "pkg:composer/ibexa/content-forms@v5.0.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "ibexa/content-forms@v5.0.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/ibexa/core@v5.0.6",
+      "type": "library",
+      "name": "ibexa/core",
+      "version": "v5.0.6",
+      "licenses": [
+        {
+          "license": {
+            "name": "GPL-2.0-only OR proprietary"
+          }
+        }
+      ],
+      "purl": "pkg:composer/ibexa/core@v5.0.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "ibexa/core@v5.0.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/ibexa/design-engine@v5.0.6",
+      "type": "library",
+      "name": "ibexa/design-engine",
+      "version": "v5.0.6",
+      "licenses": [
+        {
+          "license": {
+            "name": "GPL-2.0-only OR proprietary"
+          }
+        }
+      ],
+      "purl": "pkg:composer/ibexa/design-engine@v5.0.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "ibexa/design-engine@v5.0.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/ibexa/doctrine-schema@v5.0.6",
+      "type": "library",
+      "name": "ibexa/doctrine-schema",
+      "version": "v5.0.6",
+      "licenses": [
+        {
+          "license": {
+            "name": "GPL-2.0-only OR proprietary"
+          }
+        }
+      ],
+      "purl": "pkg:composer/ibexa/doctrine-schema@v5.0.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "ibexa/doctrine-schema@v5.0.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/ibexa/notifications@v5.0.6",
+      "type": "library",
+      "name": "ibexa/notifications",
+      "version": "v5.0.6",
+      "licenses": [
+        {
+          "license": {
+            "name": "GPL-2.0-only OR proprietary"
+          }
+        }
+      ],
+      "purl": "pkg:composer/ibexa/notifications@v5.0.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "ibexa/notifications@v5.0.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/ibexa/polyfill-php82@v1.0.1",
+      "type": "library",
+      "name": "ibexa/polyfill-php82",
+      "version": "v1.0.1",
+      "licenses": [
+        {
+          "license": {
+            "name": "GPL-2.0-only OR proprietary"
+          }
+        }
+      ],
+      "purl": "pkg:composer/ibexa/polyfill-php82@v1.0.1",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "ibexa/polyfill-php82@v1.0.1"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/ibexa/rest@v5.0.6",
+      "type": "library",
+      "name": "ibexa/rest",
+      "version": "v5.0.6",
+      "licenses": [
+        {
+          "license": {
+            "name": "GPL-2.0-only OR proprietary"
+          }
+        }
+      ],
+      "purl": "pkg:composer/ibexa/rest@v5.0.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "ibexa/rest@v5.0.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/ibexa/search@v5.0.6",
+      "type": "library",
+      "name": "ibexa/search",
+      "version": "v5.0.6",
+      "licenses": [
+        {
+          "license": {
+            "name": "GPL-2.0-only OR proprietary"
+          }
+        }
+      ],
+      "purl": "pkg:composer/ibexa/search@v5.0.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "ibexa/search@v5.0.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/ibexa/templated-uri-bundle@4.0.0",
+      "type": "library",
+      "name": "ibexa/templated-uri-bundle",
+      "version": "4.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/ibexa/templated-uri-bundle@4.0.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "ibexa/templated-uri-bundle@4.0.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/ibexa/templated-uri-router@5.0.0",
+      "type": "library",
+      "name": "ibexa/templated-uri-router",
+      "version": "5.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/ibexa/templated-uri-router@5.0.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "ibexa/templated-uri-router@5.0.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/ibexa/twig-components@v5.0.6",
+      "type": "library",
+      "name": "ibexa/twig-components",
+      "version": "v5.0.6",
+      "licenses": [
+        {
+          "license": {
+            "name": "GPL-2.0-only OR proprietary"
+          }
+        }
+      ],
+      "purl": "pkg:composer/ibexa/twig-components@v5.0.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "ibexa/twig-components@v5.0.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/ibexa/user@v5.0.6",
+      "type": "library",
+      "name": "ibexa/user",
+      "version": "v5.0.6",
+      "licenses": [
+        {
+          "license": {
+            "name": "GPL-2.0-only OR proprietary"
+          }
+        }
+      ],
+      "purl": "pkg:composer/ibexa/user@v5.0.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "ibexa/user@v5.0.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/imagine/imagine@1.5.2",
+      "type": "library",
+      "name": "imagine/imagine",
+      "version": "1.5.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/imagine/imagine@1.5.2",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "imagine/imagine@1.5.2"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/jean85/pretty-package-versions@2.1.1",
+      "type": "library",
+      "name": "jean85/pretty-package-versions",
+      "version": "2.1.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/jean85/pretty-package-versions@2.1.1",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "jean85/pretty-package-versions@2.1.1"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/jms/translation-bundle@2.6.0",
+      "type": "library",
+      "name": "jms/translation-bundle",
+      "version": "2.6.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "purl": "pkg:composer/jms/translation-bundle@2.6.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "jms/translation-bundle@2.6.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/knplabs/knp-menu-bundle@v3.7.0",
+      "type": "library",
+      "name": "knplabs/knp-menu-bundle",
+      "version": "v3.7.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/knplabs/knp-menu-bundle@v3.7.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "knplabs/knp-menu-bundle@v3.7.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/knplabs/knp-menu@v3.8.0",
+      "type": "library",
+      "name": "knplabs/knp-menu",
+      "version": "v3.8.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/knplabs/knp-menu@v3.8.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "knplabs/knp-menu@v3.8.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/laminas/laminas-code@4.17.0",
+      "type": "library",
+      "name": "laminas/laminas-code",
+      "version": "4.17.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/laminas/laminas-code@4.17.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "laminas/laminas-code@4.17.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/lcobucci/clock@3.5.0",
+      "type": "library",
+      "name": "lcobucci/clock",
+      "version": "3.5.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/lcobucci/clock@3.5.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "lcobucci/clock@3.5.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/lcobucci/jwt@5.6.0",
+      "type": "library",
+      "name": "lcobucci/jwt",
+      "version": "5.6.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/lcobucci/jwt@5.6.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "lcobucci/jwt@5.6.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/league/flysystem-memory@2.0.6",
+      "type": "library",
+      "name": "league/flysystem-memory",
+      "version": "2.0.6",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/league/flysystem-memory@2.0.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "league/flysystem-memory@2.0.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/league/flysystem@2.5.0",
+      "type": "library",
+      "name": "league/flysystem",
+      "version": "2.5.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/league/flysystem@2.5.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "league/flysystem@2.5.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/league/mime-type-detection@1.16.0",
+      "type": "library",
+      "name": "league/mime-type-detection",
+      "version": "1.16.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/league/mime-type-detection@1.16.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "league/mime-type-detection@1.16.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/lexik/jwt-authentication-bundle@v2.21.0",
+      "type": "library",
+      "name": "lexik/jwt-authentication-bundle",
+      "version": "v2.21.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/lexik/jwt-authentication-bundle@v2.21.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "lexik/jwt-authentication-bundle@v2.21.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/liip/imagine-bundle@2.17.1",
+      "type": "library",
+      "name": "liip/imagine-bundle",
+      "version": "2.17.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/liip/imagine-bundle@2.17.1",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "liip/imagine-bundle@2.17.1"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/lorenzo/pinky@1.1.0",
+      "type": "library",
+      "name": "lorenzo/pinky",
+      "version": "1.1.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/lorenzo/pinky@1.1.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "lorenzo/pinky@1.1.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/mck89/peast@v1.17.5",
+      "type": "library",
+      "name": "mck89/peast",
+      "version": "v1.17.5",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/mck89/peast@v1.17.5",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "mck89/peast@v1.17.5"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/mrk-te/ibexa-migration-bundle2@3.0.0",
+      "type": "library",
+      "name": "mrk-te/ibexa-migration-bundle2",
+      "version": "3.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "GPL-2.0-only"
+          }
+        }
+      ],
+      "purl": "pkg:composer/mrk-te/ibexa-migration-bundle2@3.0.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "mrk-te/ibexa-migration-bundle2@3.0.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/mtdowling/jmespath.php@2.8.0",
+      "type": "library",
+      "name": "mtdowling/jmespath.php",
+      "version": "2.8.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/mtdowling/jmespath.php@2.8.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "mtdowling/jmespath.php@2.8.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/myclabs/deep-copy@1.13.4",
+      "type": "library",
+      "name": "myclabs/deep-copy",
+      "version": "1.13.4",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/myclabs/deep-copy@1.13.4",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "myclabs/deep-copy@1.13.4"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/namshi/jose@7.2.3",
+      "type": "library",
+      "name": "namshi/jose",
+      "version": "7.2.3",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/namshi/jose@7.2.3",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "namshi/jose@7.2.3"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/nelmio/cors-bundle@2.6.1",
+      "type": "library",
+      "name": "nelmio/cors-bundle",
+      "version": "2.6.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/nelmio/cors-bundle@2.6.1",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "nelmio/cors-bundle@2.6.1"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/nikic/php-parser@v5.7.0",
+      "type": "library",
+      "name": "nikic/php-parser",
+      "version": "v5.7.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/nikic/php-parser@v5.7.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "nikic/php-parser@v5.7.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/nunomaduro/collision@v8.9.1",
+      "type": "library",
+      "name": "nunomaduro/collision",
+      "version": "v8.9.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/nunomaduro/collision@v8.9.1",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "nunomaduro/collision@v8.9.1"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/nunomaduro/termwind@v2.4.0",
+      "type": "library",
+      "name": "nunomaduro/termwind",
+      "version": "v2.4.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/nunomaduro/termwind@v2.4.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "nunomaduro/termwind@v2.4.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/nyholm/psr7@1.8.2",
+      "type": "library",
+      "name": "nyholm/psr7",
+      "version": "1.8.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/nyholm/psr7@1.8.2",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "nyholm/psr7@1.8.2"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/oneup/flysystem-bundle@4.14.1",
+      "type": "library",
+      "name": "oneup/flysystem-bundle",
+      "version": "4.14.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/oneup/flysystem-bundle@4.14.1",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "oneup/flysystem-bundle@4.14.1"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/pagerfanta/pagerfanta@v3.8.0",
+      "type": "library",
+      "name": "pagerfanta/pagerfanta",
+      "version": "v3.8.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/pagerfanta/pagerfanta@v3.8.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "pagerfanta/pagerfanta@v3.8.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/pestphp/pest-plugin-arch@v4.0.0",
+      "type": "library",
+      "name": "pestphp/pest-plugin-arch",
+      "version": "v4.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/pestphp/pest-plugin-arch@v4.0.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "pestphp/pest-plugin-arch@v4.0.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/pestphp/pest-plugin-mutate@v4.0.1",
+      "type": "library",
+      "name": "pestphp/pest-plugin-mutate",
+      "version": "v4.0.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/pestphp/pest-plugin-mutate@v4.0.1",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "pestphp/pest-plugin-mutate@v4.0.1"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/pestphp/pest-plugin-profanity@v4.2.1",
+      "type": "library",
+      "name": "pestphp/pest-plugin-profanity",
+      "version": "v4.2.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/pestphp/pest-plugin-profanity@v4.2.1",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "pestphp/pest-plugin-profanity@v4.2.1"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/pestphp/pest-plugin@v4.0.0",
+      "type": "library",
+      "name": "pestphp/pest-plugin",
+      "version": "v4.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/pestphp/pest-plugin@v4.0.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "pestphp/pest-plugin@v4.0.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/pestphp/pest@v4.4.2",
+      "type": "library",
+      "name": "pestphp/pest",
+      "version": "v4.4.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/pestphp/pest@v4.4.2",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "pestphp/pest@v4.4.2"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/phar-io/manifest@2.0.4",
+      "type": "library",
+      "name": "phar-io/manifest",
+      "version": "2.0.4",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/phar-io/manifest@2.0.4",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "phar-io/manifest@2.0.4"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/phar-io/version@3.2.1",
+      "type": "library",
+      "name": "phar-io/version",
+      "version": "3.2.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/phar-io/version@3.2.1",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "phar-io/version@3.2.1"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/php-http/client-common@2.7.3",
+      "type": "library",
+      "name": "php-http/client-common",
+      "version": "2.7.3",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/php-http/client-common@2.7.3",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "php-http/client-common@2.7.3"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/php-http/discovery@1.20.0",
+      "type": "library",
+      "name": "php-http/discovery",
+      "version": "1.20.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/php-http/discovery@1.20.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "php-http/discovery@1.20.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/php-http/httplug@2.4.1",
+      "type": "library",
+      "name": "php-http/httplug",
+      "version": "2.4.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/php-http/httplug@2.4.1",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "php-http/httplug@2.4.1"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/php-http/message@1.16.2",
+      "type": "library",
+      "name": "php-http/message",
+      "version": "1.16.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/php-http/message@1.16.2",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "php-http/message@1.16.2"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/php-http/promise@1.3.1",
+      "type": "library",
+      "name": "php-http/promise",
+      "version": "1.3.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/php-http/promise@1.3.1",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "php-http/promise@1.3.1"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/phpdocumentor/reflection-common@2.2.0",
+      "type": "library",
+      "name": "phpdocumentor/reflection-common",
+      "version": "2.2.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/phpdocumentor/reflection-common@2.2.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "phpdocumentor/reflection-common@2.2.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/phpdocumentor/reflection-docblock@6.0.3",
+      "type": "library",
+      "name": "phpdocumentor/reflection-docblock",
+      "version": "6.0.3",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/phpdocumentor/reflection-docblock@6.0.3",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "phpdocumentor/reflection-docblock@6.0.3"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/phpdocumentor/type-resolver@2.0.0",
+      "type": "library",
+      "name": "phpdocumentor/type-resolver",
+      "version": "2.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/phpdocumentor/type-resolver@2.0.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "phpdocumentor/type-resolver@2.0.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/phpstan/phpdoc-parser@2.3.2",
+      "type": "library",
+      "name": "phpstan/phpdoc-parser",
+      "version": "2.3.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/phpstan/phpdoc-parser@2.3.2",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "phpstan/phpdoc-parser@2.3.2"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/phpstan/phpstan@2.1.42",
+      "type": "library",
+      "name": "phpstan/phpstan",
+      "version": "2.1.42",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/phpstan/phpstan@2.1.42",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "phpstan/phpstan@2.1.42"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/phpunit/php-code-coverage@12.5.3",
+      "type": "library",
+      "name": "phpunit/php-code-coverage",
+      "version": "12.5.3",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/phpunit/php-code-coverage@12.5.3",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "phpunit/php-code-coverage@12.5.3"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/phpunit/php-file-iterator@6.0.1",
+      "type": "library",
+      "name": "phpunit/php-file-iterator",
+      "version": "6.0.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/phpunit/php-file-iterator@6.0.1",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "phpunit/php-file-iterator@6.0.1"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/phpunit/php-invoker@6.0.0",
+      "type": "library",
+      "name": "phpunit/php-invoker",
+      "version": "6.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/phpunit/php-invoker@6.0.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "phpunit/php-invoker@6.0.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/phpunit/php-text-template@5.0.0",
+      "type": "library",
+      "name": "phpunit/php-text-template",
+      "version": "5.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/phpunit/php-text-template@5.0.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "phpunit/php-text-template@5.0.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/phpunit/php-timer@8.0.0",
+      "type": "library",
+      "name": "phpunit/php-timer",
+      "version": "8.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/phpunit/php-timer@8.0.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "phpunit/php-timer@8.0.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/phpunit/phpunit@12.5.12",
+      "type": "library",
+      "name": "phpunit/phpunit",
+      "version": "12.5.12",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/phpunit/phpunit@12.5.12",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "phpunit/phpunit@12.5.12"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/psr/cache@3.0.0",
+      "type": "library",
+      "name": "psr/cache",
+      "version": "3.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/psr/cache@3.0.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "psr/cache@3.0.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/psr/clock@1.0.0",
+      "type": "library",
+      "name": "psr/clock",
+      "version": "1.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/psr/clock@1.0.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "psr/clock@1.0.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/psr/container@2.0.2",
+      "type": "library",
+      "name": "psr/container",
+      "version": "2.0.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/psr/container@2.0.2",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "psr/container@2.0.2"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/psr/event-dispatcher@1.0.0",
+      "type": "library",
+      "name": "psr/event-dispatcher",
+      "version": "1.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/psr/event-dispatcher@1.0.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "psr/event-dispatcher@1.0.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/psr/http-client@1.0.3",
+      "type": "library",
+      "name": "psr/http-client",
+      "version": "1.0.3",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/psr/http-client@1.0.3",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "psr/http-client@1.0.3"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/psr/http-factory@1.1.0",
+      "type": "library",
+      "name": "psr/http-factory",
+      "version": "1.1.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/psr/http-factory@1.1.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "psr/http-factory@1.1.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/psr/http-message@2.0",
+      "type": "library",
+      "name": "psr/http-message",
+      "version": "2.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/psr/http-message@2.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "psr/http-message@2.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/psr/link@2.0.1",
+      "type": "library",
+      "name": "psr/link",
+      "version": "2.0.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/psr/link@2.0.1",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "psr/link@2.0.1"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/psr/log@3.0.2",
+      "type": "library",
+      "name": "psr/log",
+      "version": "3.0.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/psr/log@3.0.2",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "psr/log@3.0.2"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/psr/simple-cache@3.0.0",
+      "type": "library",
+      "name": "psr/simple-cache",
+      "version": "3.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/psr/simple-cache@3.0.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "psr/simple-cache@3.0.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/react/cache@v1.2.0",
+      "type": "library",
+      "name": "react/cache",
+      "version": "v1.2.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/react/cache@v1.2.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "react/cache@v1.2.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/react/child-process@v0.6.7",
+      "type": "library",
+      "name": "react/child-process",
+      "version": "v0.6.7",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/react/child-process@v0.6.7",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "react/child-process@v0.6.7"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/react/dns@v1.14.0",
+      "type": "library",
+      "name": "react/dns",
+      "version": "v1.14.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/react/dns@v1.14.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "react/dns@v1.14.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/react/event-loop@v1.6.0",
+      "type": "library",
+      "name": "react/event-loop",
+      "version": "v1.6.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/react/event-loop@v1.6.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "react/event-loop@v1.6.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/react/promise@v3.3.0",
+      "type": "library",
+      "name": "react/promise",
+      "version": "v3.3.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/react/promise@v3.3.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "react/promise@v3.3.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/react/socket@v1.17.0",
+      "type": "library",
+      "name": "react/socket",
+      "version": "v1.17.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/react/socket@v1.17.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "react/socket@v1.17.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/react/stream@v1.4.0",
+      "type": "library",
+      "name": "react/stream",
+      "version": "v1.4.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/react/stream@v1.4.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "react/stream@v1.4.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/rector/swiss-knife@2.3.5",
+      "type": "library",
+      "name": "rector/swiss-knife",
+      "version": "2.3.5",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/rector/swiss-knife@2.3.5",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "rector/swiss-knife@2.3.5"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/sebastian/cli-parser@4.2.0",
+      "type": "library",
+      "name": "sebastian/cli-parser",
+      "version": "4.2.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/sebastian/cli-parser@4.2.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "sebastian/cli-parser@4.2.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/sebastian/comparator@7.1.4",
+      "type": "library",
+      "name": "sebastian/comparator",
+      "version": "7.1.4",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/sebastian/comparator@7.1.4",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "sebastian/comparator@7.1.4"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/sebastian/complexity@5.0.0",
+      "type": "library",
+      "name": "sebastian/complexity",
+      "version": "5.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/sebastian/complexity@5.0.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "sebastian/complexity@5.0.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/sebastian/diff@7.0.0",
+      "type": "library",
+      "name": "sebastian/diff",
+      "version": "7.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/sebastian/diff@7.0.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "sebastian/diff@7.0.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/sebastian/environment@8.0.4",
+      "type": "library",
+      "name": "sebastian/environment",
+      "version": "8.0.4",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/sebastian/environment@8.0.4",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "sebastian/environment@8.0.4"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/sebastian/exporter@7.0.2",
+      "type": "library",
+      "name": "sebastian/exporter",
+      "version": "7.0.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/sebastian/exporter@7.0.2",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "sebastian/exporter@7.0.2"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/sebastian/global-state@8.0.2",
+      "type": "library",
+      "name": "sebastian/global-state",
+      "version": "8.0.2",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/sebastian/global-state@8.0.2",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "sebastian/global-state@8.0.2"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/sebastian/lines-of-code@4.0.0",
+      "type": "library",
+      "name": "sebastian/lines-of-code",
+      "version": "4.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/sebastian/lines-of-code@4.0.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "sebastian/lines-of-code@4.0.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/sebastian/object-enumerator@7.0.0",
+      "type": "library",
+      "name": "sebastian/object-enumerator",
+      "version": "7.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/sebastian/object-enumerator@7.0.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "sebastian/object-enumerator@7.0.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/sebastian/object-reflector@5.0.0",
+      "type": "library",
+      "name": "sebastian/object-reflector",
+      "version": "5.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/sebastian/object-reflector@5.0.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "sebastian/object-reflector@5.0.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/sebastian/recursion-context@7.0.1",
+      "type": "library",
+      "name": "sebastian/recursion-context",
+      "version": "7.0.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/sebastian/recursion-context@7.0.1",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "sebastian/recursion-context@7.0.1"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/sebastian/type@6.0.3",
+      "type": "library",
+      "name": "sebastian/type",
+      "version": "6.0.3",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/sebastian/type@6.0.3",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "sebastian/type@6.0.3"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/sebastian/version@6.0.0",
+      "type": "library",
+      "name": "sebastian/version",
+      "version": "6.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/sebastian/version@6.0.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "sebastian/version@6.0.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/staabm/side-effects-detector@1.0.5",
+      "type": "library",
+      "name": "staabm/side-effects-detector",
+      "version": "1.0.5",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/staabm/side-effects-detector@1.0.5",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "staabm/side-effects-detector@1.0.5"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony-cmf/routing@3.0.5",
+      "type": "library",
+      "name": "symfony-cmf/routing",
+      "version": "3.0.5",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony-cmf/routing@3.0.5",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony-cmf/routing@3.0.5"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/asset@v7.4.6",
+      "type": "library",
+      "name": "symfony/asset",
+      "version": "v7.4.6",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/asset@v7.4.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/asset@v7.4.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/cache-contracts@v3.6.0",
+      "type": "library",
+      "name": "symfony/cache-contracts",
+      "version": "v3.6.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/cache-contracts@v3.6.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/cache-contracts@v3.6.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/cache@v7.4.7",
+      "type": "library",
+      "name": "symfony/cache",
+      "version": "v7.4.7",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/cache@v7.4.7",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/cache@v7.4.7"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/clock@v8.0.0",
+      "type": "library",
+      "name": "symfony/clock",
+      "version": "v8.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/clock@v8.0.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/clock@v8.0.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/config@v7.4.7",
+      "type": "library",
+      "name": "symfony/config",
+      "version": "v7.4.7",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/config@v7.4.7",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/config@v7.4.7"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/console@v7.4.7",
+      "type": "library",
+      "name": "symfony/console",
+      "version": "v7.4.7",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/console@v7.4.7",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/console@v7.4.7"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/css-selector@v8.0.6",
+      "type": "library",
+      "name": "symfony/css-selector",
+      "version": "v8.0.6",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/css-selector@v8.0.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/css-selector@v8.0.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/dependency-injection@v7.4.7",
+      "type": "library",
+      "name": "symfony/dependency-injection",
+      "version": "v7.4.7",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/dependency-injection@v7.4.7",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/dependency-injection@v7.4.7"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+      "type": "library",
+      "name": "symfony/deprecation-contracts",
+      "version": "v3.6.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/deprecation-contracts@v3.6.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/doctrine-bridge@v7.3.10",
+      "type": "library",
+      "name": "symfony/doctrine-bridge",
+      "version": "v7.3.10",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/doctrine-bridge@v7.3.10",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/doctrine-bridge@v7.3.10"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/error-handler@v8.0.4",
+      "type": "library",
+      "name": "symfony/error-handler",
+      "version": "v8.0.4",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/error-handler@v8.0.4",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/error-handler@v8.0.4"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/event-dispatcher-contracts@v3.6.0",
+      "type": "library",
+      "name": "symfony/event-dispatcher-contracts",
+      "version": "v3.6.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/event-dispatcher-contracts@v3.6.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/event-dispatcher-contracts@v3.6.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/event-dispatcher@v7.4.4",
+      "type": "library",
+      "name": "symfony/event-dispatcher",
+      "version": "v7.4.4",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/event-dispatcher@v7.4.4",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/event-dispatcher@v7.4.4"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/expression-language@v7.4.4",
+      "type": "library",
+      "name": "symfony/expression-language",
+      "version": "v7.4.4",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/expression-language@v7.4.4",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/expression-language@v7.4.4"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/filesystem@v7.4.6",
+      "type": "library",
+      "name": "symfony/filesystem",
+      "version": "v7.4.6",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/filesystem@v7.4.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/filesystem@v7.4.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/finder@v7.4.6",
+      "type": "library",
+      "name": "symfony/finder",
+      "version": "v7.4.6",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/finder@v7.4.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/finder@v7.4.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/form@v7.4.7",
+      "type": "library",
+      "name": "symfony/form",
+      "version": "v7.4.7",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/form@v7.4.7",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/form@v7.4.7"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/framework-bundle@v7.4.7",
+      "type": "library",
+      "name": "symfony/framework-bundle",
+      "version": "v7.4.7",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/framework-bundle@v7.4.7",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/framework-bundle@v7.4.7"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/http-client-contracts@v3.6.0",
+      "type": "library",
+      "name": "symfony/http-client-contracts",
+      "version": "v3.6.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/http-client-contracts@v3.6.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/http-client-contracts@v3.6.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/http-client@v7.4.7",
+      "type": "library",
+      "name": "symfony/http-client",
+      "version": "v7.4.7",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/http-client@v7.4.7",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/http-client@v7.4.7"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/http-foundation@v7.4.7",
+      "type": "library",
+      "name": "symfony/http-foundation",
+      "version": "v7.4.7",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/http-foundation@v7.4.7",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/http-foundation@v7.4.7"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/http-kernel@v7.4.7",
+      "type": "library",
+      "name": "symfony/http-kernel",
+      "version": "v7.4.7",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/http-kernel@v7.4.7",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/http-kernel@v7.4.7"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/intl@v7.4.6",
+      "type": "library",
+      "name": "symfony/intl",
+      "version": "v7.4.6",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/intl@v7.4.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/intl@v7.4.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/mailer@v7.4.6",
+      "type": "library",
+      "name": "symfony/mailer",
+      "version": "v7.4.6",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/mailer@v7.4.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/mailer@v7.4.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/mime@v7.4.7",
+      "type": "library",
+      "name": "symfony/mime",
+      "version": "v7.4.7",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/mime@v7.4.7",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/mime@v7.4.7"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/notifier@v7.4.6",
+      "type": "library",
+      "name": "symfony/notifier",
+      "version": "v7.4.6",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/notifier@v7.4.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/notifier@v7.4.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/options-resolver@v7.4.0",
+      "type": "library",
+      "name": "symfony/options-resolver",
+      "version": "v7.4.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/options-resolver@v7.4.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/options-resolver@v7.4.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/password-hasher@v8.0.6",
+      "type": "library",
+      "name": "symfony/password-hasher",
+      "version": "v8.0.6",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/password-hasher@v8.0.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/password-hasher@v8.0.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/polyfill-ctype@v1.33.0",
+      "type": "library",
+      "name": "symfony/polyfill-ctype",
+      "version": "v1.33.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/polyfill-ctype@v1.33.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/polyfill-ctype@v1.33.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/polyfill-intl-grapheme@v1.33.0",
+      "type": "library",
+      "name": "symfony/polyfill-intl-grapheme",
+      "version": "v1.33.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/polyfill-intl-grapheme@v1.33.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/polyfill-intl-grapheme@v1.33.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/polyfill-intl-icu@v1.33.0",
+      "type": "library",
+      "name": "symfony/polyfill-intl-icu",
+      "version": "v1.33.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/polyfill-intl-icu@v1.33.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/polyfill-intl-icu@v1.33.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/polyfill-intl-idn@v1.33.0",
+      "type": "library",
+      "name": "symfony/polyfill-intl-idn",
+      "version": "v1.33.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/polyfill-intl-idn@v1.33.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/polyfill-intl-idn@v1.33.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/polyfill-intl-normalizer@v1.33.0",
+      "type": "library",
+      "name": "symfony/polyfill-intl-normalizer",
+      "version": "v1.33.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/polyfill-intl-normalizer@v1.33.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/polyfill-intl-normalizer@v1.33.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/polyfill-mbstring@v1.33.0",
+      "type": "library",
+      "name": "symfony/polyfill-mbstring",
+      "version": "v1.33.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/polyfill-mbstring@v1.33.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/polyfill-mbstring@v1.33.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/polyfill-php56@v1.20.0",
+      "type": "library",
+      "name": "symfony/polyfill-php56",
+      "version": "v1.20.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/polyfill-php56@v1.20.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/polyfill-php56@v1.20.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/polyfill-php72@v1.31.0",
+      "type": "library",
+      "name": "symfony/polyfill-php72",
+      "version": "v1.31.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/polyfill-php72@v1.31.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/polyfill-php72@v1.31.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/polyfill-php80@v1.33.0",
+      "type": "library",
+      "name": "symfony/polyfill-php80",
+      "version": "v1.33.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/polyfill-php80@v1.33.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/polyfill-php80@v1.33.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/polyfill-php81@v1.33.0",
+      "type": "library",
+      "name": "symfony/polyfill-php81",
+      "version": "v1.33.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/polyfill-php81@v1.33.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/polyfill-php81@v1.33.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/polyfill-php83@v1.33.0",
+      "type": "library",
+      "name": "symfony/polyfill-php83",
+      "version": "v1.33.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/polyfill-php83@v1.33.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/polyfill-php83@v1.33.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/polyfill-php84@v1.33.0",
+      "type": "library",
+      "name": "symfony/polyfill-php84",
+      "version": "v1.33.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/polyfill-php84@v1.33.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/polyfill-php84@v1.33.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/polyfill-php85@v1.33.0",
+      "type": "library",
+      "name": "symfony/polyfill-php85",
+      "version": "v1.33.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/polyfill-php85@v1.33.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/polyfill-php85@v1.33.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/process@v7.4.5",
+      "type": "library",
+      "name": "symfony/process",
+      "version": "v7.4.5",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/process@v7.4.5",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/process@v7.4.5"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/property-access@v7.4.4",
+      "type": "library",
+      "name": "symfony/property-access",
+      "version": "v7.4.4",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/property-access@v7.4.4",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/property-access@v7.4.4"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/property-info@v7.4.7",
+      "type": "library",
+      "name": "symfony/property-info",
+      "version": "v7.4.7",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/property-info@v7.4.7",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/property-info@v7.4.7"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/routing@v7.4.6",
+      "type": "library",
+      "name": "symfony/routing",
+      "version": "v7.4.6",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/routing@v7.4.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/routing@v7.4.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/security-bundle@v7.4.6",
+      "type": "library",
+      "name": "symfony/security-bundle",
+      "version": "v7.4.6",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/security-bundle@v7.4.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/security-bundle@v7.4.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/security-core@v7.4.4",
+      "type": "library",
+      "name": "symfony/security-core",
+      "version": "v7.4.4",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/security-core@v7.4.4",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/security-core@v7.4.4"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/security-csrf@v7.4.6",
+      "type": "library",
+      "name": "symfony/security-csrf",
+      "version": "v7.4.6",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/security-csrf@v7.4.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/security-csrf@v7.4.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/security-http@v7.4.6",
+      "type": "library",
+      "name": "symfony/security-http",
+      "version": "v7.4.6",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/security-http@v7.4.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/security-http@v7.4.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/serializer@v7.4.7",
+      "type": "library",
+      "name": "symfony/serializer",
+      "version": "v7.4.7",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/serializer@v7.4.7",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/serializer@v7.4.7"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/service-contracts@v3.6.1",
+      "type": "library",
+      "name": "symfony/service-contracts",
+      "version": "v3.6.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/service-contracts@v3.6.1",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/service-contracts@v3.6.1"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/stopwatch@v8.0.0",
+      "type": "library",
+      "name": "symfony/stopwatch",
+      "version": "v8.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/stopwatch@v8.0.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/stopwatch@v8.0.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/string@v8.0.6",
+      "type": "library",
+      "name": "symfony/string",
+      "version": "v8.0.6",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/string@v8.0.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/string@v8.0.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/templating@v6.4.24",
+      "type": "library",
+      "name": "symfony/templating",
+      "version": "v6.4.24",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/templating@v6.4.24",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/templating@v6.4.24"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/translation-contracts@v3.6.1",
+      "type": "library",
+      "name": "symfony/translation-contracts",
+      "version": "v3.6.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/translation-contracts@v3.6.1",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/translation-contracts@v3.6.1"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/translation@v7.4.6",
+      "type": "library",
+      "name": "symfony/translation",
+      "version": "v7.4.6",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/translation@v7.4.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/translation@v7.4.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/twig-bridge@v8.0.7",
+      "type": "library",
+      "name": "symfony/twig-bridge",
+      "version": "v8.0.7",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/twig-bridge@v8.0.7",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/twig-bridge@v8.0.7"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/twig-bundle@v7.4.4",
+      "type": "library",
+      "name": "symfony/twig-bundle",
+      "version": "v7.4.4",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/twig-bundle@v7.4.4",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/twig-bundle@v7.4.4"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/type-info@v7.4.7",
+      "type": "library",
+      "name": "symfony/type-info",
+      "version": "v7.4.7",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/type-info@v7.4.7",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/type-info@v7.4.7"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/validator@v7.3.11",
+      "type": "library",
+      "name": "symfony/validator",
+      "version": "v7.3.11",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/validator@v7.3.11",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/validator@v7.3.11"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/var-dumper@v7.4.6",
+      "type": "library",
+      "name": "symfony/var-dumper",
+      "version": "v7.4.6",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/var-dumper@v7.4.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/var-dumper@v7.4.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/var-exporter@v8.0.0",
+      "type": "library",
+      "name": "symfony/var-exporter",
+      "version": "v8.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/var-exporter@v8.0.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/var-exporter@v8.0.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/web-link@v7.4.4",
+      "type": "library",
+      "name": "symfony/web-link",
+      "version": "v7.4.4",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/web-link@v7.4.4",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/web-link@v7.4.4"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/webpack-encore-bundle@v2.4.0",
+      "type": "library",
+      "name": "symfony/webpack-encore-bundle",
+      "version": "v2.4.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/webpack-encore-bundle@v2.4.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/webpack-encore-bundle@v2.4.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symfony/yaml@v7.4.6",
+      "type": "library",
+      "name": "symfony/yaml",
+      "version": "v7.4.6",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symfony/yaml@v7.4.6",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symfony/yaml@v7.4.6"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/symplify/easy-coding-standard@13.0.4",
+      "type": "library",
+      "name": "symplify/easy-coding-standard",
+      "version": "13.0.4",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/symplify/easy-coding-standard@13.0.4",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "symplify/easy-coding-standard@13.0.4"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/ta-tikoma/phpunit-architecture-test@0.8.7",
+      "type": "library",
+      "name": "ta-tikoma/phpunit-architecture-test",
+      "version": "0.8.7",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/ta-tikoma/phpunit-architecture-test@0.8.7",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "ta-tikoma/phpunit-architecture-test@0.8.7"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/theseer/tokenizer@2.0.1",
+      "type": "library",
+      "name": "theseer/tokenizer",
+      "version": "2.0.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/theseer/tokenizer@2.0.1",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "theseer/tokenizer@2.0.1"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/tijsverkoyen/css-to-inline-styles@v2.4.0",
+      "type": "library",
+      "name": "tijsverkoyen/css-to-inline-styles",
+      "version": "v2.4.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/tijsverkoyen/css-to-inline-styles@v2.4.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "tijsverkoyen/css-to-inline-styles@v2.4.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/twig/cssinliner-extra@v3.24.0",
+      "type": "library",
+      "name": "twig/cssinliner-extra",
+      "version": "v3.24.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/twig/cssinliner-extra@v3.24.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "twig/cssinliner-extra@v3.24.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/twig/extra-bundle@v3.24.0",
+      "type": "library",
+      "name": "twig/extra-bundle",
+      "version": "v3.24.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/twig/extra-bundle@v3.24.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "twig/extra-bundle@v3.24.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/twig/inky-extra@v3.24.0",
+      "type": "library",
+      "name": "twig/inky-extra",
+      "version": "v3.24.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/twig/inky-extra@v3.24.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "twig/inky-extra@v3.24.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/twig/intl-extra@v3.24.0",
+      "type": "library",
+      "name": "twig/intl-extra",
+      "version": "v3.24.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/twig/intl-extra@v3.24.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "twig/intl-extra@v3.24.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/twig/string-extra@v3.24.0",
+      "type": "library",
+      "name": "twig/string-extra",
+      "version": "v3.24.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/twig/string-extra@v3.24.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "twig/string-extra@v3.24.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/twig/twig@v3.24.0",
+      "type": "library",
+      "name": "twig/twig",
+      "version": "v3.24.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ],
+      "purl": "pkg:composer/twig/twig@v3.24.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "twig/twig@v3.24.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/webmozart/assert@1.12.1",
+      "type": "library",
+      "name": "webmozart/assert",
+      "version": "1.12.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/webmozart/assert@1.12.1",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "webmozart/assert@1.12.1"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/willdurand/js-translation-bundle@6.1.0",
+      "type": "library",
+      "name": "willdurand/js-translation-bundle",
+      "version": "6.1.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/willdurand/js-translation-bundle@6.1.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "willdurand/js-translation-bundle@6.1.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/willdurand/jsonp-callback-validator@v2.0.0",
+      "type": "library",
+      "name": "willdurand/jsonp-callback-validator",
+      "version": "v2.0.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/willdurand/jsonp-callback-validator@v2.0.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "willdurand/jsonp-callback-validator@v2.0.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:composer/willdurand/negotiation@3.1.0",
+      "type": "library",
+      "name": "willdurand/negotiation",
+      "version": "3.1.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:composer/willdurand/negotiation@3.1.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "willdurand/negotiation@3.1.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "composer"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "63757446-363b-480f-b058-687a2d5fd6a3",
+      "dependsOn": [
+        "7b128a03-a03c-4bec-939f-2e349e2b4053"
+      ]
+    },
+    {
+      "ref": "7b128a03-a03c-4bec-939f-2e349e2b4053",
+      "dependsOn": [
+        "pkg:composer/brainmaestro/composer-git-hooks@dev-master",
+        "pkg:composer/friendsofphp/php-cs-fixer@v3.94.2",
+        "pkg:composer/guzzlehttp/promises@2.3.0",
+        "pkg:composer/ibexa/admin-ui@v5.0.6",
+        "pkg:composer/ibexa/core@v5.0.6",
+        "pkg:composer/mrk-te/ibexa-migration-bundle2@3.0.0",
+        "pkg:composer/nyholm/psr7@1.8.2",
+        "pkg:composer/pestphp/pest@v4.4.2",
+        "pkg:composer/phpstan/phpstan@2.1.42",
+        "pkg:composer/rector/swiss-knife@2.3.5",
+        "pkg:composer/symplify/easy-coding-standard@13.0.4"
+      ]
+    },
+    {
+      "ref": "pkg:composer/api-platform/core@v4.1.28",
+      "dependsOn": [
+        "pkg:composer/doctrine/inflector@2.1.0",
+        "pkg:composer/psr/cache@3.0.0",
+        "pkg:composer/psr/container@2.0.2",
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/http-foundation@v7.4.7",
+        "pkg:composer/symfony/http-kernel@v7.4.7",
+        "pkg:composer/symfony/property-access@v7.4.4",
+        "pkg:composer/symfony/property-info@v7.4.7",
+        "pkg:composer/symfony/serializer@v7.4.7",
+        "pkg:composer/symfony/translation-contracts@v3.6.1",
+        "pkg:composer/symfony/type-info@v7.4.7",
+        "pkg:composer/symfony/validator@v7.3.11",
+        "pkg:composer/symfony/web-link@v7.4.4",
+        "pkg:composer/willdurand/negotiation@3.1.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/babdev/pagerfanta-bundle@v4.6.0",
+      "dependsOn": [
+        "pkg:composer/psr/container@2.0.2",
+        "pkg:composer/symfony/config@v7.4.7",
+        "pkg:composer/symfony/dependency-injection@v7.4.7",
+        "pkg:composer/symfony/http-foundation@v7.4.7",
+        "pkg:composer/symfony/http-kernel@v7.4.7",
+        "pkg:composer/symfony/property-access@v7.4.4",
+        "pkg:composer/symfony/routing@v7.4.6"
+      ]
+    },
+    {
+      "ref": "pkg:composer/brainmaestro/composer-git-hooks@dev-master",
+      "dependsOn": [
+        "pkg:composer/symfony/console@v7.4.7"
+      ]
+    },
+    {
+      "ref": "pkg:composer/brianium/paratest@v7.19.0",
+      "dependsOn": [
+        "pkg:composer/fidry/cpu-core-counter@1.3.0",
+        "pkg:composer/jean85/pretty-package-versions@2.1.1",
+        "pkg:composer/phpunit/php-code-coverage@12.5.3",
+        "pkg:composer/phpunit/php-file-iterator@6.0.1",
+        "pkg:composer/phpunit/php-timer@8.0.0",
+        "pkg:composer/phpunit/phpunit@12.5.12",
+        "pkg:composer/sebastian/environment@8.0.4",
+        "pkg:composer/symfony/console@v7.4.7",
+        "pkg:composer/symfony/process@v7.4.5"
+      ]
+    },
+    {
+      "ref": "pkg:composer/clue/ndjson-react@v1.3.0",
+      "dependsOn": [
+        "pkg:composer/react/stream@v1.4.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/clue/stream-filter@v1.7.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/composer/package-versions-deprecated@1.11.99.5",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/composer/pcre@3.3.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/composer/semver@3.4.4",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/composer/xdebug-handler@3.0.5",
+      "dependsOn": [
+        "pkg:composer/composer/pcre@3.3.2",
+        "pkg:composer/psr/log@3.0.2"
+      ]
+    },
+    {
+      "ref": "pkg:composer/doctrine/annotations@2.0.2",
+      "dependsOn": [
+        "pkg:composer/doctrine/lexer@3.0.1",
+        "pkg:composer/psr/cache@3.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/doctrine/cache@2.2.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/doctrine/collections@2.6.0",
+      "dependsOn": [
+        "pkg:composer/doctrine/deprecations@1.1.6",
+        "pkg:composer/symfony/polyfill-php84@v1.33.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/doctrine/common@3.5.0",
+      "dependsOn": [
+        "pkg:composer/doctrine/persistence@3.4.3"
+      ]
+    },
+    {
+      "ref": "pkg:composer/doctrine/dbal@3.10.5",
+      "dependsOn": [
+        "pkg:composer/doctrine/deprecations@1.1.6",
+        "pkg:composer/doctrine/event-manager@2.1.1",
+        "pkg:composer/psr/cache@3.0.0",
+        "pkg:composer/psr/log@3.0.2"
+      ]
+    },
+    {
+      "ref": "pkg:composer/doctrine/deprecations@1.1.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/doctrine/doctrine-bundle@2.18.2",
+      "dependsOn": [
+        "pkg:composer/doctrine/dbal@3.10.5",
+        "pkg:composer/doctrine/deprecations@1.1.6",
+        "pkg:composer/doctrine/persistence@3.4.3",
+        "pkg:composer/doctrine/sql-formatter@1.5.4",
+        "pkg:composer/symfony/cache@v7.4.7",
+        "pkg:composer/symfony/config@v7.4.7",
+        "pkg:composer/symfony/console@v7.4.7",
+        "pkg:composer/symfony/dependency-injection@v7.4.7",
+        "pkg:composer/symfony/doctrine-bridge@v7.3.10",
+        "pkg:composer/symfony/framework-bundle@v7.4.7",
+        "pkg:composer/symfony/service-contracts@v3.6.1"
+      ]
+    },
+    {
+      "ref": "pkg:composer/doctrine/event-manager@2.1.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/doctrine/inflector@2.1.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/doctrine/instantiator@2.1.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/doctrine/lexer@3.0.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/doctrine/orm@2.20.9",
+      "dependsOn": [
+        "pkg:composer/doctrine/cache@2.2.0",
+        "pkg:composer/doctrine/collections@2.6.0",
+        "pkg:composer/doctrine/common@3.5.0",
+        "pkg:composer/doctrine/dbal@3.10.5",
+        "pkg:composer/doctrine/deprecations@1.1.6",
+        "pkg:composer/doctrine/event-manager@2.1.1",
+        "pkg:composer/doctrine/inflector@2.1.0",
+        "pkg:composer/doctrine/instantiator@2.1.0",
+        "pkg:composer/doctrine/lexer@3.0.1",
+        "pkg:composer/doctrine/persistence@3.4.3",
+        "pkg:composer/psr/cache@3.0.0",
+        "pkg:composer/symfony/console@v7.4.7",
+        "pkg:composer/symfony/polyfill-php72@v1.31.0",
+        "pkg:composer/symfony/polyfill-php80@v1.33.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/doctrine/persistence@3.4.3",
+      "dependsOn": [
+        "pkg:composer/doctrine/event-manager@2.1.1",
+        "pkg:composer/psr/cache@3.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/doctrine/sql-formatter@1.5.4",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/egulias/email-validator@4.0.4",
+      "dependsOn": [
+        "pkg:composer/doctrine/lexer@3.0.1",
+        "pkg:composer/symfony/polyfill-intl-idn@v1.33.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/evenement/evenement@v3.0.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/fidry/cpu-core-counter@1.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/filp/whoops@2.18.4",
+      "dependsOn": [
+        "pkg:composer/psr/log@3.0.2"
+      ]
+    },
+    {
+      "ref": "pkg:composer/friendsofphp/php-cs-fixer@v3.94.2",
+      "dependsOn": [
+        "pkg:composer/clue/ndjson-react@v1.3.0",
+        "pkg:composer/composer/semver@3.4.4",
+        "pkg:composer/composer/xdebug-handler@3.0.5",
+        "pkg:composer/fidry/cpu-core-counter@1.3.0",
+        "pkg:composer/react/child-process@v0.6.7",
+        "pkg:composer/react/event-loop@v1.6.0",
+        "pkg:composer/react/socket@v1.17.0",
+        "pkg:composer/react/stream@v1.4.0",
+        "pkg:composer/sebastian/diff@7.0.0",
+        "pkg:composer/symfony/console@v7.4.7",
+        "pkg:composer/symfony/event-dispatcher@v7.4.4",
+        "pkg:composer/symfony/filesystem@v7.4.6",
+        "pkg:composer/symfony/finder@v7.4.6",
+        "pkg:composer/symfony/options-resolver@v7.4.0",
+        "pkg:composer/symfony/polyfill-mbstring@v1.33.0",
+        "pkg:composer/symfony/polyfill-php80@v1.33.0",
+        "pkg:composer/symfony/polyfill-php81@v1.33.0",
+        "pkg:composer/symfony/polyfill-php84@v1.33.0",
+        "pkg:composer/symfony/process@v7.4.5",
+        "pkg:composer/symfony/stopwatch@v8.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/friendsofphp/proxy-manager-lts@v1.0.19",
+      "dependsOn": [
+        "pkg:composer/laminas/laminas-code@4.17.0",
+        "pkg:composer/symfony/filesystem@v7.4.6"
+      ]
+    },
+    {
+      "ref": "pkg:composer/friendsofsymfony/http-cache-bundle@3.4.0",
+      "dependsOn": [
+        "pkg:composer/friendsofsymfony/http-cache@3.2.0",
+        "pkg:composer/symfony/dependency-injection@v7.4.7",
+        "pkg:composer/symfony/expression-language@v7.4.4",
+        "pkg:composer/symfony/framework-bundle@v7.4.7",
+        "pkg:composer/symfony/http-foundation@v7.4.7",
+        "pkg:composer/symfony/http-kernel@v7.4.7",
+        "pkg:composer/symfony/security-bundle@v7.4.6"
+      ]
+    },
+    {
+      "ref": "pkg:composer/friendsofsymfony/http-cache@3.2.0",
+      "dependsOn": [
+        "pkg:composer/php-http/client-common@2.7.3",
+        "pkg:composer/php-http/discovery@1.20.0",
+        "pkg:composer/psr/http-factory@1.1.0",
+        "pkg:composer/symfony/event-dispatcher@v7.4.4",
+        "pkg:composer/symfony/options-resolver@v7.4.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/friendsofsymfony/jsrouting-bundle@3.6.1",
+      "dependsOn": [
+        "pkg:composer/symfony/console@v7.4.7",
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/framework-bundle@v7.4.7",
+        "pkg:composer/symfony/serializer@v7.4.7",
+        "pkg:composer/willdurand/jsonp-callback-validator@v2.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/guzzlehttp/promises@2.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/ibexa/admin-ui@v5.0.6",
+      "dependsOn": [
+        "pkg:composer/babdev/pagerfanta-bundle@v4.6.0",
+        "pkg:composer/ibexa/content-forms@v5.0.6",
+        "pkg:composer/ibexa/core@v5.0.6",
+        "pkg:composer/ibexa/design-engine@v5.0.6",
+        "pkg:composer/ibexa/polyfill-php82@v1.0.1",
+        "pkg:composer/ibexa/rest@v5.0.6",
+        "pkg:composer/ibexa/search@v5.0.6",
+        "pkg:composer/ibexa/twig-components@v5.0.6",
+        "pkg:composer/ibexa/user@v5.0.6",
+        "pkg:composer/jms/translation-bundle@2.6.0",
+        "pkg:composer/knplabs/knp-menu-bundle@v3.7.0",
+        "pkg:composer/mck89/peast@v1.17.5",
+        "pkg:composer/symfony/asset@v7.4.6",
+        "pkg:composer/symfony/config@v7.4.7",
+        "pkg:composer/symfony/console@v7.4.7",
+        "pkg:composer/symfony/dependency-injection@v7.4.7",
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/event-dispatcher@v7.4.4",
+        "pkg:composer/symfony/filesystem@v7.4.6",
+        "pkg:composer/symfony/form@v7.4.7",
+        "pkg:composer/symfony/http-foundation@v7.4.7",
+        "pkg:composer/symfony/http-kernel@v7.4.7",
+        "pkg:composer/symfony/options-resolver@v7.4.0",
+        "pkg:composer/symfony/routing@v7.4.6",
+        "pkg:composer/symfony/security-core@v7.4.4",
+        "pkg:composer/symfony/security-http@v7.4.6",
+        "pkg:composer/symfony/translation@v7.4.6",
+        "pkg:composer/symfony/validator@v7.3.11",
+        "pkg:composer/symfony/webpack-encore-bundle@v2.4.0",
+        "pkg:composer/symfony/yaml@v7.4.6",
+        "pkg:composer/twig/intl-extra@v3.24.0",
+        "pkg:composer/twig/string-extra@v3.24.0",
+        "pkg:composer/twig/twig@v3.24.0",
+        "pkg:composer/willdurand/js-translation-bundle@6.1.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/ibexa/content-forms@v5.0.6",
+      "dependsOn": [
+        "pkg:composer/ibexa/core@v5.0.6",
+        "pkg:composer/jms/translation-bundle@2.6.0",
+        "pkg:composer/symfony/config@v7.4.7",
+        "pkg:composer/symfony/dependency-injection@v7.4.7",
+        "pkg:composer/symfony/event-dispatcher@v7.4.4",
+        "pkg:composer/symfony/filesystem@v7.4.6",
+        "pkg:composer/symfony/form@v7.4.7",
+        "pkg:composer/symfony/http-foundation@v7.4.7",
+        "pkg:composer/symfony/http-kernel@v7.4.7",
+        "pkg:composer/symfony/options-resolver@v7.4.0",
+        "pkg:composer/symfony/routing@v7.4.6",
+        "pkg:composer/symfony/translation@v7.4.6",
+        "pkg:composer/symfony/validator@v7.3.11",
+        "pkg:composer/symfony/yaml@v7.4.6"
+      ]
+    },
+    {
+      "ref": "pkg:composer/ibexa/core@v5.0.6",
+      "dependsOn": [
+        "pkg:composer/composer/package-versions-deprecated@1.11.99.5",
+        "pkg:composer/doctrine/annotations@2.0.2",
+        "pkg:composer/doctrine/dbal@3.10.5",
+        "pkg:composer/doctrine/doctrine-bundle@2.18.2",
+        "pkg:composer/doctrine/orm@2.20.9",
+        "pkg:composer/doctrine/persistence@3.4.3",
+        "pkg:composer/friendsofphp/proxy-manager-lts@v1.0.19",
+        "pkg:composer/friendsofsymfony/http-cache-bundle@3.4.0",
+        "pkg:composer/friendsofsymfony/jsrouting-bundle@3.6.1",
+        "pkg:composer/ibexa/doctrine-schema@v5.0.6",
+        "pkg:composer/ibexa/polyfill-php82@v1.0.1",
+        "pkg:composer/jms/translation-bundle@2.6.0",
+        "pkg:composer/league/flysystem-memory@2.0.6",
+        "pkg:composer/liip/imagine-bundle@2.17.1",
+        "pkg:composer/nelmio/cors-bundle@2.6.1",
+        "pkg:composer/oneup/flysystem-bundle@4.14.1",
+        "pkg:composer/pagerfanta/pagerfanta@v3.8.0",
+        "pkg:composer/psr/event-dispatcher@1.0.0",
+        "pkg:composer/symfony-cmf/routing@3.0.5",
+        "pkg:composer/symfony/cache@v7.4.7",
+        "pkg:composer/symfony/console@v7.4.7",
+        "pkg:composer/symfony/dependency-injection@v7.4.7",
+        "pkg:composer/symfony/event-dispatcher@v7.4.4",
+        "pkg:composer/symfony/expression-language@v7.4.4",
+        "pkg:composer/symfony/framework-bundle@v7.4.7",
+        "pkg:composer/symfony/http-client@v7.4.7",
+        "pkg:composer/symfony/http-foundation@v7.4.7",
+        "pkg:composer/symfony/http-kernel@v7.4.7",
+        "pkg:composer/symfony/mime@v7.4.7",
+        "pkg:composer/symfony/polyfill-php80@v1.33.0",
+        "pkg:composer/symfony/process@v7.4.5",
+        "pkg:composer/symfony/security-bundle@v7.4.6",
+        "pkg:composer/symfony/security-core@v7.4.4",
+        "pkg:composer/symfony/security-http@v7.4.6",
+        "pkg:composer/symfony/serializer@v7.4.7",
+        "pkg:composer/symfony/templating@v6.4.24",
+        "pkg:composer/symfony/translation@v7.4.6",
+        "pkg:composer/symfony/validator@v7.3.11",
+        "pkg:composer/symfony/var-dumper@v7.4.6",
+        "pkg:composer/symfony/yaml@v7.4.6",
+        "pkg:composer/twig/extra-bundle@v3.24.0",
+        "pkg:composer/twig/twig@v3.24.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/ibexa/design-engine@v5.0.6",
+      "dependsOn": [
+        "pkg:composer/ibexa/core@v5.0.6",
+        "pkg:composer/symfony/asset@v7.4.6",
+        "pkg:composer/symfony/config@v7.4.7",
+        "pkg:composer/symfony/dependency-injection@v7.4.7",
+        "pkg:composer/symfony/filesystem@v7.4.6",
+        "pkg:composer/symfony/finder@v7.4.6",
+        "pkg:composer/symfony/http-foundation@v7.4.7",
+        "pkg:composer/symfony/http-kernel@v7.4.7",
+        "pkg:composer/symfony/templating@v6.4.24",
+        "pkg:composer/twig/twig@v3.24.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/ibexa/doctrine-schema@v5.0.6",
+      "dependsOn": [
+        "pkg:composer/doctrine/dbal@3.10.5",
+        "pkg:composer/symfony/config@v7.4.7",
+        "pkg:composer/symfony/console@v7.4.7",
+        "pkg:composer/symfony/dependency-injection@v7.4.7",
+        "pkg:composer/symfony/http-kernel@v7.4.7",
+        "pkg:composer/symfony/yaml@v7.4.6"
+      ]
+    },
+    {
+      "ref": "pkg:composer/ibexa/notifications@v5.0.6",
+      "dependsOn": [
+        "pkg:composer/ibexa/core@v5.0.6",
+        "pkg:composer/symfony/config@v7.4.7",
+        "pkg:composer/symfony/dependency-injection@v7.4.7",
+        "pkg:composer/symfony/event-dispatcher@v7.4.4",
+        "pkg:composer/symfony/http-foundation@v7.4.7",
+        "pkg:composer/symfony/http-kernel@v7.4.7",
+        "pkg:composer/symfony/mailer@v7.4.6",
+        "pkg:composer/symfony/notifier@v7.4.6",
+        "pkg:composer/symfony/yaml@v7.4.6",
+        "pkg:composer/twig/cssinliner-extra@v3.24.0",
+        "pkg:composer/twig/inky-extra@v3.24.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/ibexa/polyfill-php82@v1.0.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/ibexa/rest@v5.0.6",
+      "dependsOn": [
+        "pkg:composer/api-platform/core@v4.1.28",
+        "pkg:composer/ibexa/core@v5.0.6",
+        "pkg:composer/ibexa/polyfill-php82@v1.0.1",
+        "pkg:composer/ibexa/templated-uri-bundle@4.0.0",
+        "pkg:composer/lexik/jwt-authentication-bundle@v2.21.0",
+        "pkg:composer/symfony/config@v7.4.7",
+        "pkg:composer/symfony/dependency-injection@v7.4.7",
+        "pkg:composer/symfony/event-dispatcher@v7.4.4",
+        "pkg:composer/symfony/expression-language@v7.4.4",
+        "pkg:composer/symfony/form@v7.4.7",
+        "pkg:composer/symfony/http-foundation@v7.4.7",
+        "pkg:composer/symfony/http-kernel@v7.4.7",
+        "pkg:composer/symfony/routing@v7.4.6",
+        "pkg:composer/symfony/security-bundle@v7.4.6",
+        "pkg:composer/symfony/security-csrf@v7.4.6",
+        "pkg:composer/symfony/yaml@v7.4.6",
+        "pkg:composer/twig/twig@v3.24.0",
+        "pkg:composer/webmozart/assert@1.12.1"
+      ]
+    },
+    {
+      "ref": "pkg:composer/ibexa/search@v5.0.6",
+      "dependsOn": [
+        "pkg:composer/ibexa/core@v5.0.6",
+        "pkg:composer/pagerfanta/pagerfanta@v3.8.0",
+        "pkg:composer/symfony/config@v7.4.7",
+        "pkg:composer/symfony/dependency-injection@v7.4.7",
+        "pkg:composer/symfony/event-dispatcher@v7.4.4",
+        "pkg:composer/symfony/form@v7.4.7",
+        "pkg:composer/symfony/http-foundation@v7.4.7",
+        "pkg:composer/symfony/http-kernel@v7.4.7",
+        "pkg:composer/symfony/serializer@v7.4.7"
+      ]
+    },
+    {
+      "ref": "pkg:composer/ibexa/templated-uri-bundle@4.0.0",
+      "dependsOn": [
+        "pkg:composer/ibexa/templated-uri-router@5.0.0",
+        "pkg:composer/symfony/framework-bundle@v7.4.7"
+      ]
+    },
+    {
+      "ref": "pkg:composer/ibexa/templated-uri-router@5.0.0",
+      "dependsOn": [
+        "pkg:composer/symfony/routing@v7.4.6"
+      ]
+    },
+    {
+      "ref": "pkg:composer/ibexa/twig-components@v5.0.6",
+      "dependsOn": [
+        "pkg:composer/ibexa/core@v5.0.6",
+        "pkg:composer/knplabs/knp-menu@v3.8.0",
+        "pkg:composer/symfony/config@v7.4.7",
+        "pkg:composer/symfony/dependency-injection@v7.4.7",
+        "pkg:composer/symfony/event-dispatcher@v7.4.4",
+        "pkg:composer/symfony/http-foundation@v7.4.7",
+        "pkg:composer/symfony/http-kernel@v7.4.7",
+        "pkg:composer/symfony/yaml@v7.4.6"
+      ]
+    },
+    {
+      "ref": "pkg:composer/ibexa/user@v5.0.6",
+      "dependsOn": [
+        "pkg:composer/ibexa/content-forms@v5.0.6",
+        "pkg:composer/ibexa/core@v5.0.6",
+        "pkg:composer/ibexa/notifications@v5.0.6",
+        "pkg:composer/jms/translation-bundle@2.6.0",
+        "pkg:composer/symfony/config@v7.4.7",
+        "pkg:composer/symfony/dependency-injection@v7.4.7",
+        "pkg:composer/symfony/event-dispatcher@v7.4.4",
+        "pkg:composer/symfony/form@v7.4.7",
+        "pkg:composer/symfony/http-foundation@v7.4.7",
+        "pkg:composer/symfony/http-kernel@v7.4.7",
+        "pkg:composer/symfony/intl@v7.4.6",
+        "pkg:composer/symfony/options-resolver@v7.4.0",
+        "pkg:composer/symfony/routing@v7.4.6",
+        "pkg:composer/symfony/security-core@v7.4.4",
+        "pkg:composer/symfony/security-http@v7.4.6",
+        "pkg:composer/symfony/translation@v7.4.6",
+        "pkg:composer/symfony/validator@v7.3.11",
+        "pkg:composer/twig/twig@v3.24.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/imagine/imagine@1.5.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/jean85/pretty-package-versions@2.1.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/jms/translation-bundle@2.6.0",
+      "dependsOn": [
+        "pkg:composer/nikic/php-parser@v5.7.0",
+        "pkg:composer/psr/log@3.0.2",
+        "pkg:composer/symfony/config@v7.4.7",
+        "pkg:composer/symfony/console@v7.4.7",
+        "pkg:composer/symfony/framework-bundle@v7.4.7",
+        "pkg:composer/symfony/translation-contracts@v3.6.1",
+        "pkg:composer/symfony/translation@v7.4.6",
+        "pkg:composer/symfony/validator@v7.3.11",
+        "pkg:composer/twig/twig@v3.24.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/knplabs/knp-menu-bundle@v3.7.0",
+      "dependsOn": [
+        "pkg:composer/knplabs/knp-menu@v3.8.0",
+        "pkg:composer/symfony/config@v7.4.7",
+        "pkg:composer/symfony/dependency-injection@v7.4.7",
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/http-kernel@v7.4.7"
+      ]
+    },
+    {
+      "ref": "pkg:composer/knplabs/knp-menu@v3.8.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/laminas/laminas-code@4.17.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/lcobucci/clock@3.5.0",
+      "dependsOn": [
+        "pkg:composer/psr/clock@1.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/lcobucci/jwt@5.6.0",
+      "dependsOn": [
+        "pkg:composer/psr/clock@1.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/league/flysystem-memory@2.0.6",
+      "dependsOn": [
+        "pkg:composer/league/flysystem@2.5.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/league/flysystem@2.5.0",
+      "dependsOn": [
+        "pkg:composer/league/mime-type-detection@1.16.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/league/mime-type-detection@1.16.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/lexik/jwt-authentication-bundle@v2.21.0",
+      "dependsOn": [
+        "pkg:composer/lcobucci/clock@3.5.0",
+        "pkg:composer/lcobucci/jwt@5.6.0",
+        "pkg:composer/namshi/jose@7.2.3",
+        "pkg:composer/symfony/config@v7.4.7",
+        "pkg:composer/symfony/dependency-injection@v7.4.7",
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/event-dispatcher@v7.4.4",
+        "pkg:composer/symfony/http-foundation@v7.4.7",
+        "pkg:composer/symfony/http-kernel@v7.4.7",
+        "pkg:composer/symfony/property-access@v7.4.4",
+        "pkg:composer/symfony/security-bundle@v7.4.6",
+        "pkg:composer/symfony/translation-contracts@v3.6.1"
+      ]
+    },
+    {
+      "ref": "pkg:composer/liip/imagine-bundle@2.17.1",
+      "dependsOn": [
+        "pkg:composer/imagine/imagine@1.5.2",
+        "pkg:composer/symfony/dependency-injection@v7.4.7",
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/filesystem@v7.4.6",
+        "pkg:composer/symfony/finder@v7.4.6",
+        "pkg:composer/symfony/framework-bundle@v7.4.7",
+        "pkg:composer/symfony/mime@v7.4.7",
+        "pkg:composer/symfony/options-resolver@v7.4.0",
+        "pkg:composer/symfony/process@v7.4.5",
+        "pkg:composer/twig/twig@v3.24.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/lorenzo/pinky@1.1.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/mck89/peast@v1.17.5",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/mrk-te/ibexa-migration-bundle2@3.0.0",
+      "dependsOn": [
+        "pkg:composer/doctrine/dbal@3.10.5",
+        "pkg:composer/ibexa/core@v5.0.6",
+        "pkg:composer/mtdowling/jmespath.php@2.8.0",
+        "pkg:composer/nikic/php-parser@v5.7.0",
+        "pkg:composer/symfony/expression-language@v7.4.4",
+        "pkg:composer/symfony/process@v7.4.5",
+        "pkg:composer/symfony/validator@v7.3.11",
+        "pkg:composer/symfony/var-dumper@v7.4.6"
+      ]
+    },
+    {
+      "ref": "pkg:composer/mtdowling/jmespath.php@2.8.0",
+      "dependsOn": [
+        "pkg:composer/symfony/polyfill-mbstring@v1.33.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/myclabs/deep-copy@1.13.4",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/namshi/jose@7.2.3",
+      "dependsOn": [
+        "pkg:composer/symfony/polyfill-php56@v1.20.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/nelmio/cors-bundle@2.6.1",
+      "dependsOn": [
+        "pkg:composer/psr/log@3.0.2",
+        "pkg:composer/symfony/framework-bundle@v7.4.7"
+      ]
+    },
+    {
+      "ref": "pkg:composer/nikic/php-parser@v5.7.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/nunomaduro/collision@v8.9.1",
+      "dependsOn": [
+        "pkg:composer/filp/whoops@2.18.4",
+        "pkg:composer/nunomaduro/termwind@v2.4.0",
+        "pkg:composer/symfony/console@v7.4.7"
+      ]
+    },
+    {
+      "ref": "pkg:composer/nunomaduro/termwind@v2.4.0",
+      "dependsOn": [
+        "pkg:composer/symfony/console@v7.4.7"
+      ]
+    },
+    {
+      "ref": "pkg:composer/nyholm/psr7@1.8.2",
+      "dependsOn": [
+        "pkg:composer/psr/http-factory@1.1.0",
+        "pkg:composer/psr/http-message@2.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/oneup/flysystem-bundle@4.14.1",
+      "dependsOn": [
+        "pkg:composer/league/flysystem@2.5.0",
+        "pkg:composer/symfony/config@v7.4.7",
+        "pkg:composer/symfony/dependency-injection@v7.4.7",
+        "pkg:composer/symfony/http-kernel@v7.4.7"
+      ]
+    },
+    {
+      "ref": "pkg:composer/pagerfanta/pagerfanta@v3.8.0",
+      "dependsOn": [
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/polyfill-php80@v1.33.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/pestphp/pest-plugin-arch@v4.0.0",
+      "dependsOn": [
+        "pkg:composer/pestphp/pest-plugin@v4.0.0",
+        "pkg:composer/ta-tikoma/phpunit-architecture-test@0.8.7"
+      ]
+    },
+    {
+      "ref": "pkg:composer/pestphp/pest-plugin-mutate@v4.0.1",
+      "dependsOn": [
+        "pkg:composer/nikic/php-parser@v5.7.0",
+        "pkg:composer/pestphp/pest-plugin@v4.0.0",
+        "pkg:composer/psr/simple-cache@3.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/pestphp/pest-plugin-profanity@v4.2.1",
+      "dependsOn": [
+        "pkg:composer/pestphp/pest-plugin@v4.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/pestphp/pest-plugin@v4.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/pestphp/pest@v4.4.2",
+      "dependsOn": [
+        "pkg:composer/brianium/paratest@v7.19.0",
+        "pkg:composer/nunomaduro/collision@v8.9.1",
+        "pkg:composer/nunomaduro/termwind@v2.4.0",
+        "pkg:composer/pestphp/pest-plugin-arch@v4.0.0",
+        "pkg:composer/pestphp/pest-plugin-mutate@v4.0.1",
+        "pkg:composer/pestphp/pest-plugin-profanity@v4.2.1",
+        "pkg:composer/pestphp/pest-plugin@v4.0.0",
+        "pkg:composer/phpunit/phpunit@12.5.12",
+        "pkg:composer/symfony/process@v7.4.5"
+      ]
+    },
+    {
+      "ref": "pkg:composer/phar-io/manifest@2.0.4",
+      "dependsOn": [
+        "pkg:composer/phar-io/version@3.2.1"
+      ]
+    },
+    {
+      "ref": "pkg:composer/phar-io/version@3.2.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/php-http/client-common@2.7.3",
+      "dependsOn": [
+        "pkg:composer/php-http/httplug@2.4.1",
+        "pkg:composer/php-http/message@1.16.2",
+        "pkg:composer/psr/http-client@1.0.3",
+        "pkg:composer/psr/http-factory@1.1.0",
+        "pkg:composer/psr/http-message@2.0",
+        "pkg:composer/symfony/options-resolver@v7.4.0",
+        "pkg:composer/symfony/polyfill-php80@v1.33.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/php-http/discovery@1.20.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/php-http/httplug@2.4.1",
+      "dependsOn": [
+        "pkg:composer/php-http/promise@1.3.1",
+        "pkg:composer/psr/http-client@1.0.3",
+        "pkg:composer/psr/http-message@2.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/php-http/message@1.16.2",
+      "dependsOn": [
+        "pkg:composer/clue/stream-filter@v1.7.0",
+        "pkg:composer/psr/http-message@2.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/php-http/promise@1.3.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/phpdocumentor/reflection-common@2.2.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/phpdocumentor/reflection-docblock@6.0.3",
+      "dependsOn": [
+        "pkg:composer/doctrine/deprecations@1.1.6",
+        "pkg:composer/phpdocumentor/reflection-common@2.2.0",
+        "pkg:composer/phpdocumentor/type-resolver@2.0.0",
+        "pkg:composer/phpstan/phpdoc-parser@2.3.2",
+        "pkg:composer/webmozart/assert@1.12.1"
+      ]
+    },
+    {
+      "ref": "pkg:composer/phpdocumentor/type-resolver@2.0.0",
+      "dependsOn": [
+        "pkg:composer/doctrine/deprecations@1.1.6",
+        "pkg:composer/phpdocumentor/reflection-common@2.2.0",
+        "pkg:composer/phpstan/phpdoc-parser@2.3.2"
+      ]
+    },
+    {
+      "ref": "pkg:composer/phpstan/phpdoc-parser@2.3.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/phpstan/phpstan@2.1.42",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/phpunit/php-code-coverage@12.5.3",
+      "dependsOn": [
+        "pkg:composer/nikic/php-parser@v5.7.0",
+        "pkg:composer/phpunit/php-file-iterator@6.0.1",
+        "pkg:composer/phpunit/php-text-template@5.0.0",
+        "pkg:composer/sebastian/complexity@5.0.0",
+        "pkg:composer/sebastian/environment@8.0.4",
+        "pkg:composer/sebastian/lines-of-code@4.0.0",
+        "pkg:composer/sebastian/version@6.0.0",
+        "pkg:composer/theseer/tokenizer@2.0.1"
+      ]
+    },
+    {
+      "ref": "pkg:composer/phpunit/php-file-iterator@6.0.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/phpunit/php-invoker@6.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/phpunit/php-text-template@5.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/phpunit/php-timer@8.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/phpunit/phpunit@12.5.12",
+      "dependsOn": [
+        "pkg:composer/myclabs/deep-copy@1.13.4",
+        "pkg:composer/phar-io/manifest@2.0.4",
+        "pkg:composer/phar-io/version@3.2.1",
+        "pkg:composer/phpunit/php-code-coverage@12.5.3",
+        "pkg:composer/phpunit/php-file-iterator@6.0.1",
+        "pkg:composer/phpunit/php-invoker@6.0.0",
+        "pkg:composer/phpunit/php-text-template@5.0.0",
+        "pkg:composer/phpunit/php-timer@8.0.0",
+        "pkg:composer/sebastian/cli-parser@4.2.0",
+        "pkg:composer/sebastian/comparator@7.1.4",
+        "pkg:composer/sebastian/diff@7.0.0",
+        "pkg:composer/sebastian/environment@8.0.4",
+        "pkg:composer/sebastian/exporter@7.0.2",
+        "pkg:composer/sebastian/global-state@8.0.2",
+        "pkg:composer/sebastian/object-enumerator@7.0.0",
+        "pkg:composer/sebastian/recursion-context@7.0.1",
+        "pkg:composer/sebastian/type@6.0.3",
+        "pkg:composer/sebastian/version@6.0.0",
+        "pkg:composer/staabm/side-effects-detector@1.0.5"
+      ]
+    },
+    {
+      "ref": "pkg:composer/psr/cache@3.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/psr/clock@1.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/psr/container@2.0.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/psr/event-dispatcher@1.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/psr/http-client@1.0.3",
+      "dependsOn": [
+        "pkg:composer/psr/http-message@2.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/psr/http-factory@1.1.0",
+      "dependsOn": [
+        "pkg:composer/psr/http-message@2.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/psr/http-message@2.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/psr/link@2.0.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/psr/log@3.0.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/psr/simple-cache@3.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/react/cache@v1.2.0",
+      "dependsOn": [
+        "pkg:composer/react/promise@v3.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/react/child-process@v0.6.7",
+      "dependsOn": [
+        "pkg:composer/evenement/evenement@v3.0.2",
+        "pkg:composer/react/event-loop@v1.6.0",
+        "pkg:composer/react/stream@v1.4.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/react/dns@v1.14.0",
+      "dependsOn": [
+        "pkg:composer/react/cache@v1.2.0",
+        "pkg:composer/react/event-loop@v1.6.0",
+        "pkg:composer/react/promise@v3.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/react/event-loop@v1.6.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/react/promise@v3.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/react/socket@v1.17.0",
+      "dependsOn": [
+        "pkg:composer/evenement/evenement@v3.0.2",
+        "pkg:composer/react/dns@v1.14.0",
+        "pkg:composer/react/event-loop@v1.6.0",
+        "pkg:composer/react/promise@v3.3.0",
+        "pkg:composer/react/stream@v1.4.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/react/stream@v1.4.0",
+      "dependsOn": [
+        "pkg:composer/evenement/evenement@v3.0.2",
+        "pkg:composer/react/event-loop@v1.6.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/rector/swiss-knife@2.3.5",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/sebastian/cli-parser@4.2.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/sebastian/comparator@7.1.4",
+      "dependsOn": [
+        "pkg:composer/sebastian/diff@7.0.0",
+        "pkg:composer/sebastian/exporter@7.0.2"
+      ]
+    },
+    {
+      "ref": "pkg:composer/sebastian/complexity@5.0.0",
+      "dependsOn": [
+        "pkg:composer/nikic/php-parser@v5.7.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/sebastian/diff@7.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/sebastian/environment@8.0.4",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/sebastian/exporter@7.0.2",
+      "dependsOn": [
+        "pkg:composer/sebastian/recursion-context@7.0.1"
+      ]
+    },
+    {
+      "ref": "pkg:composer/sebastian/global-state@8.0.2",
+      "dependsOn": [
+        "pkg:composer/sebastian/object-reflector@5.0.0",
+        "pkg:composer/sebastian/recursion-context@7.0.1"
+      ]
+    },
+    {
+      "ref": "pkg:composer/sebastian/lines-of-code@4.0.0",
+      "dependsOn": [
+        "pkg:composer/nikic/php-parser@v5.7.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/sebastian/object-enumerator@7.0.0",
+      "dependsOn": [
+        "pkg:composer/sebastian/object-reflector@5.0.0",
+        "pkg:composer/sebastian/recursion-context@7.0.1"
+      ]
+    },
+    {
+      "ref": "pkg:composer/sebastian/object-reflector@5.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/sebastian/recursion-context@7.0.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/sebastian/type@6.0.3",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/sebastian/version@6.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/staabm/side-effects-detector@1.0.5",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/symfony-cmf/routing@3.0.5",
+      "dependsOn": [
+        "pkg:composer/psr/log@3.0.2",
+        "pkg:composer/symfony/http-kernel@v7.4.7",
+        "pkg:composer/symfony/routing@v7.4.6"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/asset@v7.4.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/symfony/cache-contracts@v3.6.0",
+      "dependsOn": [
+        "pkg:composer/psr/cache@3.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/cache@v7.4.7",
+      "dependsOn": [
+        "pkg:composer/psr/cache@3.0.0",
+        "pkg:composer/psr/log@3.0.2",
+        "pkg:composer/symfony/cache-contracts@v3.6.0",
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/service-contracts@v3.6.1",
+        "pkg:composer/symfony/var-exporter@v8.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/clock@v8.0.0",
+      "dependsOn": [
+        "pkg:composer/psr/clock@1.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/config@v7.4.7",
+      "dependsOn": [
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/filesystem@v7.4.6",
+        "pkg:composer/symfony/polyfill-ctype@v1.33.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/console@v7.4.7",
+      "dependsOn": [
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/polyfill-mbstring@v1.33.0",
+        "pkg:composer/symfony/service-contracts@v3.6.1",
+        "pkg:composer/symfony/string@v8.0.6"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/css-selector@v8.0.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/symfony/dependency-injection@v7.4.7",
+      "dependsOn": [
+        "pkg:composer/psr/container@2.0.2",
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/service-contracts@v3.6.1",
+        "pkg:composer/symfony/var-exporter@v8.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/symfony/doctrine-bridge@v7.3.10",
+      "dependsOn": [
+        "pkg:composer/doctrine/event-manager@2.1.1",
+        "pkg:composer/doctrine/persistence@3.4.3",
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/polyfill-ctype@v1.33.0",
+        "pkg:composer/symfony/polyfill-mbstring@v1.33.0",
+        "pkg:composer/symfony/service-contracts@v3.6.1"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/error-handler@v8.0.4",
+      "dependsOn": [
+        "pkg:composer/psr/log@3.0.2",
+        "pkg:composer/symfony/polyfill-php85@v1.33.0",
+        "pkg:composer/symfony/var-dumper@v7.4.6"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/event-dispatcher-contracts@v3.6.0",
+      "dependsOn": [
+        "pkg:composer/psr/event-dispatcher@1.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/event-dispatcher@v7.4.4",
+      "dependsOn": [
+        "pkg:composer/symfony/event-dispatcher-contracts@v3.6.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/expression-language@v7.4.4",
+      "dependsOn": [
+        "pkg:composer/symfony/cache@v7.4.7",
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/service-contracts@v3.6.1"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/filesystem@v7.4.6",
+      "dependsOn": [
+        "pkg:composer/symfony/polyfill-ctype@v1.33.0",
+        "pkg:composer/symfony/polyfill-mbstring@v1.33.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/finder@v7.4.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/symfony/form@v7.4.7",
+      "dependsOn": [
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/event-dispatcher@v7.4.4",
+        "pkg:composer/symfony/options-resolver@v7.4.0",
+        "pkg:composer/symfony/polyfill-ctype@v1.33.0",
+        "pkg:composer/symfony/polyfill-intl-icu@v1.33.0",
+        "pkg:composer/symfony/polyfill-mbstring@v1.33.0",
+        "pkg:composer/symfony/property-access@v7.4.4",
+        "pkg:composer/symfony/service-contracts@v3.6.1"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/framework-bundle@v7.4.7",
+      "dependsOn": [
+        "pkg:composer/symfony/cache@v7.4.7",
+        "pkg:composer/symfony/config@v7.4.7",
+        "pkg:composer/symfony/dependency-injection@v7.4.7",
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/error-handler@v8.0.4",
+        "pkg:composer/symfony/event-dispatcher@v7.4.4",
+        "pkg:composer/symfony/filesystem@v7.4.6",
+        "pkg:composer/symfony/finder@v7.4.6",
+        "pkg:composer/symfony/http-foundation@v7.4.7",
+        "pkg:composer/symfony/http-kernel@v7.4.7",
+        "pkg:composer/symfony/polyfill-mbstring@v1.33.0",
+        "pkg:composer/symfony/polyfill-php85@v1.33.0",
+        "pkg:composer/symfony/routing@v7.4.6"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/http-client-contracts@v3.6.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/symfony/http-client@v7.4.7",
+      "dependsOn": [
+        "pkg:composer/psr/log@3.0.2",
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/http-client-contracts@v3.6.0",
+        "pkg:composer/symfony/polyfill-php83@v1.33.0",
+        "pkg:composer/symfony/service-contracts@v3.6.1"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/http-foundation@v7.4.7",
+      "dependsOn": [
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/polyfill-mbstring@v1.33.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/http-kernel@v7.4.7",
+      "dependsOn": [
+        "pkg:composer/psr/log@3.0.2",
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/error-handler@v8.0.4",
+        "pkg:composer/symfony/event-dispatcher@v7.4.4",
+        "pkg:composer/symfony/http-foundation@v7.4.7",
+        "pkg:composer/symfony/polyfill-ctype@v1.33.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/intl@v7.4.6",
+      "dependsOn": [
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/mailer@v7.4.6",
+      "dependsOn": [
+        "pkg:composer/egulias/email-validator@4.0.4",
+        "pkg:composer/psr/event-dispatcher@1.0.0",
+        "pkg:composer/psr/log@3.0.2",
+        "pkg:composer/symfony/event-dispatcher@v7.4.4",
+        "pkg:composer/symfony/mime@v7.4.7",
+        "pkg:composer/symfony/service-contracts@v3.6.1"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/mime@v7.4.7",
+      "dependsOn": [
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/polyfill-intl-idn@v1.33.0",
+        "pkg:composer/symfony/polyfill-mbstring@v1.33.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/notifier@v7.4.6",
+      "dependsOn": [
+        "pkg:composer/psr/log@3.0.2"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/options-resolver@v7.4.0",
+      "dependsOn": [
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/password-hasher@v8.0.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/symfony/polyfill-ctype@v1.33.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/symfony/polyfill-intl-grapheme@v1.33.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/symfony/polyfill-intl-icu@v1.33.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/symfony/polyfill-intl-idn@v1.33.0",
+      "dependsOn": [
+        "pkg:composer/symfony/polyfill-intl-normalizer@v1.33.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/polyfill-intl-normalizer@v1.33.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/symfony/polyfill-mbstring@v1.33.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/symfony/polyfill-php56@v1.20.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/symfony/polyfill-php72@v1.31.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/symfony/polyfill-php80@v1.33.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/symfony/polyfill-php81@v1.33.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/symfony/polyfill-php83@v1.33.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/symfony/polyfill-php84@v1.33.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/symfony/polyfill-php85@v1.33.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/symfony/process@v7.4.5",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/symfony/property-access@v7.4.4",
+      "dependsOn": [
+        "pkg:composer/symfony/property-info@v7.4.7"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/property-info@v7.4.7",
+      "dependsOn": [
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/string@v8.0.6",
+        "pkg:composer/symfony/type-info@v7.4.7"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/routing@v7.4.6",
+      "dependsOn": [
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/security-bundle@v7.4.6",
+      "dependsOn": [
+        "pkg:composer/symfony/clock@v8.0.0",
+        "pkg:composer/symfony/config@v7.4.7",
+        "pkg:composer/symfony/dependency-injection@v7.4.7",
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/event-dispatcher@v7.4.4",
+        "pkg:composer/symfony/http-foundation@v7.4.7",
+        "pkg:composer/symfony/http-kernel@v7.4.7",
+        "pkg:composer/symfony/password-hasher@v8.0.6",
+        "pkg:composer/symfony/security-core@v7.4.4",
+        "pkg:composer/symfony/security-csrf@v7.4.6",
+        "pkg:composer/symfony/security-http@v7.4.6",
+        "pkg:composer/symfony/service-contracts@v3.6.1"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/security-core@v7.4.4",
+      "dependsOn": [
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/event-dispatcher-contracts@v3.6.0",
+        "pkg:composer/symfony/password-hasher@v8.0.6",
+        "pkg:composer/symfony/service-contracts@v3.6.1"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/security-csrf@v7.4.6",
+      "dependsOn": [
+        "pkg:composer/symfony/security-core@v7.4.4"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/security-http@v7.4.6",
+      "dependsOn": [
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/event-dispatcher@v7.4.4",
+        "pkg:composer/symfony/http-foundation@v7.4.7",
+        "pkg:composer/symfony/http-kernel@v7.4.7",
+        "pkg:composer/symfony/polyfill-mbstring@v1.33.0",
+        "pkg:composer/symfony/property-access@v7.4.4",
+        "pkg:composer/symfony/security-core@v7.4.4",
+        "pkg:composer/symfony/service-contracts@v3.6.1"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/serializer@v7.4.7",
+      "dependsOn": [
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/polyfill-ctype@v1.33.0",
+        "pkg:composer/symfony/polyfill-php84@v1.33.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/service-contracts@v3.6.1",
+      "dependsOn": [
+        "pkg:composer/psr/container@2.0.2",
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/stopwatch@v8.0.0",
+      "dependsOn": [
+        "pkg:composer/symfony/service-contracts@v3.6.1"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/string@v8.0.6",
+      "dependsOn": [
+        "pkg:composer/symfony/polyfill-ctype@v1.33.0",
+        "pkg:composer/symfony/polyfill-intl-grapheme@v1.33.0",
+        "pkg:composer/symfony/polyfill-intl-normalizer@v1.33.0",
+        "pkg:composer/symfony/polyfill-mbstring@v1.33.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/templating@v6.4.24",
+      "dependsOn": [
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/polyfill-ctype@v1.33.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/translation-contracts@v3.6.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/symfony/translation@v7.4.6",
+      "dependsOn": [
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/polyfill-mbstring@v1.33.0",
+        "pkg:composer/symfony/translation-contracts@v3.6.1"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/twig-bridge@v8.0.7",
+      "dependsOn": [
+        "pkg:composer/symfony/translation-contracts@v3.6.1",
+        "pkg:composer/twig/twig@v3.24.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/twig-bundle@v7.4.4",
+      "dependsOn": [
+        "pkg:composer/symfony/config@v7.4.7",
+        "pkg:composer/symfony/dependency-injection@v7.4.7",
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/http-foundation@v7.4.7",
+        "pkg:composer/symfony/http-kernel@v7.4.7",
+        "pkg:composer/symfony/twig-bridge@v8.0.7",
+        "pkg:composer/twig/twig@v3.24.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/type-info@v7.4.7",
+      "dependsOn": [
+        "pkg:composer/psr/container@2.0.2",
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/validator@v7.3.11",
+      "dependsOn": [
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/polyfill-ctype@v1.33.0",
+        "pkg:composer/symfony/polyfill-mbstring@v1.33.0",
+        "pkg:composer/symfony/polyfill-php83@v1.33.0",
+        "pkg:composer/symfony/translation-contracts@v3.6.1"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/var-dumper@v7.4.6",
+      "dependsOn": [
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/polyfill-mbstring@v1.33.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/var-exporter@v8.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/symfony/web-link@v7.4.4",
+      "dependsOn": [
+        "pkg:composer/psr/link@2.0.1"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/webpack-encore-bundle@v2.4.0",
+      "dependsOn": [
+        "pkg:composer/symfony/asset@v7.4.6",
+        "pkg:composer/symfony/config@v7.4.7",
+        "pkg:composer/symfony/dependency-injection@v7.4.7",
+        "pkg:composer/symfony/http-kernel@v7.4.7",
+        "pkg:composer/symfony/service-contracts@v3.6.1"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symfony/yaml@v7.4.6",
+      "dependsOn": [
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/polyfill-ctype@v1.33.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/symplify/easy-coding-standard@13.0.4",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/ta-tikoma/phpunit-architecture-test@0.8.7",
+      "dependsOn": [
+        "pkg:composer/nikic/php-parser@v5.7.0",
+        "pkg:composer/phpdocumentor/reflection-docblock@6.0.3",
+        "pkg:composer/phpunit/phpunit@12.5.12",
+        "pkg:composer/symfony/finder@v7.4.6"
+      ]
+    },
+    {
+      "ref": "pkg:composer/theseer/tokenizer@2.0.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/tijsverkoyen/css-to-inline-styles@v2.4.0",
+      "dependsOn": [
+        "pkg:composer/symfony/css-selector@v8.0.6"
+      ]
+    },
+    {
+      "ref": "pkg:composer/twig/cssinliner-extra@v3.24.0",
+      "dependsOn": [
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/tijsverkoyen/css-to-inline-styles@v2.4.0",
+        "pkg:composer/twig/twig@v3.24.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/twig/extra-bundle@v3.24.0",
+      "dependsOn": [
+        "pkg:composer/symfony/framework-bundle@v7.4.7",
+        "pkg:composer/symfony/twig-bundle@v7.4.4",
+        "pkg:composer/twig/twig@v3.24.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/twig/inky-extra@v3.24.0",
+      "dependsOn": [
+        "pkg:composer/lorenzo/pinky@1.1.0",
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/twig/twig@v3.24.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/twig/intl-extra@v3.24.0",
+      "dependsOn": [
+        "pkg:composer/symfony/intl@v7.4.6",
+        "pkg:composer/twig/twig@v3.24.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/twig/string-extra@v3.24.0",
+      "dependsOn": [
+        "pkg:composer/symfony/string@v8.0.6",
+        "pkg:composer/symfony/translation-contracts@v3.6.1",
+        "pkg:composer/twig/twig@v3.24.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/twig/twig@v3.24.0",
+      "dependsOn": [
+        "pkg:composer/symfony/deprecation-contracts@v3.6.0",
+        "pkg:composer/symfony/polyfill-ctype@v1.33.0",
+        "pkg:composer/symfony/polyfill-mbstring@v1.33.0"
+      ]
+    },
+    {
+      "ref": "pkg:composer/webmozart/assert@1.12.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/willdurand/js-translation-bundle@6.1.0",
+      "dependsOn": [
+        "pkg:composer/symfony/console@v7.4.7",
+        "pkg:composer/symfony/finder@v7.4.6",
+        "pkg:composer/symfony/framework-bundle@v7.4.7",
+        "pkg:composer/symfony/intl@v7.4.6",
+        "pkg:composer/symfony/translation@v7.4.6",
+        "pkg:composer/symfony/twig-bundle@v7.4.4"
+      ]
+    },
+    {
+      "ref": "pkg:composer/willdurand/jsonp-callback-validator@v2.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:composer/willdurand/negotiation@3.1.0",
+      "dependsOn": []
+    }
+  ],
+  "vulnerabilities": []
+}

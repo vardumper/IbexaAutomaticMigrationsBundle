@@ -1,3 +1,4 @@
 /vendor/
 /tests/examples/
-/coverage-report/
+/coverage-report/cghooks.lock
+
