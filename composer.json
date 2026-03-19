@@ -39,6 +39,10 @@
     }
   },
   "extra": {
+    "thanks": {
+      "name": "symfony/flex",
+      "url": "https://github.com/symfony/flex"
+    },
     "hooks": {
       "pre-commit": [
         ".githooks/pre-commit"

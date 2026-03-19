@@ -81,3 +81,59 @@ describe('SectionListener', function () {
         withEnv('dev', fn () => expect(fn () => $this->listener->onBeforeDeleted($this->deleteEvent))->not->toThrow(\Throwable::class));
     });
 });
+
+describe('SectionListener – past CLI guard', function () {
+    beforeEach(function () {
+        $this->tmpDir = makeTmpDir();
+        $this->section = new \Ibexa\Contracts\Core\Repository\Values\Content\Section(['id' => 1, 'identifier' => 'test_section', 'name' => 'Test Section']);
+        $createStruct = new \Ibexa\Contracts\Core\Repository\Values\Content\SectionCreateStruct(['identifier' => 'test_section', 'name' => 'Test Section']);
+        $updateStruct = new \Ibexa\Contracts\Core\Repository\Values\Content\SectionUpdateStruct(['identifier' => 'test_section', 'name' => 'Updated']);
+        $this->createEvent = new \Ibexa\Contracts\Core\Repository\Events\Section\CreateSectionEvent($this->section, $createStruct);
+        $this->updateEvent = new \Ibexa\Contracts\Core\Repository\Events\Section\UpdateSectionEvent($this->section, $this->section, $updateStruct);
+        $this->deleteEvent = new \Ibexa\Contracts\Core\Repository\Events\Section\BeforeDeleteSectionEvent($this->section);
+    });
+
+    afterEach(function () {
+        removeTmpDir($this->tmpDir);
+    });
+
+    it('onCreated – mode=null – generateMigration logs and returns early', function () {
+        $listener = withTestingEnv(fn () => new \vardumper\IbexaAutomaticMigrationsBundle\EventListener\SectionListener(
+            new \Psr\Log\NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['section' => true]),
+            $this->tmpDir,
+            makeContainer()
+        ));
+        withEnv('dev', fn () => expect(fn () => $listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onUpdated – mode=null – generateMigration logs and returns early', function () {
+        $listener = withTestingEnv(fn () => new \vardumper\IbexaAutomaticMigrationsBundle\EventListener\SectionListener(
+            new \Psr\Log\NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['section' => true]),
+            $this->tmpDir,
+            makeContainer()
+        ));
+        withEnv('dev', fn () => expect(fn () => $listener->onUpdated($this->updateEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onBeforeDeleted – mode=null – generateMigration logs and returns early', function () {
+        $listener = withTestingEnv(fn () => new \vardumper\IbexaAutomaticMigrationsBundle\EventListener\SectionListener(
+            new \Psr\Log\NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['section' => true]),
+            $this->tmpDir,
+            makeContainer()
+        ));
+        withEnv('dev', fn () => expect(fn () => $listener->onBeforeDeleted($this->deleteEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onCreated – disabled type – returns before generateMigration', function () {
+        $listener = withTestingEnv(fn () => new \vardumper\IbexaAutomaticMigrationsBundle\EventListener\SectionListener(
+            new \Psr\Log\NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['section' => false]),
+            $this->tmpDir,
+            makeContainer()
+        ));
+        withEnv('dev', fn () => expect(fn () => $listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class));
+    });
+});

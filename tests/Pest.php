@@ -137,3 +137,66 @@ function withEnv(string $env, callable $fn): void
         }
     }
 }
+
+/**
+ * Create a fake MigrationRunnerInterface that captures calls and returns configured values.
+ * Pass exitCode=0 to simulate a successful migration generation.
+ */
+function makeFakeRunner(int $exitCode = 1, string $output = '', string $errorOutput = ''): \vardumper\IbexaAutomaticMigrationsBundle\Process\MigrationRunnerInterface
+{
+    return new class($exitCode, $output, $errorOutput) implements \vardumper\IbexaAutomaticMigrationsBundle\Process\MigrationRunnerInterface {
+        /** @var array<string> */
+        public array $lastCommand = [];
+        public string $lastWorkingDir = '';
+
+        public function __construct(
+            private readonly int $exitCode,
+            private readonly string $out,
+            private readonly string $errOut
+        ) {
+        }
+
+        /** @param array<string> $command */
+        public function run(array $command, string $workingDirectory): void
+        {
+            $this->lastCommand = $command;
+            $this->lastWorkingDir = $workingDirectory;
+        }
+
+        public function getExitCode(): ?int
+        {
+            return $this->exitCode;
+        }
+
+        public function getOutput(): string
+        {
+            return $this->out;
+        }
+
+        public function getErrorOutput(): string
+        {
+            return $this->errOut;
+        }
+    };
+}
+
+/**
+ * Construct a listener with APP_ENV=testing so isCli is false, allowing event handlers
+ * to proceed past the CLI guard when APP_ENV is later set to 'dev'.
+ *
+ * @param callable $factory  Must return the listener instance; called while APP_ENV=testing
+ */
+function withTestingEnv(callable $factory): mixed
+{
+    $previous = $_SERVER['APP_ENV'] ?? null;
+    $_SERVER['APP_ENV'] = 'testing';
+    try {
+        return $factory();
+    } finally {
+        if ($previous === null) {
+            unset($_SERVER['APP_ENV']);
+        } else {
+            $_SERVER['APP_ENV'] = $previous;
+        }
+    }
+}

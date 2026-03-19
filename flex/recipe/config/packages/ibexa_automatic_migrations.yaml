@@ -1,0 +1,14 @@
+ibexa_automatic_migrations:
+    enabled: true
+    types:
+        content: false
+        content_type: true
+        content_type_group: true
+        section: false
+        object_state: false
+        object_state_group: false
+        user: false
+        user_group: false
+        role: false
+        language: false
+        url: false

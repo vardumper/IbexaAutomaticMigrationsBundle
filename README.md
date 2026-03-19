@@ -45,15 +45,42 @@ Migrations are created in the default locations (in `src/Migrations/Ibexa/migrat
 
 ## Installation
 
-### 1. Install the bundle
+### With Symfony Flex (recommended)
 
-```bash
-composer require vardumper/ibexa-automatic-migrations-bundle:dev-main
+Add the recipe endpoint to your project's `composer.json` once:
+
+```json
+"extra": {
+    "symfony": {
+        "endpoint": [
+            "https://raw.githubusercontent.com/vardumper/IbexaAutomaticMigrationsBundle/main/flex/",
+            "flex://defaults"
+        ]
+    }
+}
 ```
 
-### 2. Register the bundle in your `config/bundles.php`:
-Remember that even though you activate this bundle for all to activate this bundle for all environments, only when `APP_ENV` is set to `dev` it will create migration files.
-To configure which kind of migration files will be created, head to Admin > Migrations > Settings, make changes and save the Bundle settings.
+Then install the bundle:
+
+```bash
+composer require vardumper/ibexa-automatic-migrations-bundle
+```
+
+Symfony Flex will automatically:
+- Register the bundle in `config/bundles.php`
+- Copy a default configuration to `config/packages/ibexa_automatic_migrations.yaml`
+
+### Without Symfony Flex (manual)
+
+#### 1. Install the bundle
+
+```bash
+composer require vardumper/ibexa-automatic-migrations-bundle
+```
+
+#### 2. Register the bundle in `config/bundles.php`
+
+Remember that even though the bundle is activated for all environments, migration files are only created when `APP_ENV` is set to `dev`.
 
 ```php
 return [
@@ -62,12 +89,38 @@ return [
 ];
 ```
 
-Register the backend controller. Create a file called `config/routes/dev/ibexa_automatic_migrations.yaml` with this content:
+#### 3. Create the package configuration
+
+Create `config/packages/ibexa_automatic_migrations.yaml`:
+
+```yaml
+ibexa_automatic_migrations:
+    enabled: true
+    types:
+        content: false
+        content_type: true
+        content_type_group: true
+        section: false
+        object_state: false
+        object_state_group: false
+        user: false
+        user_group: false
+        role: false
+        language: false
+        url: false
+```
+
+#### 4. Register the backend controller routes
+
+Create `config/routes/dev/ibexa_automatic_migrations.yaml`:
+
 ```yaml
 ibexa_automatic_migrations:
     resource: '@IbexaAutomaticMigrationsBundle/src/Controller/'
     type: attribute
 ```
+
+To configure which migration types are generated, go to Admin > Migrations > Settings.
 
 ## Testing
 

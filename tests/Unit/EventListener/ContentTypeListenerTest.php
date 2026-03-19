@@ -88,3 +88,51 @@ describe('ContentTypeListener', function () {
         expect($listener2)->toBeInstanceOf(ContentTypeListener::class);
     });
 });
+
+describe('ContentTypeListener – past CLI guard (fake runner)', function () {
+    beforeEach(function () {
+        $this->tmpDir = makeTmpDir();
+
+        $draft = $this->createStub(ContentTypeDraft::class);
+        $contentType = $this->createStub(ContentType::class);
+
+        $this->publishEvent = new PublishContentTypeDraftEvent($draft);
+        $this->deleteEvent = new BeforeDeleteContentTypeEvent($contentType);
+    });
+
+    afterEach(function () {
+        removeTmpDir($this->tmpDir);
+    });
+
+    it('onIbexaPublishContentTypeDraft – null content type service – caught and logged', function () {
+        // makeContainer returns null for all gets; loading CT by id throws TypeError → caught
+        $listener = withTestingEnv(fn () => new ContentTypeListener(
+            new NullLogger(),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(0)
+        ));
+        withEnv('dev', fn () => expect(fn () => $listener->onIbexaPublishContentTypeDraft($this->publishEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onIbexaBeforeDeleteContentType – null content type – generateMigration early-returns on null mode', function () {
+        $listener = withTestingEnv(fn () => new ContentTypeListener(
+            new NullLogger(),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(0)
+        ));
+        withEnv('dev', fn () => expect(fn () => $listener->onIbexaBeforeDeleteContentType($this->deleteEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onIbexaPublishContentTypeDraft – non-dev env – skips early', function () {
+        $listener = withTestingEnv(fn () => new ContentTypeListener(
+            new NullLogger(),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(0)
+        ));
+        // default APP_ENV is not 'dev', so should return early
+        expect(fn () => $listener->onIbexaPublishContentTypeDraft($this->publishEvent))->not->toThrow(\Throwable::class);
+    });
+});
