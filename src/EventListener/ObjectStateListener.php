@@ -10,8 +10,9 @@ use Ibexa\Contracts\Core\Repository\Events\ObjectState\UpdateObjectStateEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Process\Process;
 use vardumper\IbexaAutomaticMigrationsBundle\Helper\Helper;
+use vardumper\IbexaAutomaticMigrationsBundle\Process\MigrationRunnerInterface;
+use vardumper\IbexaAutomaticMigrationsBundle\Process\SymfonyProcessRunner;
 use vardumper\IbexaAutomaticMigrationsBundle\Service\SettingsService;
 
 final class ObjectStateListener implements EventSubscriberInterface
@@ -22,6 +23,7 @@ final class ObjectStateListener implements EventSubscriberInterface
     private string $destination;
     private ContainerInterface $container;
     private array $consoleCommand;
+    private MigrationRunnerInterface $migrationRunner;
     /** @var array<string, int> */
     private array $recentGenerations = [];
 
@@ -29,9 +31,11 @@ final class ObjectStateListener implements EventSubscriberInterface
         private readonly LoggerInterface $logger,
         private readonly SettingsService $settingsService,
         string $projectDir,
-        ContainerInterface $container
+        ContainerInterface $container,
+        ?MigrationRunnerInterface $migrationRunner = null
     ) {
         $this->container = $container;
+        $this->migrationRunner = $migrationRunner ?? new SymfonyProcessRunner();
         $this->projectDir = rtrim($projectDir, DIRECTORY_SEPARATOR);
         $this->isCli = PHP_SAPI === 'cli' && ($_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null) !== 'testing';
         $this->consoleCommand = ['php', '-d', 'memory_limit=512M', $this->projectDir . '/bin/console'];
@@ -173,11 +177,9 @@ final class ObjectStateListener implements EventSubscriberInterface
             if ($this->mode === 'kaliop') {
                 $cmd = array_merge($cmd, [$this->destination, $name]);
             }
-            $process = new Process($cmd, $this->projectDir);
-
-            $process->run();
-            $code = $process->getExitCode();
-            $this->logger->info('Object state migration generate process finished (' . $mode . ')', ['name' => $name, 'code' => $code, 'output' => $process->getOutput(), 'error' => $process->getErrorOutput()]);
+            $this->migrationRunner->run($cmd, $this->projectDir);
+            $code = $this->migrationRunner->getExitCode();
+            $this->logger->info('Object state migration generate process finished (' . $mode . ')', ['name' => $name, 'code' => $code, 'output' => $this->migrationRunner->getOutput(), 'error' => $this->migrationRunner->getErrorOutput()]);
             if ($code == 0) {
                 if ($this->mode === 'ibexa') {
                     $fileName = $inputArray['--file'];
@@ -246,7 +248,7 @@ final class ObjectStateListener implements EventSubscriberInterface
                     $this->logger->warning('Failed to mark migration as executed', ['exception' => $e->getMessage()]);
                 }
             } else {
-                $this->logger->error('Object state migration generation failed', ['code' => $code, 'error' => $process->getErrorOutput()]);
+                $this->logger->error('Object state migration generation failed', ['code' => $code, 'error' => $this->migrationRunner->getErrorOutput()]);
             }
         } catch (\Throwable $e) {
             $this->logger->error('Failed to generate object state migration programmatically', ['mode' => $mode, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);

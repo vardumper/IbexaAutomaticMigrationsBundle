@@ -87,3 +87,56 @@ describe('ContentListener', function () {
         withEnv('dev', fn () => expect(fn () => $this->listener->onBeforeDeleted($this->deleteEvent))->not->toThrow(\Throwable::class));
     });
 });
+
+describe('ContentListener – past CLI guard (fake runner)', function () {
+    beforeEach(function () {
+        $this->tmpDir = makeTmpDir();
+        $content = $this->createStub(Content::class);
+        $createStruct = $this->createStub(ContentCreateStruct::class);
+        $versionInfo = $this->createStub(VersionInfo::class);
+        $updateStruct = $this->createStub(ContentUpdateStruct::class);
+        $contentInfo = new ContentInfo(['id' => 1, 'mainLocationId' => 2]);
+
+        $this->createEvent = new CreateContentEvent($content, $createStruct, [], null);
+        $this->updateEvent = new UpdateContentEvent($content, $versionInfo, $updateStruct, null);
+        $this->deleteEvent = new BeforeDeleteContentEvent($contentInfo);
+    });
+
+    afterEach(function () {
+        removeTmpDir($this->tmpDir);
+    });
+
+    it('onCreated handles successful runner branch', function () {
+        $listener = withTestingEnv(fn () => new ContentListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['content' => true]),
+            $this->tmpDir,
+            makeFakeRunner(0)
+        ));
+
+        withEnv('dev', fn () => expect(fn () => $listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onUpdated handles failed runner branch', function () {
+        $listener = withTestingEnv(fn () => new ContentListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['content' => true]),
+            $this->tmpDir,
+            makeFakeRunner(1, '', 'boom')
+        ));
+
+        withEnv('dev', fn () => expect(fn () => $listener->onUpdated($this->updateEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onCreated – forced ibexa mode – exercises ibexa generation branch', function () {
+        $listener = withTestingEnv(fn () => new ContentListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['content' => true]),
+            $this->tmpDir,
+            makeFakeRunner(1, '', 'ibexa-fail')
+        ));
+        setPrivateProperty($listener, 'mode', 'ibexa');
+
+        withEnv('dev', fn () => expect(fn () => $listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class));
+    });
+});

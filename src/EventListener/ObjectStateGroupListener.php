@@ -12,9 +12,10 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 use vardumper\IbexaAutomaticMigrationsBundle\Helper\Helper;
+use vardumper\IbexaAutomaticMigrationsBundle\Process\MigrationRunnerInterface;
+use vardumper\IbexaAutomaticMigrationsBundle\Process\SymfonyProcessRunner;
 use vardumper\IbexaAutomaticMigrationsBundle\Service\SettingsService;
 
 final class ObjectStateGroupListener implements EventSubscriberInterface
@@ -25,6 +26,7 @@ final class ObjectStateGroupListener implements EventSubscriberInterface
     private string $destination;
     /** @var array<string> */
     private array $consoleCommand;
+    private MigrationRunnerInterface $migrationRunner;
 
     public function __construct(
         private readonly LoggerInterface $logger,
@@ -32,8 +34,10 @@ final class ObjectStateGroupListener implements EventSubscriberInterface
         #[Autowire('%kernel.project_dir%')]
         string $projectDir,
         #[Autowire(service: 'service_container')]
-        private readonly ContainerInterface $container
+        private readonly ContainerInterface $container,
+        ?MigrationRunnerInterface $migrationRunner = null
     ) {
+        $this->migrationRunner = $migrationRunner ?? new SymfonyProcessRunner();
         $this->logger->info('ObjectStateGroupListener constructor called');
         $this->projectDir = rtrim($projectDir, DIRECTORY_SEPARATOR);
         $this->isCli = PHP_SAPI === 'cli' && ($_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null) !== 'testing';
@@ -116,10 +120,9 @@ final class ObjectStateGroupListener implements EventSubscriberInterface
                 $cmd = array_merge($cmd, [$this->destination, $name]);
             }
 
-            $process = new Process($cmd, $this->projectDir);
-            $process->run();
-            $code = $process->getExitCode();
-            $this->logger->info('ObjectStateGroup migration generate process finished (create)', ['name' => $name, 'code' => $code, 'output' => $process->getOutput(), 'error' => $process->getErrorOutput()]);
+            $this->migrationRunner->run($cmd, $this->projectDir);
+            $code = $this->migrationRunner->getExitCode();
+            $this->logger->info('ObjectStateGroup migration generate process finished (create)', ['name' => $name, 'code' => $code, 'output' => $this->migrationRunner->getOutput(), 'error' => $this->migrationRunner->getErrorOutput()]);
 
             if ($code == 0) {
                 if ($this->mode === 'ibexa') {
@@ -247,10 +250,9 @@ final class ObjectStateGroupListener implements EventSubscriberInterface
                 $cmd = array_merge($cmd, [$this->destination, $name]);
             }
 
-            $process = new Process($cmd, $this->projectDir);
-            $process->run();
-            $code = $process->getExitCode();
-            $this->logger->info('ObjectStateGroup migration generate process finished (update)', ['name' => $name, 'code' => $code, 'output' => $process->getOutput(), 'error' => $process->getErrorOutput()]);
+            $this->migrationRunner->run($cmd, $this->projectDir);
+            $code = $this->migrationRunner->getExitCode();
+            $this->logger->info('ObjectStateGroup migration generate process finished (update)', ['name' => $name, 'code' => $code, 'output' => $this->migrationRunner->getOutput(), 'error' => $this->migrationRunner->getErrorOutput()]);
 
             if ($code == 0) {
                 if ($this->mode === 'ibexa') {

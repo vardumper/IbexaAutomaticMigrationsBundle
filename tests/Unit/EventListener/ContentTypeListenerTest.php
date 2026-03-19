@@ -115,6 +115,182 @@ describe('ContentTypeListener – past CLI guard (fake runner)', function () {
         withEnv('dev', fn () => expect(fn () => $listener->onIbexaPublishContentTypeDraft($this->publishEvent))->not->toThrow(\Throwable::class));
     });
 
+    it('onIbexaPublishContentTypeDraft – with content type service – reaches hasExecutedCreateMigration path', function () {
+        $publishedContentType = $this->createStub(ContentType::class);
+        $contentTypeService = new class($publishedContentType) {
+            public function __construct(private readonly object $ct)
+            {
+            }
+
+            public function loadContentType(int $id): object
+            {
+                return $this->ct;
+            }
+
+            public function loadContentTypeByIdentifier(string $identifier): object
+            {
+                return $this->ct;
+            }
+        };
+
+        $listener = withTestingEnv(fn () => new ContentTypeListener(
+            new NullLogger(),
+            $this->tmpDir,
+            makeContainerWith($contentTypeService),
+            makeFakeRunner(0)
+        ));
+
+        withEnv('dev', fn () => expect(fn () => $listener->onIbexaPublishContentTypeDraft($this->publishEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onIbexaPublishContentTypeDraft – with content type service and failed runner – handles process failure branch', function () {
+        $publishedContentType = $this->createStub(ContentType::class);
+        $contentTypeService = new class($publishedContentType) {
+            public function __construct(private readonly object $ct)
+            {
+            }
+
+            public function loadContentType(int $id): object
+            {
+                return $this->ct;
+            }
+
+            public function loadContentTypeByIdentifier(string $identifier): object
+            {
+                return $this->ct;
+            }
+        };
+
+        $listener = withTestingEnv(fn () => new ContentTypeListener(
+            new NullLogger(),
+            $this->tmpDir,
+            makeContainerWith($contentTypeService),
+            makeFakeRunner(1)
+        ));
+
+        withEnv('dev', fn () => expect(fn () => $listener->onIbexaPublishContentTypeDraft($this->publishEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onIbexaPublishContentTypeDraft – deep success path with migration file present', function () {
+        $draft = $this->getMockBuilder(ContentTypeDraft::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $draft->method('__get')->willReturnCallback(fn (string $prop) => match ($prop) {
+            'id' => 42,
+            'identifier' => 'article',
+            default => null,
+        });
+
+        $publishedContentType = $this->getMockBuilder(ContentType::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $publishedContentType->method('__get')->willReturnCallback(fn (string $prop) => match ($prop) {
+            'id' => 42,
+            'identifier' => 'article',
+            default => null,
+        });
+
+        $publishEvent = new PublishContentTypeDraftEvent($draft);
+        $contentTypeService = new class($publishedContentType) {
+            public function __construct(private readonly object $ct)
+            {
+            }
+
+            public function loadContentType(int $id): object
+            {
+                return $this->ct;
+            }
+
+            public function loadContentTypeByIdentifier(string $identifier): object
+            {
+                return $this->ct;
+            }
+        };
+
+        $dest = $this->tmpDir . '/src/MigrationsDefinitions';
+        @mkdir($dest, 0777, true);
+        $file = $dest . '/2099_01_01_00_00_07_auto_content_type_create_article.yaml';
+        file_put_contents($file, "- type: content_type\n  mode: create\n");
+        touch($file, time() - 1);
+
+        $listener = withTestingEnv(fn () => new ContentTypeListener(
+            new NullLogger(),
+            $this->tmpDir,
+            makeContainerWith($contentTypeService),
+            makeFakeRunner(0)
+        ));
+
+        withEnv('dev', fn () => expect(fn () => $listener->onIbexaPublishContentTypeDraft($publishEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onIbexaBeforeDeleteContentType – deep failed runner path with concrete content type', function () {
+        $contentType = $this->getMockBuilder(ContentType::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $contentType->method('__get')->willReturnCallback(fn (string $prop) => match ($prop) {
+            'id' => 77,
+            'identifier' => 'landing_page',
+            default => null,
+        });
+        $deleteEvent = new BeforeDeleteContentTypeEvent($contentType);
+
+        $listener = withTestingEnv(fn () => new ContentTypeListener(
+            new NullLogger(),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(1, '', 'boom')
+        ));
+
+        withEnv('dev', fn () => expect(fn () => $listener->onIbexaBeforeDeleteContentType($deleteEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onIbexaPublishContentTypeDraft – forced ibexa mode – exercises ibexa generation branch', function () {
+        $draft = $this->getMockBuilder(ContentTypeDraft::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $draft->method('__get')->willReturnCallback(fn (string $prop) => match ($prop) {
+            'id' => 77,
+            'identifier' => 'forced_ibexa',
+            default => null,
+        });
+
+        $publishedContentType = $this->getMockBuilder(ContentType::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $publishedContentType->method('__get')->willReturnCallback(fn (string $prop) => match ($prop) {
+            'id' => 77,
+            'identifier' => 'forced_ibexa',
+            default => null,
+        });
+
+        $publishEvent = new PublishContentTypeDraftEvent($draft);
+        $contentTypeService = new class($publishedContentType) {
+            public function __construct(private readonly object $ct)
+            {
+            }
+
+            public function loadContentType(int $id): object
+            {
+                return $this->ct;
+            }
+
+            public function loadContentTypeByIdentifier(string $identifier): object
+            {
+                return $this->ct;
+            }
+        };
+
+        $listener = withTestingEnv(fn () => new ContentTypeListener(
+            new NullLogger(),
+            $this->tmpDir,
+            makeContainerWith($contentTypeService),
+            makeFakeRunner(1, '', 'ibexa-fail')
+        ));
+        setPrivateProperty($listener, 'mode', 'ibexa');
+
+        withEnv('dev', fn () => expect(fn () => $listener->onIbexaPublishContentTypeDraft($publishEvent))->not->toThrow(\Throwable::class));
+    });
+
     it('onIbexaBeforeDeleteContentType – null content type – generateMigration early-returns on null mode', function () {
         $listener = withTestingEnv(fn () => new ContentTypeListener(
             new NullLogger(),

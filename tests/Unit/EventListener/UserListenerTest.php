@@ -165,3 +165,82 @@ describe('UserListener', function () {
         withEnv('dev', fn () => expect(fn () => $this->listener->onBeforeDeleted($this->deleteEvent))->not->toThrow(\Throwable::class));
     });
 });
+
+describe('UserListener – past CLI guard (fake runner)', function () {
+    beforeEach(function () {
+        $this->tmpDir = makeTmpDir();
+        $user = $this->getMockBuilder(User::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $user->method('__get')->willReturnCallback(fn (string $prop) => match ($prop) {
+            'id' => 1,
+            'login' => 'editor',
+            default => null,
+        });
+        $createStruct = $this->createStub(UserCreateStruct::class);
+        $updateStruct = new UserUpdateStruct();
+
+        $this->createEvent = new CreateUserEvent($user, $createStruct, []);
+        $this->updateEvent = new UpdateUserEvent($user, $user, $updateStruct);
+        $this->deleteEvent = new BeforeDeleteUserEvent($user);
+    });
+
+    afterEach(function () {
+        removeTmpDir($this->tmpDir);
+    });
+
+    it('onCreated handles successful runner with no generated file', function () {
+        $listener = withTestingEnv(fn () => new UserListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['user' => true]),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(0)
+        ));
+
+        withEnv('dev', fn () => expect(fn () => $listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onUpdated handles failed runner branch', function () {
+        $listener = withTestingEnv(fn () => new UserListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['user' => true]),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(1, '', 'boom')
+        ));
+
+        withEnv('dev', fn () => expect(fn () => $listener->onUpdated($this->updateEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onBeforeDeleted handles successful runner with existing migration file', function () {
+        $dest = $this->tmpDir . '/src/MigrationsDefinitions';
+        @mkdir($dest, 0777, true);
+        $file = $dest . '/2099_01_01_00_00_06_auto_user.yaml';
+        file_put_contents($file, "- type: user\n  mode: delete\n");
+        touch($file, time() - 1);
+
+        $listener = withTestingEnv(fn () => new UserListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['user' => true]),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(0)
+        ));
+
+        withEnv('dev', fn () => expect(fn () => $listener->onBeforeDeleted($this->deleteEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onCreated – forced ibexa mode – exercises ibexa generation branch', function () {
+        $listener = withTestingEnv(fn () => new UserListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['user' => true]),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(1, '', 'ibexa-fail')
+        ));
+        setPrivateProperty($listener, 'mode', 'ibexa');
+
+        withEnv('dev', fn () => expect(fn () => $listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class));
+    });
+});

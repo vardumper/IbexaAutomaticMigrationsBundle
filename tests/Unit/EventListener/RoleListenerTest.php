@@ -122,3 +122,77 @@ describe('RoleListener', function () {
         withEnv('dev', fn () => expect(fn () => $this->listener->onBeforeDeleted($this->deleteEvent))->not->toThrow(\Throwable::class));
     });
 });
+
+describe('RoleListener – past CLI guard (fake runner)', function () {
+    beforeEach(function () {
+        $this->tmpDir = makeTmpDir();
+        $draft = $this->createStub(RoleDraft::class);
+        $createStruct = $this->createStub(RoleCreateStruct::class);
+        $updateStruct = new RoleUpdateStruct(['identifier' => 'test_role']);
+        $role = $this->createStub(Role::class);
+
+        $this->createEvent = new CreateRoleEvent($draft, $createStruct);
+        $this->publishEvent = new PublishRoleDraftEvent($draft);
+        $this->updateEvent = new UpdateRoleDraftEvent($draft, $draft, $updateStruct);
+        $this->deleteEvent = new BeforeDeleteRoleEvent($role);
+    });
+
+    afterEach(function () {
+        removeTmpDir($this->tmpDir);
+    });
+
+    it('onCreated handles successful runner with no generated file', function () {
+        $listener = withTestingEnv(fn () => new RoleListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['role' => true]),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(0)
+        ));
+
+        withEnv('dev', fn () => expect(fn () => $listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onUpdated handles failed runner branch', function () {
+        $listener = withTestingEnv(fn () => new RoleListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['role' => true]),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(1, '', 'boom')
+        ));
+
+        withEnv('dev', fn () => expect(fn () => $listener->onUpdated($this->updateEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onBeforeDeleted handles successful runner with existing migration file', function () {
+        $dest = $this->tmpDir . '/src/MigrationsDefinitions';
+        @mkdir($dest, 0777, true);
+        $file = $dest . '/2099_01_01_00_00_04_auto_role.yaml';
+        file_put_contents($file, "- type: role\n  mode: delete\n");
+        touch($file, time() - 1);
+
+        $listener = withTestingEnv(fn () => new RoleListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['role' => true]),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(0)
+        ));
+
+        withEnv('dev', fn () => expect(fn () => $listener->onBeforeDeleted($this->deleteEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onCreated – forced ibexa mode – exercises ibexa generation branch', function () {
+        $listener = withTestingEnv(fn () => new RoleListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['role' => true]),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(1, '', 'ibexa-fail')
+        ));
+        setPrivateProperty($listener, 'mode', 'ibexa');
+
+        withEnv('dev', fn () => expect(fn () => $listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class));
+    });
+});

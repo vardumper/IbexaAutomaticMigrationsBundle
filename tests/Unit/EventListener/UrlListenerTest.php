@@ -124,3 +124,113 @@ describe('UrlListener', function () {
         }
     });
 });
+
+describe('UrlListener – past CLI guard (fake runner)', function () {
+    beforeEach(function () {
+        $this->tmpDir = makeTmpDir();
+        $urlAlias = new URLAlias(['id' => 1, 'path' => '/test', 'type' => URLAlias::LOCATION]);
+        $location = $this->createStub(Location::class);
+        $urlWildcard = new URLWildcard(['id' => 1, 'sourceUrl' => '/src', 'destinationUrl' => '/dst', 'forward' => false]);
+        $updateStruct = new URLWildcardUpdateStruct(['sourceUrl' => '/src', 'destinationUrl' => '/dst', 'forward' => false]);
+
+        $this->aliasCreateEvent = new CreateUrlAliasEvent($urlAlias, $location, '/test', 'eng-GB', false, false);
+        $this->wildcardCreateEvent = new CreateUrlWildcardEvent($urlWildcard, '/src', '/dst', false);
+        $this->wildcardUpdateEvent = new UpdateUrlWildcardEvent($urlWildcard, $updateStruct);
+        $this->wildcardRemoveEvent = new RemoveUrlWildcardEvent($urlWildcard);
+    });
+
+    afterEach(function () {
+        removeTmpDir($this->tmpDir);
+    });
+
+    it('onAliasCreated handles successful runner with no generated file', function () {
+        $listener = withTestingEnv(fn () => new UrlListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['url' => true]),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(0)
+        ));
+
+        withEnv('dev', fn () => expect(fn () => $listener->onAliasCreated($this->aliasCreateEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onWildcardUpdated handles failed runner branch', function () {
+        $listener = withTestingEnv(fn () => new UrlListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['url' => true]),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(1, '', 'boom')
+        ));
+
+        withEnv('dev', fn () => expect(fn () => $listener->onWildcardUpdated($this->wildcardUpdateEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onAliasCreated handles successful runner with existing migration file', function () {
+        $dest = $this->tmpDir . '/src/MigrationsDefinitions';
+        @mkdir($dest, 0777, true);
+        $file = $dest . '/2099_01_01_00_00_10_auto_url_alias_create.yaml';
+        file_put_contents($file, "- type: url_alias\n  mode: create\n");
+        touch($file, time() - 1);
+
+        $listener = withTestingEnv(fn () => new UrlListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['url' => true]),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(0)
+        ));
+
+        withEnv('dev', fn () => expect(fn () => $listener->onAliasCreated($this->aliasCreateEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onWildcardUpdated handles successful runner with existing migration file', function () {
+        $dest = $this->tmpDir . '/src/MigrationsDefinitions';
+        @mkdir($dest, 0777, true);
+        $file = $dest . '/2099_01_01_00_00_11_auto_url_wildcard_update.yaml';
+        file_put_contents($file, "- type: url_wildcard\n  mode: update\n");
+        touch($file, time() - 1);
+
+        $listener = withTestingEnv(fn () => new UrlListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['url' => true]),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(0)
+        ));
+
+        withEnv('dev', fn () => expect(fn () => $listener->onWildcardUpdated($this->wildcardUpdateEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onWildcardRemoved handles successful runner with existing migration file', function () {
+        $dest = $this->tmpDir . '/src/MigrationsDefinitions';
+        @mkdir($dest, 0777, true);
+        $file = $dest . '/2099_01_01_00_00_05_auto_url.yaml';
+        file_put_contents($file, "- type: url_wildcard\n  mode: delete\n");
+        touch($file, time() - 1);
+
+        $listener = withTestingEnv(fn () => new UrlListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['url' => true]),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(0)
+        ));
+
+        withEnv('dev', fn () => expect(fn () => $listener->onWildcardRemoved($this->wildcardRemoveEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onAliasCreated – forced ibexa mode – exercises ibexa generation branch', function () {
+        $listener = withTestingEnv(fn () => new UrlListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['url' => true]),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(1, '', 'ibexa-fail')
+        ));
+        setPrivateProperty($listener, 'mode', 'ibexa');
+
+        withEnv('dev', fn () => expect(fn () => $listener->onAliasCreated($this->aliasCreateEvent))->not->toThrow(\Throwable::class));
+    });
+});

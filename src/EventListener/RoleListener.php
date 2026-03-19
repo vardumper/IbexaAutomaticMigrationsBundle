@@ -11,8 +11,9 @@ use Ibexa\Contracts\Core\Repository\Events\Role\UpdateRoleDraftEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Process\Process;
 use vardumper\IbexaAutomaticMigrationsBundle\Helper\Helper;
+use vardumper\IbexaAutomaticMigrationsBundle\Process\MigrationRunnerInterface;
+use vardumper\IbexaAutomaticMigrationsBundle\Process\SymfonyProcessRunner;
 use vardumper\IbexaAutomaticMigrationsBundle\Service\SettingsService;
 
 final class RoleListener implements EventSubscriberInterface
@@ -23,14 +24,17 @@ final class RoleListener implements EventSubscriberInterface
     private string $destination;
     private ContainerInterface $container;
     private array $consoleCommand;
+    private MigrationRunnerInterface $migrationRunner;
 
     public function __construct(
         private readonly LoggerInterface $logger,
         private readonly SettingsService $settingsService,
         string $projectDir,
-        ContainerInterface $container
+        ContainerInterface $container,
+        ?MigrationRunnerInterface $migrationRunner = null
     ) {
         $this->container = $container;
+        $this->migrationRunner = $migrationRunner ?? new SymfonyProcessRunner();
         $this->projectDir = rtrim($projectDir, DIRECTORY_SEPARATOR);
         $this->isCli = PHP_SAPI === 'cli' && ($_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null) !== 'testing';
         $this->consoleCommand = ['php', '-d', 'memory_limit=512M', $this->projectDir . '/bin/console'];
@@ -205,11 +209,9 @@ final class RoleListener implements EventSubscriberInterface
             if ($this->mode === 'kaliop') {
                 $cmd = array_merge($cmd, [$this->destination, $name]);
             }
-            $process = new Process($cmd, $this->projectDir);
-
-            $process->run();
-            $code = $process->getExitCode();
-            $this->logger->info('Role migration generate process finished (' . $mode . ')', ['name' => $name, 'code' => $code, 'output' => $process->getOutput(), 'error' => $process->getErrorOutput()]);
+            $this->migrationRunner->run($cmd, $this->projectDir);
+            $code = $this->migrationRunner->getExitCode();
+            $this->logger->info('Role migration generate process finished (' . $mode . ')', ['name' => $name, 'code' => $code, 'output' => $this->migrationRunner->getOutput(), 'error' => $this->migrationRunner->getErrorOutput()]);
             if ($code == 0) {
                 if ($this->mode === 'ibexa') {
                     $fileName = $inputArray['--file'];
@@ -278,7 +280,7 @@ final class RoleListener implements EventSubscriberInterface
                     $this->logger->warning('Failed to mark migration as executed', ['exception' => $e->getMessage()]);
                 }
             } else {
-                $this->logger->error('Role migration generation failed', ['code' => $code, 'error' => $process->getErrorOutput()]);
+                $this->logger->error('Role migration generation failed', ['code' => $code, 'error' => $this->migrationRunner->getErrorOutput()]);
             }
         } catch (\Throwable $e) {
             $this->logger->error('Failed to generate role migration programmatically', ['mode' => $mode, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);

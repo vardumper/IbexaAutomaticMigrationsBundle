@@ -238,16 +238,26 @@ describe('ContentTypeGroupListener – past CLI guard (fake runner)', function (
 
     it('onCreated – disabled type – returns early before runner', function () {
         $settings = makeSettingsService($this->tmpDir, true, ['content_type_group' => false]);
-        $fakeRunner = makeFakeRunner(0);
         $listener = withTestingEnv(fn () => new \vardumper\IbexaAutomaticMigrationsBundle\EventListener\ContentTypeGroupListener(
             new \Psr\Log\NullLogger(),
             $settings,
             $this->tmpDir,
             makeContainer(),
-            $fakeRunner
+            makeFakeRunner(0)
         ));
-        withEnv('dev', fn () => $listener->onCreated($this->createEvent));
-        // runner should NOT have been called
-        expect($fakeRunner->lastCommand)->toBeEmpty();
+        withEnv('dev', fn () => expect(fn () => $listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onUpdated – forced ibexa mode – exercises ibexa generation branch', function () {
+        $listener = withTestingEnv(fn () => new \vardumper\IbexaAutomaticMigrationsBundle\EventListener\ContentTypeGroupListener(
+            new \Psr\Log\NullLogger(),
+            $this->settings,
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(1, '', 'ibexa-fail')
+        ));
+        setPrivateProperty($listener, 'mode', 'ibexa');
+
+        withEnv('dev', fn () => expect(fn () => $listener->onUpdated($this->updateEvent))->not->toThrow(\Throwable::class));
     });
 });

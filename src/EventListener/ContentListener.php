@@ -11,8 +11,9 @@ use Ibexa\Contracts\Core\Repository\Values\Content\ContentInfo;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
-use Symfony\Component\Process\Process;
 use vardumper\IbexaAutomaticMigrationsBundle\Helper\Helper;
+use vardumper\IbexaAutomaticMigrationsBundle\Process\MigrationRunnerInterface;
+use vardumper\IbexaAutomaticMigrationsBundle\Process\SymfonyProcessRunner;
 
 final class ContentListener
 {
@@ -21,13 +22,16 @@ final class ContentListener
     private string $projectDir;
     private string $destination;
     private array $consoleCommand;
+    private MigrationRunnerInterface $migrationRunner;
 
     public function __construct(
         private readonly LoggerInterface $logger,
         private readonly \vardumper\IbexaAutomaticMigrationsBundle\Service\SettingsService $settingsService,
         #[Autowire('%kernel.project_dir%')]
         string $projectDir,
+        ?MigrationRunnerInterface $migrationRunner = null,
     ) {
+        $this->migrationRunner = $migrationRunner ?? new SymfonyProcessRunner();
         $this->projectDir = rtrim($projectDir, DIRECTORY_SEPARATOR);
         $this->isCli = PHP_SAPI === 'cli' && ($_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null) !== 'testing';
         $this->consoleCommand = ['php', '-d', 'memory_limit=512M', $this->projectDir . '/bin/console'];
@@ -141,10 +145,9 @@ final class ContentListener
             if ($this->mode === 'kaliop') {
                 $cmd = array_merge($cmd, [$this->destination, $name]);
             }
-            $process = new Process($cmd, $this->projectDir);
-            $process->run();
-            $code = $process->getExitCode();
-            $this->logger->info('Content migration generate process finished', ['name' => $name, 'code' => $code, 'output' => $process->getOutput(), 'error' => $process->getErrorOutput()]);
+            $this->migrationRunner->run($cmd, $this->projectDir);
+            $code = $this->migrationRunner->getExitCode();
+            $this->logger->info('Content migration generate process finished', ['name' => $name, 'code' => $code, 'output' => $this->migrationRunner->getOutput(), 'error' => $this->migrationRunner->getErrorOutput()]);
         } catch (\Throwable $e) {
             $this->logger->error('Failed to generate content migration programmatically', ['exception' => $e->getMessage()]);
         }

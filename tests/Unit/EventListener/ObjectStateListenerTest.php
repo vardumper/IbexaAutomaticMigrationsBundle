@@ -112,3 +112,76 @@ describe('ObjectStateListener', function () {
         }
     });
 });
+
+describe('ObjectStateListener – past CLI guard (fake runner)', function () {
+    beforeEach(function () {
+        $this->tmpDir = makeTmpDir();
+        $state = $this->createStub(ObjectState::class);
+        $group = $this->createStub(ObjectStateGroup::class);
+        $createStruct = new ObjectStateCreateStruct(['identifier' => 'test_state']);
+        $updateStruct = new ObjectStateUpdateStruct(['identifier' => 'test_state']);
+
+        $this->createEvent = new CreateObjectStateEvent($state, $group, $createStruct);
+        $this->updateEvent = new UpdateObjectStateEvent($state, $state, $updateStruct);
+        $this->deleteEvent = new DeleteObjectStateEvent($state);
+    });
+
+    afterEach(function () {
+        removeTmpDir($this->tmpDir);
+    });
+
+    it('onCreated handles successful runner with no generated file', function () {
+        $listener = withTestingEnv(fn () => new ObjectStateListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['object_state' => true]),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(0)
+        ));
+
+        withEnv('dev', fn () => expect(fn () => $listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onUpdated handles failed runner branch', function () {
+        $listener = withTestingEnv(fn () => new ObjectStateListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['object_state' => true]),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(1, '', 'boom')
+        ));
+
+        withEnv('dev', fn () => expect(fn () => $listener->onUpdated($this->updateEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onDeleted handles successful runner with existing migration file', function () {
+        $dest = $this->tmpDir . '/src/MigrationsDefinitions';
+        @mkdir($dest, 0777, true);
+        $file = $dest . '/2099_01_01_00_00_03_auto_object_state.yaml';
+        file_put_contents($file, "- type: object_state\n  mode: delete\n");
+        touch($file, time() - 1);
+
+        $listener = withTestingEnv(fn () => new ObjectStateListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['object_state' => true]),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(0)
+        ));
+
+        withEnv('dev', fn () => expect(fn () => $listener->onDeleted($this->deleteEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onCreated – forced ibexa mode – exercises ibexa generation branch', function () {
+        $listener = withTestingEnv(fn () => new ObjectStateListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['object_state' => true]),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(1, '', 'ibexa-fail')
+        ));
+        setPrivateProperty($listener, 'mode', 'ibexa');
+
+        withEnv('dev', fn () => expect(fn () => $listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class));
+    });
+});

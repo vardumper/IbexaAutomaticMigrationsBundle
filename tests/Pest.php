@@ -84,6 +84,33 @@ function makeContainer(): \Symfony\Component\DependencyInjection\ContainerInterf
 }
 
 /**
+ * Create a ContainerInterface that returns the given service for 'ibexa.api.service.content_type'
+ * and null for everything else (e.g. doctrine.dbal.default_connection).
+ * This allows onIbexaPublishContentTypeDraft tests to bypass the "null → TypeError" barrier.
+ */
+function makeContainerWith(object $contentTypeService): \Symfony\Component\DependencyInjection\ContainerInterface
+{
+    return new class($contentTypeService) implements \Symfony\Component\DependencyInjection\ContainerInterface {
+        public function __construct(private readonly object $cts) {}
+
+        public function get(string $id, int $invalidBehavior = self::EXCEPTION_ON_INVALID_REFERENCE): ?object
+        {
+            if ($id === 'ibexa.api.service.content_type') {
+                return $this->cts;
+            }
+            return null;
+        }
+
+        public function has(string $id): bool { return false; }
+        public function initialized(string $id): bool { return false; }
+        public function getParameter(string $name): array|bool|string|int|float|null { return null; }
+        public function hasParameter(string $name): bool { return false; }
+        public function setParameter(string $name, mixed $value): void {}
+        public function set(string $id, ?object $service): void {}
+    };
+}
+
+/**
  * Create a real SettingsService instance backed by a temp directory.
  */
 function makeSettingsService(string $tmpDir, bool $enabled = false, array $types = []): \vardumper\IbexaAutomaticMigrationsBundle\Service\SettingsService
@@ -199,4 +226,15 @@ function withTestingEnv(callable $factory): mixed
             $_SERVER['APP_ENV'] = $previous;
         }
     }
+}
+
+/**
+ * Set a private/protected property on an object for branch-oriented tests.
+ */
+function setPrivateProperty(object $target, string $property, mixed $value): void
+{
+    $ref = new \ReflectionObject($target);
+    $prop = $ref->getProperty($property);
+    $prop->setAccessible(true);
+    $prop->setValue($target, $value);
 }

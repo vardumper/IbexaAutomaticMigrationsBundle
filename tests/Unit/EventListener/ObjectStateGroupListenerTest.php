@@ -94,3 +94,105 @@ describe('ObjectStateGroupListener', function () {
         withEnv('dev', fn () => expect(fn () => $this->listener->onDeleted($this->deleteEvent))->not->toThrow(\Throwable::class));
     });
 });
+
+describe('ObjectStateGroupListener – past CLI guard (fake runner)', function () {
+    beforeEach(function () {
+        $this->tmpDir = makeTmpDir();
+        $group = $this->createStub(ObjectStateGroup::class);
+        $createStruct = new ObjectStateGroupCreateStruct(['identifier' => 'test_group']);
+        $updateStruct = new ObjectStateGroupUpdateStruct(['identifier' => 'test_group']);
+
+        $this->createEvent = new CreateObjectStateGroupEvent($group, $createStruct);
+        $this->updateEvent = new UpdateObjectStateGroupEvent($group, $group, $updateStruct);
+        $this->deleteEvent = new DeleteObjectStateGroupEvent($group);
+    });
+
+    afterEach(function () {
+        removeTmpDir($this->tmpDir);
+    });
+
+    it('onCreated handles successful runner with no generated file', function () {
+        $listener = withTestingEnv(fn () => new ObjectStateGroupListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['object_state_group' => true]),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(0)
+        ));
+
+        withEnv('dev', fn () => expect(fn () => $listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onUpdated handles failed runner branch', function () {
+        $listener = withTestingEnv(fn () => new ObjectStateGroupListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['object_state_group' => true]),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(1, '', 'boom')
+        ));
+
+        withEnv('dev', fn () => expect(fn () => $listener->onUpdated($this->updateEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onCreated handles successful runner with existing migration file', function () {
+        $dest = $this->tmpDir . '/src/MigrationsDefinitions';
+        @mkdir($dest, 0777, true);
+        $file = $dest . '/2099_01_01_00_00_08_auto_object_state_group_create.yaml';
+        file_put_contents($file, "- type: object_state_group\n  mode: create\n");
+        touch($file, time() - 1);
+
+        $listener = withTestingEnv(fn () => new ObjectStateGroupListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['object_state_group' => true]),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(0)
+        ));
+
+        withEnv('dev', fn () => expect(fn () => $listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onUpdated handles successful runner with existing migration file', function () {
+        $dest = $this->tmpDir . '/src/MigrationsDefinitions';
+        @mkdir($dest, 0777, true);
+        $file = $dest . '/2099_01_01_00_00_09_auto_object_state_group_update.yaml';
+        file_put_contents($file, "- type: object_state_group\n  mode: update\n");
+        touch($file, time() - 1);
+
+        $listener = withTestingEnv(fn () => new ObjectStateGroupListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['object_state_group' => true]),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(0)
+        ));
+
+        withEnv('dev', fn () => expect(fn () => $listener->onUpdated($this->updateEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onDeleted writes migration file and handles DB marking fallback', function () {
+        $listener = withTestingEnv(fn () => new ObjectStateGroupListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['object_state_group' => true]),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(0)
+        ));
+
+        withEnv('dev', fn () => expect(fn () => $listener->onDeleted($this->deleteEvent))->not->toThrow(\Throwable::class));
+    });
+
+    it('onCreated – forced ibexa mode – exercises ibexa generation branch', function () {
+        $listener = withTestingEnv(fn () => new ObjectStateGroupListener(
+            new NullLogger(),
+            makeSettingsService($this->tmpDir, true, ['object_state_group' => true]),
+            $this->tmpDir,
+            makeContainer(),
+            makeFakeRunner(1, '', 'ibexa-fail')
+        ));
+        setPrivateProperty($listener, 'mode', 'ibexa');
+
+        withEnv('dev', fn () => expect(fn () => $listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class));
+    });
+});
