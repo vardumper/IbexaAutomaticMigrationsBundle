@@ -23,11 +23,17 @@ describe('ContentListener', function () {
             $this->tmpDir
         );
 
-        $content = $this->createStub(Content::class);
+        $contentInfo = new ContentInfo(['id' => 1, 'mainLocationId' => 2]);
+        $content = $this->getMockBuilder(Content::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $content->method('__get')->willReturnCallback(fn (string $prop) => match ($prop) {
+            'contentInfo' => $contentInfo,
+            default => null,
+        });
         $createStruct = $this->createStub(ContentCreateStruct::class);
         $versionInfo = $this->createStub(VersionInfo::class);
         $updateStruct = $this->createStub(ContentUpdateStruct::class);
-        $contentInfo = new ContentInfo(['id' => 1, 'mainLocationId' => 2]);
 
         $this->createEvent = new CreateContentEvent($content, $createStruct, [], null);
         $this->updateEvent = new UpdateContentEvent($content, $versionInfo, $updateStruct, null);
@@ -91,11 +97,17 @@ describe('ContentListener', function () {
 describe('ContentListener – past CLI guard (fake runner)', function () {
     beforeEach(function () {
         $this->tmpDir = makeTmpDir();
-        $content = $this->createStub(Content::class);
+        $contentInfo = new ContentInfo(['id' => 1, 'mainLocationId' => 2]);
+        $content = $this->getMockBuilder(Content::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $content->method('__get')->willReturnCallback(fn (string $prop) => match ($prop) {
+            'contentInfo' => $contentInfo,
+            default => null,
+        });
         $createStruct = $this->createStub(ContentCreateStruct::class);
         $versionInfo = $this->createStub(VersionInfo::class);
         $updateStruct = $this->createStub(ContentUpdateStruct::class);
-        $contentInfo = new ContentInfo(['id' => 1, 'mainLocationId' => 2]);
 
         $this->createEvent = new CreateContentEvent($content, $createStruct, [], null);
         $this->updateEvent = new UpdateContentEvent($content, $versionInfo, $updateStruct, null);
