@@ -39,7 +39,7 @@ jobs:
           ls -lart composer.lock
 
       - name: Install trivy
-        uses: aquasecurity/setup-trivy@v0.2.3
+        uses: aquasecurity/setup-trivy@v0.2.6
         with:
           version: v0.69.3
       - name: Create CycloneDX SBOM with Trivy
