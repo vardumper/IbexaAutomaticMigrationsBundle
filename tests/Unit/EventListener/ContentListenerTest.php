@@ -3,12 +3,9 @@
 declare(strict_types=1);
 
 use Ibexa\Contracts\Core\Repository\Events\Content\BeforeDeleteContentEvent;
-use Ibexa\Contracts\Core\Repository\Events\Content\CreateContentEvent;
-use Ibexa\Contracts\Core\Repository\Events\Content\UpdateContentEvent;
+use Ibexa\Contracts\Core\Repository\Events\Content\PublishVersionEvent;
 use Ibexa\Contracts\Core\Repository\Values\Content\Content;
-use Ibexa\Contracts\Core\Repository\Values\Content\ContentCreateStruct;
 use Ibexa\Contracts\Core\Repository\Values\Content\ContentInfo;
-use Ibexa\Contracts\Core\Repository\Values\Content\ContentUpdateStruct;
 use Ibexa\Contracts\Core\Repository\Values\Content\VersionInfo;
 use Psr\Log\NullLogger;
 use vardumper\IbexaAutomaticMigrationsBundle\EventListener\ContentListener;
@@ -31,12 +28,19 @@ describe('ContentListener', function () {
             'contentInfo' => $contentInfo,
             default => null,
         });
-        $createStruct = $this->createStub(ContentCreateStruct::class);
-        $versionInfo = $this->createStub(VersionInfo::class);
-        $updateStruct = $this->createStub(ContentUpdateStruct::class);
 
-        $this->createEvent = new CreateContentEvent($content, $createStruct, [], null);
-        $this->updateEvent = new UpdateContentEvent($content, $versionInfo, $updateStruct, null);
+        $versionInfoV1 = $this->getMockBuilder(VersionInfo::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $versionInfoV1->method('getVersionNo')->willReturn(1);
+
+        $versionInfoV2 = $this->getMockBuilder(VersionInfo::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $versionInfoV2->method('getVersionNo')->willReturn(2);
+
+        $this->publishCreateEvent = new PublishVersionEvent($content, $versionInfoV1, []);
+        $this->publishUpdateEvent = new PublishVersionEvent($content, $versionInfoV2, []);
         $this->deleteEvent = new BeforeDeleteContentEvent($contentInfo);
     });
 
@@ -49,20 +53,20 @@ describe('ContentListener', function () {
         expect(is_dir($this->tmpDir . '/src/MigrationsDefinitions'))->toBeTrue();
     });
 
-    it('onCreated returns early when not enabled (APP_ENV=testing)', function () {
+    it('onPublished (create) returns early when not enabled (APP_ENV=testing)', function () {
         // SettingsService::isEnabled() returns false when APP_ENV != 'dev'
-        expect(fn () => $this->listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class);
+        expect(fn () => $this->listener->onPublished($this->publishCreateEvent))->not->toThrow(\Throwable::class);
     });
 
-    it('onUpdated returns early when not enabled', function () {
-        expect(fn () => $this->listener->onUpdated($this->updateEvent))->not->toThrow(\Throwable::class);
+    it('onPublished (update) returns early when not enabled', function () {
+        expect(fn () => $this->listener->onPublished($this->publishUpdateEvent))->not->toThrow(\Throwable::class);
     });
 
     it('onBeforeDeleted returns early when not enabled', function () {
         expect(fn () => $this->listener->onBeforeDeleted($this->deleteEvent))->not->toThrow(\Throwable::class);
     });
 
-    it('onCreated returns early when content type disabled in dev env', function () {
+    it('onPublished returns early when content type disabled in dev env', function () {
         $previous = $_SERVER['APP_ENV'] ?? null;
         $_SERVER['APP_ENV'] = 'dev';
         try {
@@ -71,7 +75,7 @@ describe('ContentListener', function () {
                 makeSettingsService($this->tmpDir, true, ['content' => false]),
                 $this->tmpDir
             );
-            expect(fn () => $listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class);
+            expect(fn () => $listener->onPublished($this->publishCreateEvent))->not->toThrow(\Throwable::class);
         } finally {
             if ($previous === null) {
                 unset($_SERVER['APP_ENV']);
@@ -81,12 +85,12 @@ describe('ContentListener', function () {
         }
     });
 
-    it('onCreated reaches generateMigration in dev env', function () {
-        withEnv('dev', fn () => expect(fn () => $this->listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class));
+    it('onPublished (create) reaches generateMigration in dev env', function () {
+        withEnv('dev', fn () => expect(fn () => $this->listener->onPublished($this->publishCreateEvent))->not->toThrow(\Throwable::class));
     });
 
-    it('onUpdated reaches generateMigration in dev env', function () {
-        withEnv('dev', fn () => expect(fn () => $this->listener->onUpdated($this->updateEvent))->not->toThrow(\Throwable::class));
+    it('onPublished (update) reaches generateMigration in dev env', function () {
+        withEnv('dev', fn () => expect(fn () => $this->listener->onPublished($this->publishUpdateEvent))->not->toThrow(\Throwable::class));
     });
 
     it('onBeforeDeleted reaches generateMigration in dev env', function () {
@@ -105,12 +109,19 @@ describe('ContentListener – past CLI guard (fake runner)', function () {
             'contentInfo' => $contentInfo,
             default => null,
         });
-        $createStruct = $this->createStub(ContentCreateStruct::class);
-        $versionInfo = $this->createStub(VersionInfo::class);
-        $updateStruct = $this->createStub(ContentUpdateStruct::class);
 
-        $this->createEvent = new CreateContentEvent($content, $createStruct, [], null);
-        $this->updateEvent = new UpdateContentEvent($content, $versionInfo, $updateStruct, null);
+        $versionInfoV1 = $this->getMockBuilder(VersionInfo::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $versionInfoV1->method('getVersionNo')->willReturn(1);
+
+        $versionInfoV2 = $this->getMockBuilder(VersionInfo::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $versionInfoV2->method('getVersionNo')->willReturn(2);
+
+        $this->publishCreateEvent = new PublishVersionEvent($content, $versionInfoV1, []);
+        $this->publishUpdateEvent = new PublishVersionEvent($content, $versionInfoV2, []);
         $this->deleteEvent = new BeforeDeleteContentEvent($contentInfo);
     });
 
@@ -118,7 +129,7 @@ describe('ContentListener – past CLI guard (fake runner)', function () {
         removeTmpDir($this->tmpDir);
     });
 
-    it('onCreated handles successful runner branch', function () {
+    it('onPublished (create) handles successful runner branch', function () {
         $listener = withTestingEnv(fn () => new ContentListener(
             new NullLogger(),
             makeSettingsService($this->tmpDir, true, ['content' => true]),
@@ -126,10 +137,10 @@ describe('ContentListener – past CLI guard (fake runner)', function () {
             makeFakeRunner(0)
         ));
 
-        withEnv('dev', fn () => expect(fn () => $listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class));
+        withEnv('dev', fn () => expect(fn () => $listener->onPublished($this->publishCreateEvent))->not->toThrow(\Throwable::class));
     });
 
-    it('onUpdated handles failed runner branch', function () {
+    it('onPublished (update) handles failed runner branch', function () {
         $listener = withTestingEnv(fn () => new ContentListener(
             new NullLogger(),
             makeSettingsService($this->tmpDir, true, ['content' => true]),
@@ -137,10 +148,10 @@ describe('ContentListener – past CLI guard (fake runner)', function () {
             makeFakeRunner(1, '', 'boom')
         ));
 
-        withEnv('dev', fn () => expect(fn () => $listener->onUpdated($this->updateEvent))->not->toThrow(\Throwable::class));
+        withEnv('dev', fn () => expect(fn () => $listener->onPublished($this->publishUpdateEvent))->not->toThrow(\Throwable::class));
     });
 
-    it('onCreated – forced ibexa mode – exercises ibexa generation branch', function () {
+    it('onPublished (create) – forced ibexa mode – exercises ibexa generation branch', function () {
         $listener = withTestingEnv(fn () => new ContentListener(
             new NullLogger(),
             makeSettingsService($this->tmpDir, true, ['content' => true]),
@@ -149,6 +160,6 @@ describe('ContentListener – past CLI guard (fake runner)', function () {
         ));
         setPrivateProperty($listener, 'mode', 'ibexa');
 
-        withEnv('dev', fn () => expect(fn () => $listener->onCreated($this->createEvent))->not->toThrow(\Throwable::class));
+        withEnv('dev', fn () => expect(fn () => $listener->onPublished($this->publishCreateEvent))->not->toThrow(\Throwable::class));
     });
 });

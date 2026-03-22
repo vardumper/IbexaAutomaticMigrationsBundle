@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace vardumper\IbexaAutomaticMigrationsBundle\EventListener;
 
 use Ibexa\Contracts\Core\Repository\Events\Content\BeforeDeleteContentEvent;
-use Ibexa\Contracts\Core\Repository\Events\Content\CreateContentEvent;
-use Ibexa\Contracts\Core\Repository\Events\Content\UpdateContentEvent;
+use Ibexa\Contracts\Core\Repository\Events\Content\PublishVersionEvent;
 use Ibexa\Contracts\Core\Repository\Values\Content\ContentInfo;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -42,8 +41,8 @@ final class ContentListener
         }
     }
 
-    #[AsEventListener(CreateContentEvent::class)]
-    public function onCreated(CreateContentEvent $event): void
+    #[AsEventListener(PublishVersionEvent::class)]
+    public function onPublished(PublishVersionEvent $event): void
     {
         if (!$this->settingsService->isEnabled()) {
             return;
@@ -58,26 +57,8 @@ final class ContentListener
             $this->logger->info('Skipping content migration generation in CLI');
             return;
         }
-        $this->generateMigration($content->contentInfo, 'create');
-    }
-
-    #[AsEventListener(UpdateContentEvent::class)]
-    public function onUpdated(UpdateContentEvent $event): void
-    {
-        if (!$this->settingsService->isEnabled()) {
-            return;
-        }
-
-        $content = $event->getContent();
-
-        if (!$this->settingsService->isTypeEnabled('content')) {
-            return;
-        }
-        if ($this->isCli) {
-            $this->logger->info('Skipping content migration generation in CLI');
-            return;
-        }
-        $this->generateMigration($content->contentInfo, 'update');
+        $mode = $event->getVersionInfo()->getVersionNo() === 1 ? 'create' : 'update';
+        $this->generateMigration($content->contentInfo, $mode);
     }
 
     #[AsEventListener(BeforeDeleteContentEvent::class)]
