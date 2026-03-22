@@ -17,7 +17,8 @@ describe('ContentListener', function () {
         $this->listener = new ContentListener(
             new NullLogger(),
             makeSettingsService($this->tmpDir, true, ['content' => true]),
-            $this->tmpDir
+            $this->tmpDir,
+            makeContainer()
         );
 
         $contentInfo = new ContentInfo(['id' => 1, 'mainLocationId' => 2]);
@@ -73,7 +74,8 @@ describe('ContentListener', function () {
             $listener = new ContentListener(
                 new NullLogger(),
                 makeSettingsService($this->tmpDir, true, ['content' => false]),
-                $this->tmpDir
+                $this->tmpDir,
+                makeContainer()
             );
             expect(fn () => $listener->onPublished($this->publishCreateEvent))->not->toThrow(\Throwable::class);
         } finally {
@@ -134,6 +136,7 @@ describe('ContentListener – past CLI guard (fake runner)', function () {
             new NullLogger(),
             makeSettingsService($this->tmpDir, true, ['content' => true]),
             $this->tmpDir,
+            makeContainer(),
             makeFakeRunner(0)
         ));
 
@@ -145,6 +148,7 @@ describe('ContentListener – past CLI guard (fake runner)', function () {
             new NullLogger(),
             makeSettingsService($this->tmpDir, true, ['content' => true]),
             $this->tmpDir,
+            makeContainer(),
             makeFakeRunner(1, '', 'boom')
         ));
 
@@ -156,6 +160,7 @@ describe('ContentListener – past CLI guard (fake runner)', function () {
             new NullLogger(),
             makeSettingsService($this->tmpDir, true, ['content' => true]),
             $this->tmpDir,
+            makeContainer(),
             makeFakeRunner(1, '', 'ibexa-fail')
         ));
         setPrivateProperty($listener, 'mode', 'ibexa');

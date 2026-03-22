@@ -9,6 +9,7 @@ use Ibexa\Contracts\Core\Repository\Events\Content\PublishVersionEvent;
 use Ibexa\Contracts\Core\Repository\Values\Content\ContentInfo;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use vardumper\IbexaAutomaticMigrationsBundle\Helper\Helper;
 use vardumper\IbexaAutomaticMigrationsBundle\Process\MigrationRunnerInterface;
@@ -22,14 +23,18 @@ final class ContentListener
     private string $destination;
     private array $consoleCommand;
     private MigrationRunnerInterface $migrationRunner;
+    private ContainerInterface $container;
 
     public function __construct(
         private readonly LoggerInterface $logger,
         private readonly \vardumper\IbexaAutomaticMigrationsBundle\Service\SettingsService $settingsService,
         #[Autowire('%kernel.project_dir%')]
         string $projectDir,
+        #[Autowire(service: 'service_container')]
+        ContainerInterface $container,
         ?MigrationRunnerInterface $migrationRunner = null,
     ) {
+        $this->container = $container;
         $this->migrationRunner = $migrationRunner ?? new SymfonyProcessRunner();
         $this->projectDir = rtrim($projectDir, DIRECTORY_SEPARATOR);
         $this->isCli = PHP_SAPI === 'cli' && ($_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null) !== 'testing';
@@ -129,6 +134,59 @@ final class ContentListener
             $this->migrationRunner->run($cmd, $this->projectDir);
             $code = $this->migrationRunner->getExitCode();
             $this->logger->info('Content migration generate process finished', ['name' => $name, 'code' => $code, 'output' => $this->migrationRunner->getOutput(), 'error' => $this->migrationRunner->getErrorOutput()]);
+
+            if ($code == 0) {
+                if ($this->mode === 'ibexa') {
+                    $fileName = $inputArray['--file'];
+                } else {
+                    $files = glob($this->destination . DIRECTORY_SEPARATOR . '*.{yml,yaml}', GLOB_BRACE);
+                    $latestFile = '';
+                    $latestTime = 0;
+                    foreach ($files as $file) {
+                        $mtime = filemtime($file);
+                        if ($mtime > $latestTime) {
+                            $latestTime = $mtime;
+                            $latestFile = $file;
+                        }
+                    }
+                    if ($latestFile) {
+                        $fileName = basename($latestFile);
+                    } else {
+                        $this->logger->warning('No migration files found after generation');
+                        return;
+                    }
+                }
+
+                $fullPath = $this->destination . DIRECTORY_SEPARATOR . $fileName;
+
+                try {
+                    $conn = $this->container->get('doctrine.dbal.default_connection');
+                    if ($this->mode === 'ibexa') {
+                        $data = ['executed_at' => new \DateTime(), 'execution_time' => null];
+                        $identifier = ['name' => $fileName];
+                        $affected = $conn->update('ibexa_migrations', $data, $identifier);
+                        if ($affected === 0) {
+                            $conn->insert('ibexa_migrations', array_merge($identifier, $data));
+                        }
+                    } elseif ($this->mode === 'kaliop') {
+                        $data = ['execution_date' => time(), 'status' => 2];
+                        $identifier = ['migration' => $fileName];
+                        $affected = $conn->update('kaliop_migrations', $data, $identifier);
+                        if ($affected === 0) {
+                            $conn->insert('kaliop_migrations', array_merge($identifier, $data, [
+                                'md5' => md5_file($fullPath),
+                                'path' => $fullPath,
+                                'execution_error' => null,
+                            ]));
+                        }
+                    }
+                    $this->logger->info('Content migration marked as executed', ['filename' => $fileName, 'mode' => $this->mode]);
+                } catch (\Throwable $e) {
+                    $this->logger->warning('Failed to mark content migration as executed', ['exception' => $e->getMessage()]);
+                }
+            } else {
+                $this->logger->error('Content migration generation failed', ['code' => $code, 'error' => $this->migrationRunner->getErrorOutput()]);
+            }
         } catch (\Throwable $e) {
             $this->logger->error('Failed to generate content migration programmatically', ['exception' => $e->getMessage()]);
         }
