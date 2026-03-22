@@ -2,10 +2,10 @@
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:274fcfe8-57b9-474f-a508-e34d4babd7a7",
+  "serialNumber": "urn:uuid:12a3ccf9-6638-4d2a-9db8-aff1e8e7e3c9",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-03-19T22:18:54+00:00",
+    "timestamp": "2026-03-20T05:36:28+00:00",
     "tools": {
       "components": [
         {
@@ -20,7 +20,7 @@
       ]
     },
     "component": {
-      "bom-ref": "b9da8c96-9729-40c0-aa4c-266848b34b91",
+      "bom-ref": "b904dd05-0ba2-4086-9a72-549dcf9094d3",
       "type": "application",
       "name": ".",
       "properties": [
@@ -33,7 +33,7 @@
   },
   "components": [
     {
-      "bom-ref": "47da375d-6751-490f-a808-0cc0f3387d84",
+      "bom-ref": "687463c7-c88d-44bf-8a34-4806d06c9f7f",
       "type": "application",
       "name": "composer.lock",
       "properties": [
@@ -5042,7 +5042,7 @@
   ],
   "dependencies": [
     {
-      "ref": "47da375d-6751-490f-a808-0cc0f3387d84",
+      "ref": "687463c7-c88d-44bf-8a34-4806d06c9f7f",
       "dependsOn": [
         "pkg:composer/brainmaestro/composer-git-hooks@dev-master",
         "pkg:composer/friendsofphp/php-cs-fixer@v3.94.2",
@@ -5058,9 +5058,9 @@
       ]
     },
     {
-      "ref": "b9da8c96-9729-40c0-aa4c-266848b34b91",
+      "ref": "b904dd05-0ba2-4086-9a72-549dcf9094d3",
       "dependsOn": [
-        "47da375d-6751-490f-a808-0cc0f3387d84"
+        "687463c7-c88d-44bf-8a34-4806d06c9f7f"
       ]
     },
     {
