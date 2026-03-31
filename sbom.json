@@ -2,10 +2,10 @@
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:71880ad4-55a1-453a-9788-05b095388c70",
+  "serialNumber": "urn:uuid:a6047f37-e7c7-489d-97fb-695c06bd42a4",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-03-31T08:41:40+00:00",
+    "timestamp": "2026-03-31T08:42:56+00:00",
     "tools": {
       "components": [
         {
@@ -20,7 +20,7 @@
       ]
     },
     "component": {
-      "bom-ref": "462cdf7c-0514-4407-8b07-831fd701cdfd",
+      "bom-ref": "b8efe23b-97eb-4892-9da2-2ae241671797",
       "type": "application",
       "name": ".",
       "properties": [
@@ -33,7 +33,7 @@
   },
   "components": [
     {
-      "bom-ref": "a2888ca0-07c5-4d0c-81c4-a4a054b76a75",
+      "bom-ref": "4a60cc66-d5a6-4327-abdb-95fd8032e773",
       "type": "application",
       "name": "composer.lock",
       "properties": [
@@ -120,10 +120,10 @@
       ]
     },
     {
-      "bom-ref": "pkg:composer/brianium/paratest@v7.19.0",
+      "bom-ref": "pkg:composer/brianium/paratest@v7.20.0",
       "type": "library",
       "name": "brianium/paratest",
-      "version": "v7.19.0",
+      "version": "v7.20.0",
       "licenses": [
         {
           "license": {
@@ -131,11 +131,11 @@
           }
         }
       ],
-      "purl": "pkg:composer/brianium/paratest@v7.19.0",
+      "purl": "pkg:composer/brianium/paratest@v7.20.0",
       "properties": [
         {
           "name": "aquasecurity:trivy:PkgID",
-          "value": "brianium/paratest@v7.19.0"
+          "value": "brianium/paratest@v7.20.0"
         },
         {
           "name": "aquasecurity:trivy:PkgType",
@@ -1920,10 +1920,10 @@
       ]
     },
     {
-      "bom-ref": "pkg:composer/pestphp/pest@v4.4.2",
+      "bom-ref": "pkg:composer/pestphp/pest@v4.4.3",
       "type": "library",
       "name": "pestphp/pest",
-      "version": "v4.4.2",
+      "version": "v4.4.3",
       "licenses": [
         {
           "license": {
@@ -1931,11 +1931,11 @@
           }
         }
       ],
-      "purl": "pkg:composer/pestphp/pest@v4.4.2",
+      "purl": "pkg:composer/pestphp/pest@v4.4.3",
       "properties": [
         {
           "name": "aquasecurity:trivy:PkgID",
-          "value": "pestphp/pest@v4.4.2"
+          "value": "pestphp/pest@v4.4.3"
         },
         {
           "name": "aquasecurity:trivy:PkgType",
@@ -2376,10 +2376,10 @@
       ]
     },
     {
-      "bom-ref": "pkg:composer/phpunit/phpunit@12.5.12",
+      "bom-ref": "pkg:composer/phpunit/phpunit@12.5.14",
       "type": "library",
       "name": "phpunit/phpunit",
-      "version": "12.5.12",
+      "version": "12.5.14",
       "licenses": [
         {
           "license": {
@@ -2387,11 +2387,11 @@
           }
         }
       ],
-      "purl": "pkg:composer/phpunit/phpunit@12.5.12",
+      "purl": "pkg:composer/phpunit/phpunit@12.5.14",
       "properties": [
         {
           "name": "aquasecurity:trivy:PkgID",
-          "value": "phpunit/phpunit@12.5.12"
+          "value": "phpunit/phpunit@12.5.14"
         },
         {
           "name": "aquasecurity:trivy:PkgType",
@@ -5090,13 +5090,7 @@
   ],
   "dependencies": [
     {
-      "ref": "462cdf7c-0514-4407-8b07-831fd701cdfd",
-      "dependsOn": [
-        "a2888ca0-07c5-4d0c-81c4-a4a054b76a75"
-      ]
-    },
-    {
-      "ref": "a2888ca0-07c5-4d0c-81c4-a4a054b76a75",
+      "ref": "4a60cc66-d5a6-4327-abdb-95fd8032e773",
       "dependsOn": [
         "pkg:composer/brainmaestro/composer-git-hooks@dev-master",
         "pkg:composer/friendsofphp/php-cs-fixer@v3.94.2",
@@ -5105,11 +5099,17 @@
         "pkg:composer/ibexa/core@v5.0.6",
         "pkg:composer/mrk-te/ibexa-migration-bundle2@3.0.0",
         "pkg:composer/nyholm/psr7@1.8.2",
-        "pkg:composer/pestphp/pest@v4.4.2",
+        "pkg:composer/pestphp/pest@v4.4.3",
         "pkg:composer/phpmd/phpmd@2.15.0",
         "pkg:composer/phpstan/phpstan@2.1.42",
         "pkg:composer/rector/swiss-knife@2.3.5",
         "pkg:composer/symplify/easy-coding-standard@13.0.4"
+      ]
+    },
+    {
+      "ref": "b8efe23b-97eb-4892-9da2-2ae241671797",
+      "dependsOn": [
+        "4a60cc66-d5a6-4327-abdb-95fd8032e773"
       ]
     },
     {
@@ -5150,14 +5150,14 @@
       ]
     },
     {
-      "ref": "pkg:composer/brianium/paratest@v7.19.0",
+      "ref": "pkg:composer/brianium/paratest@v7.20.0",
       "dependsOn": [
         "pkg:composer/fidry/cpu-core-counter@1.3.0",
         "pkg:composer/jean85/pretty-package-versions@2.1.1",
         "pkg:composer/phpunit/php-code-coverage@12.5.3",
         "pkg:composer/phpunit/php-file-iterator@6.0.1",
         "pkg:composer/phpunit/php-timer@8.0.0",
-        "pkg:composer/phpunit/phpunit@12.5.12",
+        "pkg:composer/phpunit/phpunit@12.5.14",
         "pkg:composer/sebastian/environment@8.0.4",
         "pkg:composer/symfony/console@v7.4.7",
         "pkg:composer/symfony/process@v7.4.5"
@@ -5837,16 +5837,16 @@
       "dependsOn": []
     },
     {
-      "ref": "pkg:composer/pestphp/pest@v4.4.2",
+      "ref": "pkg:composer/pestphp/pest@v4.4.3",
       "dependsOn": [
-        "pkg:composer/brianium/paratest@v7.19.0",
+        "pkg:composer/brianium/paratest@v7.20.0",
         "pkg:composer/nunomaduro/collision@v8.9.1",
         "pkg:composer/nunomaduro/termwind@v2.4.0",
         "pkg:composer/pestphp/pest-plugin-arch@v4.0.0",
         "pkg:composer/pestphp/pest-plugin-mutate@v4.0.1",
         "pkg:composer/pestphp/pest-plugin-profanity@v4.2.1",
         "pkg:composer/pestphp/pest-plugin@v4.0.0",
-        "pkg:composer/phpunit/phpunit@12.5.12",
+        "pkg:composer/phpunit/phpunit@12.5.14",
         "pkg:composer/symfony/process@v7.4.5"
       ]
     },
@@ -5962,7 +5962,7 @@
       "dependsOn": []
     },
     {
-      "ref": "pkg:composer/phpunit/phpunit@12.5.12",
+      "ref": "pkg:composer/phpunit/phpunit@12.5.14",
       "dependsOn": [
         "pkg:composer/myclabs/deep-copy@1.13.4",
         "pkg:composer/phar-io/manifest@2.0.4",
@@ -6630,7 +6630,7 @@
       "dependsOn": [
         "pkg:composer/nikic/php-parser@v5.7.0",
         "pkg:composer/phpdocumentor/reflection-docblock@6.0.3",
-        "pkg:composer/phpunit/phpunit@12.5.12",
+        "pkg:composer/phpunit/phpunit@12.5.14",
         "pkg:composer/symfony/finder@v7.4.6"
       ]
     },
