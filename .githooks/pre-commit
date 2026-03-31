@@ -107,7 +107,7 @@ if $HAS_PHPSTAN; then
   if [ -z "$CHANGED_FILES" ]; then
         printf "\nNo PHP file in this commit. Skipping PHPStan.\n"
   else
-    if time exec $PHPSTAN analyse -c ./phpstan.neon --ansi --memory-limit=1G $CHANGED_FILES; then
+    if time $PHPSTAN analyse -c ./phpstan.neon --ansi --memory-limit=1G $CHANGED_FILES; then
       # All good
       printf "${GREEN}PHPStan passed${NC}\n"
     else
@@ -117,6 +117,38 @@ if $HAS_PHPSTAN; then
 else
   printf "\nphpstan is required. Install it with:\n\n  ddev composer req --dev phpstan/phpstan\n\n"
 fi
+
+HAS_PHPMD=false
+PHPMD="./vendor/bin/phpmd"
+if [ -x $PHPMD ]; then
+    HAS_PHPMD=true
+fi
+
+run_phpmd() {
+  ddev exec "$PHPMD" "$1" text ruleset.xml
+}
+
+if $HAS_PHPMD; then
+  STAGED_PHP_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.php$' | tr '\n' ',')
+
+  if [ -z "$STAGED_PHP_FILES" ]; then
+    printf "${YELLOW}PHP Mess Detector${NC} — no PHP files staged, skipping.\n"
+  else
+    STAGED_PHP_FILES="${STAGED_PHP_FILES%,}"
+    printf "${YELLOW}PHP Mess Detector${NC}\n"
+
+    run_phpmd "$STAGED_PHP_FILES"
+    if [ $? -eq 0 ]; then
+      printf "${GREEN}PASSED${NC}\n"
+    else
+      printf "${RED}FAILED${NC}\n"
+      PASS=false
+    fi
+  fi
+else
+  printf "\nphpmd is required. Install it with:\n\n  composer require --dev phpmd/phpmd\n\n"
+fi
+
 
 # you shouldn't be able to commit if composer.lock and composer.json are out of sync
 printf "${YELLOW}Composer Lockfile${NC}\n"
@@ -147,7 +179,7 @@ if [ -x $PEST ]; then
 fi
 printf "${YELLOW}Pest Unit Tests${NC}\n"
 if $HAS_PEST; then
-    if time exec $PEST --testdox --colors=always; then
+    if time $PEST --testdox --colors=always; then
       # All good, also re-generate clover.xml
         $PEST --coverage --coverage-clover clover.xml
         printf "${GREEN}Pest tests passed${NC}\n"
