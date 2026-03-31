@@ -186,6 +186,7 @@ if $HAS_PEST; then
     if RUN $PEST --testdox --colors=always; then
       # All good, also re-generate clover.xml
         $PEST --coverage --coverage-clover clover.xml
+        git add clover.xml
         printf "${GREEN}Pest tests passed${NC}\n"
     else
       PASS=false
