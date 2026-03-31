@@ -1,6 +1,10 @@
 #!/bin/bash
 START_TIME=$(date +%s)
 
+# Set to true to prepend `time` to each command for performance profiling
+TIME_COMMANDS=false
+RUN() { if $TIME_COMMANDS; then time "$@"; else "$@"; fi; }
+
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -24,29 +28,29 @@ fi
 printf "${YELLOW}Rector Swiss Knife${NC}\n"
 if $HAS_PHP_SWISSKNIFE; then
     # prevent committing unresolved conflicts or erroneous merges
-    time composer run swiss-knife-check-conflicts
+    RUN composer run swiss-knife-check-conflicts
     ret_code=$?
 
     if [[ $ret_code == 1 ]]; then
         PASS=false
     fi
 
-    time composer run swiss-knife-check-commented-code
+    RUN composer run swiss-knife-check-commented-code
     ret_code=$?
 
     if [[ $ret_code == 1 ]]; then
         PASS=false
     fi
 
-    time composer run swiss-knife-find-multi-classes
+    RUN composer run swiss-knife-find-multi-classes
     ret_code=$?
     if [[ $ret_code == 1 ]]; then
         PASS=false
     fi
 
-    time composer run swiss-knife-finalize-classes
+    RUN composer run swiss-knife-finalize-classes
     # hasnt proven very reliable
-    time composer run swiss-knife-privatize-constants
+    RUN composer run swiss-knife-privatize-constants
 
   else
     printf "\nrector/swiss-knife is required. Install it:\n\n composer require --dev rector/swiss-knife\n\n"
@@ -77,7 +81,7 @@ if $HAS_PHP_ECS; then
     else
         # Strip site/ prefix for ECS command
         FILES_FOR_ECS=$(echo "$FILES" | sed 's|site/||g')
-        time composer run fix-cs ${FILES_FOR_ECS}
+        RUN composer run fix-cs ${FILES_FOR_ECS}
         ret_code=$?
         if [[ $ret_code == 0 ]]; then
             # Trim whitespace and check if FILES is not empty
@@ -107,7 +111,7 @@ if $HAS_PHPSTAN; then
   if [ -z "$CHANGED_FILES" ]; then
         printf "\nNo PHP file in this commit. Skipping PHPStan.\n"
   else
-    if time $PHPSTAN analyse -c ./phpstan.neon --ansi --memory-limit=1G $CHANGED_FILES; then
+    if RUN $PHPSTAN analyse -c ./phpstan.neon --ansi --memory-limit=1G $CHANGED_FILES; then
       # All good
       printf "${GREEN}PHPStan passed${NC}\n"
     else
@@ -152,7 +156,7 @@ fi
 
 # you shouldn't be able to commit if composer.lock and composer.json are out of sync
 printf "${YELLOW}Composer Lockfile${NC}\n"
-time composer validate --no-check-all --no-check-publish
+RUN composer validate --no-check-all --no-check-publish
 ret_code=$?
 if [[ $ret_code == 0 ]]; then
     printf "${GREEN}Composer validation passed${NC}\n"
@@ -163,7 +167,7 @@ fi
 
 # you should still be able to commit if there are CVE vulnerabilities - information only
 printf "${YELLOW}Composer Audit${NC}\n"
-time composer audit
+RUN composer audit
 ret_code=$?
 if [[ $ret_code == 0 ]]; then
     printf "${GREEN}Composer audit passed${NC}\n"
@@ -179,7 +183,7 @@ if [ -x $PEST ]; then
 fi
 printf "${YELLOW}Pest Unit Tests${NC}\n"
 if $HAS_PEST; then
-    if time $PEST --testdox --colors=always; then
+    if RUN $PEST --testdox --colors=always; then
       # All good, also re-generate clover.xml
         $PEST --coverage --coverage-clover clover.xml
         printf "${GREEN}Pest tests passed${NC}\n"
