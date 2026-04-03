@@ -2,10 +2,10 @@
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:b5054dc1-9dcd-4c9e-a84f-80f2c1f4205f",
+  "serialNumber": "urn:uuid:ea51a744-38ad-4276-afc2-e13494cf989c",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-03-31T08:51:50+00:00",
+    "timestamp": "2026-04-03T05:36:46+00:00",
     "tools": {
       "components": [
         {
@@ -20,7 +20,7 @@
       ]
     },
     "component": {
-      "bom-ref": "36935ae2-a695-47da-acda-dd96041a18bf",
+      "bom-ref": "68f99cb7-921a-4e4b-8352-dbdc768bbae6",
       "type": "application",
       "name": ".",
       "properties": [
@@ -33,7 +33,7 @@
   },
   "components": [
     {
-      "bom-ref": "07e2d0c5-7f03-41f8-8297-247747707d11",
+      "bom-ref": "11986ba3-e78e-4a9a-9f0b-2f4025faf48c",
       "type": "application",
       "name": "composer.lock",
       "properties": [
@@ -2232,10 +2232,10 @@
       ]
     },
     {
-      "bom-ref": "pkg:composer/phpstan/phpstan@2.1.45",
+      "bom-ref": "pkg:composer/phpstan/phpstan@2.1.46",
       "type": "library",
       "name": "phpstan/phpstan",
-      "version": "2.1.45",
+      "version": "2.1.46",
       "licenses": [
         {
           "license": {
@@ -2243,11 +2243,11 @@
           }
         }
       ],
-      "purl": "pkg:composer/phpstan/phpstan@2.1.45",
+      "purl": "pkg:composer/phpstan/phpstan@2.1.46",
       "properties": [
         {
           "name": "aquasecurity:trivy:PkgID",
-          "value": "phpstan/phpstan@2.1.45"
+          "value": "phpstan/phpstan@2.1.46"
         },
         {
           "name": "aquasecurity:trivy:PkgType",
@@ -5090,7 +5090,7 @@
   ],
   "dependencies": [
     {
-      "ref": "07e2d0c5-7f03-41f8-8297-247747707d11",
+      "ref": "11986ba3-e78e-4a9a-9f0b-2f4025faf48c",
       "dependsOn": [
         "pkg:composer/brainmaestro/composer-git-hooks@dev-master",
         "pkg:composer/friendsofphp/php-cs-fixer@v3.94.2",
@@ -5101,15 +5101,15 @@
         "pkg:composer/nyholm/psr7@1.8.2",
         "pkg:composer/pestphp/pest@v4.4.3",
         "pkg:composer/phpmd/phpmd@2.15.0",
-        "pkg:composer/phpstan/phpstan@2.1.45",
+        "pkg:composer/phpstan/phpstan@2.1.46",
         "pkg:composer/rector/swiss-knife@2.3.5",
         "pkg:composer/symplify/easy-coding-standard@13.0.4"
       ]
     },
     {
-      "ref": "36935ae2-a695-47da-acda-dd96041a18bf",
+      "ref": "68f99cb7-921a-4e4b-8352-dbdc768bbae6",
       "dependsOn": [
-        "07e2d0c5-7f03-41f8-8297-247747707d11"
+        "11986ba3-e78e-4a9a-9f0b-2f4025faf48c"
       ]
     },
     {
@@ -5929,7 +5929,7 @@
       "dependsOn": []
     },
     {
-      "ref": "pkg:composer/phpstan/phpstan@2.1.45",
+      "ref": "pkg:composer/phpstan/phpstan@2.1.46",
       "dependsOn": []
     },
     {
