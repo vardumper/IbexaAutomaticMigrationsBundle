@@ -26,7 +26,8 @@
     "brainmaestro/composer-git-hooks": "dev-master",
     "rector/swiss-knife": "^2.3.3",
     "symplify/easy-coding-standard": "^13.0",
-    "pestphp/pest": "*"
+    "pestphp/pest": "*",
+    "phpmd/phpmd": "^2.15"
   },
   "autoload": {
     "psr-4": {
