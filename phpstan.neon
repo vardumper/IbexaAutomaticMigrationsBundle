@@ -3,7 +3,7 @@ parameters:
     level: 5
     treatPhpDocTypesAsCertain: false
     paths:
-        - %currentWorkingDirectory%
+        - src
     excludePaths:
         - vendor
     scanFiles:

@@ -91,7 +91,9 @@ function makeContainer(): \Symfony\Component\DependencyInjection\ContainerInterf
 function makeContainerWith(object $contentTypeService): \Symfony\Component\DependencyInjection\ContainerInterface
 {
     return new class($contentTypeService) implements \Symfony\Component\DependencyInjection\ContainerInterface {
-        public function __construct(private readonly object $cts) {}
+        public function __construct(private readonly object $cts)
+        {
+        }
 
         public function get(string $id, int $invalidBehavior = self::EXCEPTION_ON_INVALID_REFERENCE): ?object
         {
@@ -101,12 +103,28 @@ function makeContainerWith(object $contentTypeService): \Symfony\Component\Depen
             return null;
         }
 
-        public function has(string $id): bool { return false; }
-        public function initialized(string $id): bool { return false; }
-        public function getParameter(string $name): array|bool|string|int|float|null { return null; }
-        public function hasParameter(string $name): bool { return false; }
-        public function setParameter(string $name, mixed $value): void {}
-        public function set(string $id, ?object $service): void {}
+        public function has(string $id): bool
+        {
+            return false;
+        }
+        public function initialized(string $id): bool
+        {
+            return false;
+        }
+        public function getParameter(string $name): array|bool|string|int|float|null
+        {
+            return null;
+        }
+        public function hasParameter(string $name): bool
+        {
+            return false;
+        }
+        public function setParameter(string $name, mixed $value): void
+        {
+        }
+        public function set(string $id, ?object $service): void
+        {
+        }
     };
 }
 

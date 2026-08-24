@@ -1,8 +1,6 @@
 <?php
 
 use Ibexa\Contracts\Core\Repository\Repository;
-use Ibexa\Contracts\Core\Repository\Values\ContentType\ContentTypeCreateStruct;
-use Ibexa\Contracts\Core\Repository\Values\ContentType\FieldDefinitionCreateStruct;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 test('delete migration is generated when content type is deleted', function () {
@@ -65,7 +63,7 @@ test('delete migration is generated when content type is deleted', function () {
     $migrationDir = app()->getParameter('kernel.project_dir') . '/src/MigrationsDefinitions';
     $files = glob($migrationDir . '/*.yml');
 
-    $deleteFiles = array_filter($files, fn($file) => str_contains($file, 'delete_' . $identifier));
+    $deleteFiles = array_filter($files, fn ($file) => str_contains($file, 'delete_' . $identifier));
 
     expect(count($deleteFiles))->toBe(1);
 
@@ -81,5 +79,4 @@ test('delete migration is generated when content type is deleted', function () {
     expect($migrationData[0])->toHaveKey('type', 'content_type');
     expect($migrationData[0])->toHaveKey('mode', 'delete');
     expect($migrationData[0])->toHaveKey('identifier', $identifier);
-
 })->skip('Requires full Ibexa setup and database');
