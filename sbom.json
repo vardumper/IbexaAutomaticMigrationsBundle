@@ -2,10 +2,10 @@
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:c59769a8-6b3d-4950-afeb-5984960220e2",
+  "serialNumber": "urn:uuid:eb0bb3d1-752b-48bf-a140-717fa771f7ce",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-07-23T08:29:01+00:00",
+    "timestamp": "2026-08-24T07:49:49+00:00",
     "tools": {
       "components": [
         {
@@ -20,7 +20,7 @@
       ]
     },
     "component": {
-      "bom-ref": "f8bf692e-fe09-45cf-9619-98d27f61f7d1",
+      "bom-ref": "ef3e87b8-4915-4409-9da4-6f68c1473317",
       "type": "application",
       "name": ".",
       "properties": [
@@ -33,7 +33,7 @@
   },
   "components": [
     {
-      "bom-ref": "96ee06a2-4aba-49c7-99f8-446e852d935a",
+      "bom-ref": "5f42403f-e41d-4001-8998-38195fd2ec4b",
       "type": "application",
       "name": "composer.lock",
       "properties": [
@@ -5138,7 +5138,7 @@
   ],
   "dependencies": [
     {
-      "ref": "96ee06a2-4aba-49c7-99f8-446e852d935a",
+      "ref": "5f42403f-e41d-4001-8998-38195fd2ec4b",
       "dependsOn": [
         "pkg:composer/brainmaestro/composer-git-hooks@dev-master",
         "pkg:composer/friendsofphp/php-cs-fixer@v3.95.1",
@@ -5155,9 +5155,9 @@
       ]
     },
     {
-      "ref": "f8bf692e-fe09-45cf-9619-98d27f61f7d1",
+      "ref": "ef3e87b8-4915-4409-9da4-6f68c1473317",
       "dependsOn": [
-        "96ee06a2-4aba-49c7-99f8-446e852d935a"
+        "5f42403f-e41d-4001-8998-38195fd2ec4b"
       ]
     },
     {
@@ -6851,7 +6851,7 @@
         }
       ],
       "published": "2026-05-20T14:16:38+00:00",
-      "updated": "2026-07-14T16:16:53+00:00",
+      "updated": "2026-07-23T12:10:00+00:00",
       "affects": [
         {
           "ref": "pkg:composer/twig/twig@v3.24.0",
@@ -6885,7 +6885,7 @@
         290
       ],
       "description": "Symfony is a PHP framework for web and console applications and a set of reusable PHP components. Prior to 5.4.52, 6.4.40, 7.4.12, and 8.0.12, X509Authenticator extracts the user identifier from $_SERVER['SSL_CLIENT_S_DN'] with an unanchored regex that matches emailAddress= anywhere in the distinguished name, allowing an attacker with a trusted certificate containing emailAddress=victim inside another RDN value such as CN to authenticate as the victim. This issue is fixed in versions 5.4.52, 6.4.40, 7.4.12, and 8.0.12.",
-      "recommendation": "Upgrade symfony/security-http to version 6.3.0, 6.4.0, 7.2.0, 7.3.0, 5.1.0, 5.4.0, 6.2.0, 8.0.12, 5.0.0, 5.4.52, 7.1.0, 3.0.0, 5.2.0, 5.3.0, 6.4.40, 7.4.0, 7.4.12, 4.0.0, 6.1.0",
+      "recommendation": "Upgrade symfony/security-http to version 3.0.0, 5.3.0, 5.4.52, 6.2.0, 6.4.0, 6.4.40, 7.1.0, 8.0.12, 4.0.0, 5.0.0, 5.2.0, 5.1.0, 5.4.0, 6.1.0, 7.2.0, 7.4.0, 6.3.0, 7.3.0, 7.4.12",
       "advisories": [
         {
           "url": "https://avd.aquasec.com/nvd/cve-2026-45063"
@@ -6966,7 +6966,7 @@
         601
       ],
       "description": "Symfony is a PHP framework for web and console applications and a set of reusable PHP components. Prior to 5.4.52, 6.4.40, 7.4.12, and 8.0.12, UrlGenerator validates route parameters against a pattern built as ^ plus the raw requirement plus $; with ungrouped alternations, middle alternatives match as unanchored substrings, allowing a value such as //evil.com to satisfy a common locale requirement and generate a protocol-relative off-site URL. This issue is fixed in versions 5.4.52, 6.4.40, 7.4.12, and 8.0.12.",
-      "recommendation": "Upgrade symfony/routing to version 7.4.12, 8.0.12, 5.3.0, 5.4.0, 5.4.52, 6.3.0, 6.4.40, 7.1.0, 6.2.0, 7.2.0, 7.3.0, 5.1.0, 5.2.0, 6.1.0, 3.0.0, 4.0.0, 5.0.0, 6.4.0, 7.4.0",
+      "recommendation": "Upgrade symfony/routing to version 8.0.12, 5.0.0, 5.1.0, 5.2.0, 6.1.0, 6.4.0, 7.1.0, 7.2.0, 5.4.0, 6.2.0, 7.3.0, 4.0.0, 6.3.0, 6.4.40, 7.4.12, 3.0.0, 5.3.0, 5.4.52, 7.4.0",
       "advisories": [
         {
           "url": "https://avd.aquasec.com/nvd/cve-2026-45065"
@@ -7027,7 +7027,7 @@
         93
       ],
       "description": "### Description\n\n`Symfony\\Component\\Mime\\Address` is the value-object every Symfony Mailer address (to/cc/bcc/from/reply-to) flows through; its constructor is documented as validating the address and throwing on invalid input, so developers treat it as a security boundary.\n\nThe constructor accepts email addresses whose local-part (the part before `@`) is an RFC-5322 *quoted string* containing raw `\\r\\n` bytes — e.g. `\"x\\r\\nBcc: attacker@evil\"@example.com`. The stored address is later emitted verbatim into (1) the rendered message headers and (2) `SmtpTransport`'s `MAIL FROM:<...>` / `RCPT TO:<...>` protocol lines, turning the embedded CRLF into a new mail header and/or a new SMTP command.\n\n### Resolution\n\nThe `Address` constructor now rejects addresses containing line breaks.\n\nThe patch for this issue is available [here](https://github.com/symfony/symfony/commit/dc2dbd29211eb4ddc451373fa1374fb926e94604) for branch 5.4.\n\n### Credits\n\nWe would like to thank Claude Mythos Preview (via Project Glasswing) for reporting the issue and providing the fix.",
-      "recommendation": "Upgrade symfony/mime to version 5.0.0, 5.3.0, 5.4.52, 6.4.0, 7.4.12, 6.1.0, 6.2.0, 7.3.0, 8.0.12, 4.0.0, 5.1.0, 5.2.0, 6.3.0, 7.2.0, 7.4.0, 3.0.0, 5.4.0, 6.4.40, 7.1.0",
+      "recommendation": "Upgrade symfony/mime to version 4.0.0, 5.4.0, 6.4.0, 3.0.0, 5.3.0, 5.1.0, 5.4.52, 6.1.0, 6.2.0, 6.3.0, 7.2.0, 7.3.0, 7.4.0, 5.0.0, 5.2.0, 6.4.40, 7.1.0, 7.4.12, 8.0.12",
       "advisories": [
         {
           "url": "https://avd.aquasec.com/nvd/cve-2026-45067"
@@ -7101,7 +7101,7 @@
         88
       ],
       "description": "Symfony is a PHP framework for web and console applications and a set of reusable PHP components. Prior to 5.4.52, 6.4.40, 7.4.12, and 8.0.12, SendmailTransport in -t mode appended recipient addresses to the sendmail command line without a -- end-of-options separator, allowing an address beginning with - to be interpreted as a sendmail command-line option instead of an address. This issue is fixed in versions 5.4.52, 6.4.40, 7.4.12, and 8.0.12.",
-      "recommendation": "Upgrade symfony/mailer to version 6.1.0, 7.4.0, 3.0.0, 5.1.0, 5.3.0, 5.4.0, 6.2.0, 7.4.12, 4.0.0, 5.0.0, 6.4.40, 7.2.0, 8.0.12, 6.4.0, 7.1.0, 5.2.0, 5.4.52, 6.3.0, 7.3.0",
+      "recommendation": "Upgrade symfony/mailer to version 5.0.0, 7.2.0, 8.0.12, 6.4.0, 6.4.40, 3.0.0, 4.0.0, 5.3.0, 5.4.0, 5.4.52, 6.3.0, 5.2.0, 6.1.0, 7.4.12, 7.1.0, 5.1.0, 6.2.0, 7.3.0, 7.4.0",
       "advisories": [
         {
           "url": "https://avd.aquasec.com/nvd/cve-2026-45068"
@@ -7241,7 +7241,7 @@
         93
       ],
       "description": "Symfony is a PHP framework for web and console applications and a set of reusable PHP components. Prior to 5.4.52, 6.4.40, 7.4.12, and 8.0.12, Symfony\\Component\\Mime\\Header\\ParameterizedHeader validates and encodes parameter values but emits parameter names verbatim, allowing a caller that derives a parameter name from untrusted input to include CRLF or other non-token bytes and inject additional headers into rendered structured mail headers such as Content-Type or Content-Disposition. This issue is reported as fixed in versions 5.4.52, 6.4.40, 7.4.12, and 8.0.12.",
-      "recommendation": "Upgrade symfony/mime to version 7.3.0, 5.2.0, 5.4.0, 5.4.52, 6.1.0, 6.3.0, 6.4.40, 7.1.0, 4.0.0, 7.2.0, 7.4.0, 3.0.0, 5.1.0, 6.4.0, 7.4.12, 8.0.12, 5.0.0, 5.3.0, 6.2.0",
+      "recommendation": "Upgrade symfony/mime to version 7.3.0, 7.4.12, 8.0.12, 3.0.0, 5.4.52, 6.1.0, 6.3.0, 5.4.0, 6.4.0, 7.1.0, 7.4.0, 5.1.0, 5.3.0, 6.2.0, 6.4.40, 4.0.0, 5.0.0, 5.2.0, 7.2.0",
       "advisories": [
         {
           "url": "https://avd.aquasec.com/nvd/cve-2026-45070"
@@ -7312,7 +7312,7 @@
         89
       ],
       "description": "Symfony is a PHP framework for web and console applications and a set of reusable PHP components. Prior to 5.4.52, 6.4.40, 7.4.12, and 8.0.12, PdoAdapter::doClear() builds a DELETE statement using a namespace derived from the caller-supplied $prefix without binding or escaping it, allowing a caller able to influence $prefix to break out of the LIKE literal and alter query semantics or deletion scope. This issue is fixed in versions 5.4.52, 6.4.40, 7.4.12, and 8.0.12.",
-      "recommendation": "Upgrade symfony/cache to version 7.2.0, 4.0.0, 5.2.0, 6.1.0, 8.0.12, 3.0.0, 5.1.0, 5.4.0, 6.4.40, 7.1.0, 7.4.0, 5.0.0, 5.3.0, 6.2.0, 7.3.0, 7.4.12, 5.4.52, 6.3.0, 6.4.0",
+      "recommendation": "Upgrade symfony/cache to version 5.4.0, 6.1.0, 6.3.0, 6.4.0, 7.2.0, 5.3.0, 6.2.0, 6.4.40, 7.1.0, 7.4.0, 7.4.12, 8.0.12, 4.0.0, 5.0.0, 5.2.0, 5.4.52, 7.3.0, 3.0.0, 5.1.0",
       "advisories": [
         {
           "url": "https://avd.aquasec.com/nvd/cve-2026-45073"
@@ -7386,7 +7386,7 @@
         290
       ],
       "description": "Symfony is a PHP framework for web and console applications and a set of reusable PHP components. From 7.1.0 until 7.4.12 and 8.0.12, Cas2Handler builds the CAS service parameter from Request::getSchemeAndHttpHost(), which reflects an attacker-controlled Host header when framework.trusted_hosts is not configured; an attacker controlling another application registered with the same CAS server can replay a victim ticket against the Symfony application and authenticate as the victim. This issue is fixed in versions 7.4.12 and 8.0.12.",
-      "recommendation": "Upgrade symfony/security-http to version 7.4.12, 8.0.12, 7.2.0, 7.3.0, 7.4.0",
+      "recommendation": "Upgrade symfony/security-http to version 7.4.0, 7.4.12, 8.0.12, 7.2.0, 7.3.0",
       "advisories": [
         {
           "url": "https://avd.aquasec.com/nvd/cve-2026-45074"
@@ -7451,7 +7451,7 @@
         863
       ],
       "description": "Symfony is a PHP framework for web and console applications and a set of reusable PHP components. Prior to 7.4.12 and 8.0.12, method-scoped #[IsGranted], #[IsSignatureValid], and #[IsCsrfTokenValid] attributes can be configured for GET only, but Symfony routes HEAD requests to the GET handler while the attribute check is skipped, allowing protected controllers to execute and leak headers or perform side effects. This issue is fixed in versions 7.4.12 and 8.0.12.",
-      "recommendation": "Upgrade symfony/http-kernel to version 7.4.12, 8.0.12; Upgrade symfony/security-http to version 8.0.12, 7.4.12",
+      "recommendation": "Upgrade symfony/http-kernel to version 7.4.12, 8.0.12; Upgrade symfony/security-http to version 7.4.12, 8.0.12",
       "advisories": [
         {
           "url": "https://avd.aquasec.com/nvd/cve-2026-45075"
@@ -7530,7 +7530,7 @@
         1333
       ],
       "description": "Symfony is a PHP framework for web and console applications and a set of reusable PHP components. Prior to 5.4.52, 6.4.40, 7.4.12, and 8.0.12, when the parser is exposed to attacker-controlled input, deeply nested mappings or sequences cause both the block-level (Parser::parseBlock()) and inline (Inline::parseSequence() / Inline::parseMapping()) parsers to recurse without a depth limit. A crafted document exhausts the PHP stack and crashes the worker. This issue is fixed in versions 5.4.52, 6.4.40, 7.4.12, and 8.0.12.",
-      "recommendation": "Upgrade symfony/yaml to version 5.0.0, 5.1.0, 5.4.0, 6.1.0, 6.4.0, 6.4.40, 8.0.12, 3.0.0, 6.2.0, 7.2.0, 5.2.0, 5.4.52, 7.4.0, 4.0.0, 5.3.0, 6.3.0, 7.1.0, 7.3.0, 7.4.12",
+      "recommendation": "Upgrade symfony/yaml to version 3.0.0, 5.2.0, 6.2.0, 6.4.40, 6.3.0, 7.2.0, 8.0.12, 5.1.0, 6.1.0, 6.4.0, 7.3.0, 7.4.12, 4.0.0, 5.0.0, 5.3.0, 5.4.0, 5.4.52, 7.1.0, 7.4.0",
       "advisories": [
         {
           "url": "https://avd.aquasec.com/nvd/cve-2026-45133"
@@ -7601,7 +7601,7 @@
         776
       ],
       "description": "Symfony is a PHP framework for web and console applications and a set of reusable PHP components. Prior to 5.4.52, 6.4.40, 7.4.12, and 8.0.12, Symfony\\Component\\Yaml\\Parser resolved YAML collection aliases recursively, allowing a small untrusted YAML input to expand into a multi-gigabyte structure and exhaust memory. This issue is fixed in versions 5.4.52, 6.4.40, 7.4.12, and 8.0.12.",
-      "recommendation": "Upgrade symfony/yaml to version 3.0.0, 5.3.0, 6.1.0, 5.4.52, 6.2.0, 7.2.0, 8.0.12, 7.1.0, 5.0.0, 5.1.0, 5.2.0, 5.4.0, 6.3.0, 7.4.0, 7.4.12, 4.0.0, 6.4.0, 6.4.40, 7.3.0",
+      "recommendation": "Upgrade symfony/yaml to version 5.2.0, 5.3.0, 6.4.40, 6.3.0, 4.0.0, 5.0.0, 5.1.0, 5.4.0, 5.4.52, 6.2.0, 7.1.0, 7.3.0, 3.0.0, 6.1.0, 6.4.0, 7.2.0, 7.4.0, 7.4.12, 8.0.12",
       "advisories": [
         {
           "url": "https://avd.aquasec.com/nvd/cve-2026-45304"
@@ -7672,7 +7672,7 @@
         1333
       ],
       "description": "Symfony is a PHP framework for web and console applications and a set of reusable PHP components. Prior to 5.4.52, 6.4.40, 7.4.12, and 8.0.12, Symfony\\Component\\Yaml\\Parser::cleanup() used regular expressions with overlapping quantifiers for YAML directive, comment, and document marker cleanup, allowing crafted input to make parsing hang for an arbitrarily long time. This issue is fixed in versions 5.4.52, 6.4.40, 7.4.12, and 8.0.12.",
-      "recommendation": "Upgrade symfony/yaml to version 4.0.0, 6.2.0, 6.4.40, 7.2.0, 7.3.0, 7.4.12, 3.0.0, 6.1.0, 7.4.0, 5.0.0, 5.1.0, 5.2.0, 5.3.0, 5.4.52, 7.1.0, 8.0.12, 5.4.0, 6.3.0, 6.4.0",
+      "recommendation": "Upgrade symfony/yaml to version 5.1.0, 5.4.52, 6.3.0, 7.1.0, 7.4.0, 7.4.12, 3.0.0, 4.0.0, 5.0.0, 5.3.0, 6.2.0, 5.2.0, 5.4.0, 6.1.0, 6.4.0, 6.4.40, 7.2.0, 7.3.0, 8.0.12",
       "advisories": [
         {
           "url": "https://avd.aquasec.com/nvd/cve-2026-45305"
@@ -7914,7 +7914,7 @@
         94
       ],
       "description": "Twig is a template language for PHP. Prior to 3.26.0, Compiler::string() does not escape single quotes when a template name from a {% use %} tag is placed inside a PHP single-quoted string literal, allowing a crafted template name to terminate the string and inject arbitrary PHP expressions into the compiled cache file. This issue is fixed in version 3.26.0.",
-      "recommendation": "Upgrade twig/twig to version 2.0.0, 3.0.0, 3.26.0",
+      "recommendation": "Upgrade twig/twig to version 3.0.0, 3.26.0, 2.0.0",
       "advisories": [
         {
           "url": "https://avd.aquasec.com/nvd/cve-2026-46633"
@@ -8007,7 +8007,7 @@
         }
       ],
       "published": "2026-07-14T22:16:56+00:00",
-      "updated": "2026-07-16T05:16:19+00:00",
+      "updated": "2026-07-29T19:16:46+00:00",
       "affects": [
         {
           "ref": "pkg:composer/twig/twig@v3.24.0",
@@ -8041,7 +8041,7 @@
         863
       ],
       "description": "Twig is a template language for PHP. Prior to 3.26.0, the column filter passes object arrays to PHP array_column(), which reads public and magic properties without reaching CoreExtension::getAttribute() or SandboxExtension::checkPropertyAllowed(), allowing an untrusted template author with column in allowedFilters to read properties that are not in the sandbox allowlist. This issue is fixed in version 3.26.0.",
-      "recommendation": "Upgrade twig/twig to version 3.0.0, 3.26.0, 2.0.0",
+      "recommendation": "Upgrade twig/twig to version 3.26.0, 2.0.0, 3.0.0",
       "advisories": [
         {
           "url": "https://avd.aquasec.com/nvd/cve-2026-46635"
@@ -8166,7 +8166,7 @@
         693
       ],
       "description": "Twig is a template language for PHP. Prior to 3.26.0, {% sandbox %}{% include %} can include a template that was previously loaded outside the sandbox without re-invoking checkSecurity(), allowing the cached template to use tags, filters, and functions that should have been denied by SecurityPolicy::checkSecurity(). This issue is fixed in version 3.26.0.",
-      "recommendation": "Upgrade twig/twig to version 3.26.0, 2.0.0, 3.0.0",
+      "recommendation": "Upgrade twig/twig to version 2.0.0, 3.0.0, 3.26.0",
       "advisories": [
         {
           "url": "https://avd.aquasec.com/nvd/cve-2026-46638"
@@ -8482,7 +8482,7 @@
         863
       ],
       "description": "Symfony is a PHP framework for web and console applications and a set of reusable PHP components. Prior to 5.4.53, 6.4.41, 7.4.13, and 8.0.13, DefaultAuthenticationFailureHandler honored the request-supplied _failure_path parameter when failure_forward: true was enabled, allowing an unauthenticated failing login request to dispatch a subrequest to access_control-protected GET routes that skipped firewall listeners. This issue is fixed in versions 5.4.53, 6.4.41, 7.4.13, and 8.0.13.",
-      "recommendation": "Upgrade symfony/security-http to version 5.1.0, 5.4.53, 7.2.0, 7.3.0, 4.0.0, 5.0.0, 5.3.0, 6.1.0, 6.4.0, 7.4.0, 8.0.13, 5.2.0, 5.4.0, 6.2.0, 6.3.0, 6.4.41, 3.0.0, 7.1.0, 7.4.13",
+      "recommendation": "Upgrade symfony/security-http to version 5.0.0, 6.1.0, 6.4.0, 3.0.0, 4.0.0, 5.1.0, 5.3.0, 5.4.0, 6.3.0, 7.3.0, 7.4.0, 6.4.41, 7.2.0, 7.4.13, 8.0.13, 5.2.0, 5.4.53, 6.2.0, 7.1.0",
       "advisories": [
         {
           "url": "https://avd.aquasec.com/nvd/cve-2026-48489"
@@ -8551,7 +8551,7 @@
         918
       ],
       "description": "Symfony is a PHP framework for web and console applications and a set of reusable PHP components. From 5.4.0 to 5.4.53, 6.4.41, 7.4.13, and 8.0.13, NoPrivateNetworkHttpClient and IpUtils::PRIVATE_SUBNETS omitted IPv6 transition prefixes such as 6to4, NAT64, Teredo, and IPv4-compatible IPv6, allowing attacker-supplied URLs to represent private IPv4 targets in forms that IpUtils::isPrivateIp() did not block. This issue is fixed in versions 5.4.53, 6.4.41, 7.4.13, and 8.0.13.",
-      "recommendation": "Upgrade symfony/http-foundation to version 7.2.0, 7.3.0, 7.4.0, 7.4.13, 8.0.13, 6.4.41, 7.1.0",
+      "recommendation": "Upgrade symfony/http-foundation to version 6.4.41, 7.1.0, 7.2.0, 7.3.0, 7.4.0, 7.4.13, 8.0.13",
       "advisories": [
         {
           "url": "https://avd.aquasec.com/nvd/cve-2026-48736"
@@ -8626,7 +8626,7 @@
         601
       ],
       "description": "Symfony is a PHP framework for web and console applications and a set of reusable PHP components. Prior to 5.4.53, 6.4.41, 7.4.13, and 8.0.13, UrlGenerator::doGenerate() used strtr() dot-segment encoding that skipped every other chained ../ or ./ segment, allowing attacker-controlled route parameters to generate URLs that collapse to a different path under RFC 3986 normalization. This issue is fixed in versions 5.4.53, 6.4.41, 7.4.13, and 8.0.13.",
-      "recommendation": "Upgrade symfony/routing to version 7.4.13, 5.2.0, 5.4.0, 6.1.0, 6.2.0, 7.4.0, 8.0.13, 3.0.0, 4.0.0, 5.0.0, 5.3.0, 5.4.53, 6.3.0, 6.4.0, 7.1.0, 7.2.0, 5.1.0, 6.4.41, 7.3.0",
+      "recommendation": "Upgrade symfony/routing to version 5.1.0, 5.4.53, 6.2.0, 6.4.0, 7.1.0, 8.0.13, 5.2.0, 5.3.0, 7.2.0, 7.3.0, 3.0.0, 5.0.0, 5.4.0, 6.1.0, 7.4.0, 7.4.13, 4.0.0, 6.3.0, 6.4.41",
       "advisories": [
         {
           "url": "https://avd.aquasec.com/nvd/cve-2026-48784"
@@ -8700,7 +8700,7 @@
         693
       ],
       "description": "Twig is a template language for PHP. Prior to 3.27.0, deprecated internal wrappers in src/Resources/core.php do not forward the current sandbox state to CoreExtension::checkArrow(), arraySome(), and arrayEvery(), allowing legacy calls such as twig_array_some(), twig_array_every(), and twig_check_arrow_in_sandbox() to bypass sandbox callable restrictions. This issue is fixed in version 3.27.0.",
-      "recommendation": "Upgrade twig/twig to version 3.0.0, 3.27.0, 2.0.0",
+      "recommendation": "Upgrade twig/twig to version 2.0.0, 3.0.0, 3.27.0",
       "advisories": [
         {
           "url": "https://avd.aquasec.com/nvd/cve-2026-48805"
@@ -9032,6 +9032,123 @@
           "versions": [
             {
               "version": "v3.24.0",
+              "status": "affected"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-54133",
+      "source": {
+        "name": "php-security-advisories",
+        "url": "https://github.com/FriendsOfPHP/security-advisories"
+      },
+      "ratings": [
+        {
+          "source": {
+            "name": "ghsa"
+          },
+          "score": 9.8,
+          "severity": "critical",
+          "method": "CVSSv31",
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+        }
+      ],
+      "cwes": [
+        20,
+        94,
+        116
+      ],
+      "description": "jmespath.php allows users to use JMESPath, software for declaratively specifying how to extract elements from a JSON document, in PHP applications with PHP data structures. Versions prior to 2.9.1 can generate and execute attacker-controlled PHP code when `JmesPath\\CompilerRuntime` is used with an attacker-controlled JMESPath expression. The compiler emits parsed JMESPath function names into generated PHP source without sufficient escaping. A crafted expression can cause the generated cache file to contain executable attacker-controlled PHP, which is then loaded by the compiler runtime. The issue is patched in `2.9.1` and later. As a workaround, disable `JP_PHP_COMPILE` and do not use `JmesPath\\CompilerRuntime` with attacker-controlled expressions. Use the default `AstRuntime` for untrusted expressions. Applications that must continue accepting untrusted JMESPath expressions before upgrading should ensure those expressions are never evaluated by the compiler runtime.",
+      "recommendation": "Upgrade mtdowling/jmespath.php to version 2.9.1",
+      "advisories": [
+        {
+          "url": "https://avd.aquasec.com/nvd/cve-2026-54133"
+        },
+        {
+          "url": "https://github.com/FriendsOfPHP/security-advisories/blob/master/mtdowling/jmespath.php/CVE-2026-54133.yaml"
+        },
+        {
+          "url": "https://github.com/jmespath/jmespath.php"
+        },
+        {
+          "url": "https://github.com/jmespath/jmespath.php/security/advisories/GHSA-pcw8-m77r-2528"
+        },
+        {
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-54133"
+        }
+      ],
+      "published": "2026-06-12T15:16:31+00:00",
+      "updated": "2026-06-17T10:58:10+00:00",
+      "affects": [
+        {
+          "ref": "pkg:composer/mtdowling/jmespath.php@2.8.0",
+          "versions": [
+            {
+              "version": "2.8.0",
+              "status": "affected"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-54164",
+      "source": {
+        "name": "ghsa",
+        "url": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Acomposer"
+      },
+      "ratings": [
+        {
+          "source": {
+            "name": "ghsa"
+          },
+          "score": 6.5,
+          "severity": "medium",
+          "method": "CVSSv31",
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:N"
+        }
+      ],
+      "cwes": [
+        843
+      ],
+      "description": "API Platform Core is a system to create hypermedia-driven REST and GraphQL APIs. In versions prior to 4.1.30, 4.2.26 and 4.3.12, the serializer's AbstractItemNormalizer does not validate the resource type returned when resolving relation IRIs, allowing type confusion where a resource of an unintended type can be silently assigned to a relation property. An attacker who can submit write requests (POST/PUT/PATCH) to an API Platform endpoint with writable relations can supply a relation IRI pointing to a resource of a different type than the relation's declared class. Because getResourceFromIri() does not pass an $operation to IriConverter::getResourceFromIri(), the is_a type guard at IriConverter.php:86 is skipped. For untyped relation properties (legacy @var-only style), the wrong-typed object is silently assigned, corrupting invariants and potentially feeding downstream logic that assumes the declared type (CWE-843). For typed properties (modern PHP 8.x), the substitution is blocked by Symfony's PropertyAccessor with an InvalidTypeException. This issue has been fixed in versions 4.1.30, 4.2.26 and 4.3.12.",
+      "recommendation": "Upgrade api-platform/core to version 4.1.30, 4.2.26, 4.3.12",
+      "advisories": [
+        {
+          "url": "https://avd.aquasec.com/nvd/cve-2026-54164"
+        },
+        {
+          "url": "https://github.com/api-platform/core"
+        },
+        {
+          "url": "https://github.com/api-platform/core/commit/6bcbeb2dbee53db5bb9b4b8e343bffdf7732de1e"
+        },
+        {
+          "url": "https://github.com/api-platform/core/releases/tag/v4.1.30"
+        },
+        {
+          "url": "https://github.com/api-platform/core/releases/tag/v4.2.26"
+        },
+        {
+          "url": "https://github.com/api-platform/core/releases/tag/v4.3.12"
+        },
+        {
+          "url": "https://github.com/api-platform/core/security/advisories/GHSA-9rjg-x2p2-h68h"
+        },
+        {
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-54164"
+        }
+      ],
+      "published": "2026-07-01T20:17:10+00:00",
+      "updated": "2026-07-02T17:54:15+00:00",
+      "affects": [
+        {
+          "ref": "pkg:composer/api-platform/core@v4.1.28",
+          "versions": [
+            {
+              "version": "v4.1.28",
               "status": "affected"
             }
           ]
