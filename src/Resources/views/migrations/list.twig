@@ -30,7 +30,7 @@
 {%- block content -%}
     <section class="container ibexa-container">
         <form method="post" action="{{ path('migrations_list') }}" id="migrations-form">
-            <input type="hidden" name="action" id="bulk-action" value="">
+            <input type="hidden" name="bulk-action" id="bulk-action" value="">
             
             {% set body_rows = [] %}
             {% for migrationData in migrations.currentPageResults %}
