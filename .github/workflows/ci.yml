@@ -34,7 +34,7 @@ jobs:
 
       - name: Add migration bundle to require-dev
         if: matrix.migration-bundle != 'none'
-        run: composer require --no-update --dev "${{ matrix.migration-bundle }}"
+        run: composer require --dev "${{ matrix.migration-bundle }}"
 
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist --no-scripts
@@ -43,7 +43,7 @@ jobs:
         run: XDEBUG_MODE=coverage vendor/bin/pest --coverage --min=50
 
       - name: Upload coverage artifact
-        if: matrix.php == '8.2' && matrix.migration-bundle == 'none'
+        if: matrix.php == '8.3' && matrix.migration-bundle == 'none'
         uses: actions/upload-artifact@v7
         with:
           name: coverage-report
