@@ -2,10 +2,10 @@
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:466111ee-0997-4a96-ae1e-850de6d1f1d5",
+  "serialNumber": "urn:uuid:1718c129-92d4-4736-9493-c5901e6b1b09",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-10-30T10:00:21+00:00",
+    "timestamp": "2026-10-30T10:03:06+00:00",
     "tools": {
       "components": [
         {
@@ -20,7 +20,7 @@
       ]
     },
     "component": {
-      "bom-ref": "52728538-ff1e-4c5b-ad00-30bd22017b24",
+      "bom-ref": "96ea0f2d-a910-4432-8852-e4d923867bf2",
       "type": "application",
       "name": ".",
       "properties": [
@@ -33,7 +33,7 @@
   },
   "components": [
     {
-      "bom-ref": "ed2728f2-9621-4b19-b090-a51beb98c80a",
+      "bom-ref": "39b5bee1-8a9a-4fb7-8b11-b77bd2234c2a",
       "type": "application",
       "name": "composer.lock",
       "properties": [
@@ -5138,13 +5138,7 @@
   ],
   "dependencies": [
     {
-      "ref": "52728538-ff1e-4c5b-ad00-30bd22017b24",
-      "dependsOn": [
-        "ed2728f2-9621-4b19-b090-a51beb98c80a"
-      ]
-    },
-    {
-      "ref": "ed2728f2-9621-4b19-b090-a51beb98c80a",
+      "ref": "39b5bee1-8a9a-4fb7-8b11-b77bd2234c2a",
       "dependsOn": [
         "pkg:composer/brainmaestro/composer-git-hooks@dev-master",
         "pkg:composer/friendsofphp/php-cs-fixer@v3.95.1",
@@ -5158,6 +5152,12 @@
         "pkg:composer/phpstan/phpstan@2.1.54",
         "pkg:composer/rector/swiss-knife@2.3.5",
         "pkg:composer/symplify/easy-coding-standard@13.0.4"
+      ]
+    },
+    {
+      "ref": "96ea0f2d-a910-4432-8852-e4d923867bf2",
+      "dependsOn": [
+        "39b5bee1-8a9a-4fb7-8b11-b77bd2234c2a"
       ]
     },
     {
