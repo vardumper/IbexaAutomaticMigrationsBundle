@@ -14,8 +14,8 @@
   ],
   "require": {
     "php": ">=8.3",
-    "ibexa/core": "^4.4|^5.0.4",
-    "ibexa/admin-ui": "^4.4|^5.0.4",
+    "ibexa/core": "^4.4|^5.0.4|^6.0",
+    "ibexa/admin-ui": "^4.4|^5.0.4|^6.0",
     "guzzlehttp/promises": "^2.3",
     "nyholm/psr7": "^1.8.2"
   },
