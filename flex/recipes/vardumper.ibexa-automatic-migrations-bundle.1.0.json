@@ -1,0 +1,15 @@
+{
+    "manifests": {
+        "vardumper/ibexa-automatic-migrations-bundle": {
+            "manifest": {
+                "bundles": {
+                    "vardumper\\IbexaAutomaticMigrationsBundle\\IbexaAutomaticMigrationsBundle": ["all"]
+                },
+                "copy-from-package": {
+                    "flex/recipe/config/": "%CONFIG_DIR%/"
+                }
+            },
+            "ref": "019bc0f3f505b027a836955480bb067553409a76"
+        }
+    }
+}

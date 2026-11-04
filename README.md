@@ -50,14 +50,14 @@ Migrations are created in the default locations (in `src/Migrations/Ibexa/migrat
 
 ### With Symfony Flex (recommended)
 
-Add the recipe endpoint to your project's `composer.json` once:
+The recipe is not part of the public recipe index — it is hosted in this repository. Add the endpoint to your project's `composer.json` once, keeping your existing endpoint (e.g. Ibexa's):
 
 ```json
 "extra": {
     "symfony": {
         "endpoint": [
-            "https://raw.githubusercontent.com/vardumper/IbexaAutomaticMigrationsBundle/main/flex/",
-            "flex://defaults"
+            "https://api.github.com/repos/ibexa/recipes/contents/index.json?ref=flex/main",
+            "https://raw.githubusercontent.com/vardumper/IbexaAutomaticMigrationsBundle/main/flex/index.json"
         ]
     }
 }

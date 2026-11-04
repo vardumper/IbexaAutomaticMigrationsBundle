@@ -1,0 +1,12 @@
+{
+    "recipes": {
+        "vardumper/ibexa-automatic-migrations-bundle": ["1.0"]
+    },
+    "branch": "main",
+    "is_contrib": false,
+    "_links": {
+        "repository": "github.com/vardumper/IbexaAutomaticMigrationsBundle",
+        "origin_template": "{package}:{version}@github.com/vardumper/IbexaAutomaticMigrationsBundle:main",
+        "recipe_template": "https://raw.githubusercontent.com/vardumper/IbexaAutomaticMigrationsBundle/main/flex/recipes/{package_dotted}.{version}.json"
+    }
+}

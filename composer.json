@@ -14,8 +14,8 @@
   ],
   "require": {
     "php": ">=8.3",
-    "ibexa/core": "^4.4|^5.0.4|^6.0",
-    "ibexa/admin-ui": "^4.4|^5.0.4|^6.0",
+    "ibexa/core": "^4.4|^5.0.4|^6.0|~6.0.x-dev",
+    "ibexa/admin-ui": "^4.4|^5.0.4|^6.0|~6.0.x-dev",
     "guzzlehttp/promises": "^2.3|^3.0",
     "nyholm/psr7": "^1.8.2"
   },
@@ -40,10 +40,6 @@
     }
   },
   "extra": {
-    "thanks": {
-      "name": "symfony/flex",
-      "url": "https://github.com/symfony/flex"
-    },
     "hooks": {
       "pre-commit": [
         ".githooks/pre-commit"

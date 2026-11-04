@@ -1,9 +1,0 @@
-{
-    "bundles": {
-        "vardumper\\IbexaAutomaticMigrationsBundle\\IbexaAutomaticMigrationsBundle": ["all"]
-    },
-    "copy-from-recipe": {
-        "config/": "%CONFIG_DIR%/"
-    },
-    "aliases": ["ibexa-automatic-migrations", "ibexa-auto-migrations"]
-}
